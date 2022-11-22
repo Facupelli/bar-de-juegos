@@ -36,17 +36,25 @@ export default async function handlerUser(
       points,
     }: { id: string; fullName: string; points: number } = req.body;
 
-    if (id) {
-      const data = {};
+    type data = {
+      fullName: string;
+      totalPoints: { increment: number };
+    };
 
+    const data: data = {
+      fullName: "",
+      totalPoints: {
+        increment: 0,
+      },
+    };
+
+    if (fullName) data.fullName = fullName;
+    if (points) data.totalPoints.increment = points;
+
+    if (id) {
       const updateUser = await prisma.user.update({
         where: { id },
-        data: {
-          fullName,
-          totalPoints: {
-            increment: points,
-          },
-        },
+        data,
       });
 
       res.status(200).json({ message: "success" });
