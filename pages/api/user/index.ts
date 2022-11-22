@@ -1,6 +1,5 @@
-import { PrismaClient } from "@prisma/client";
+import { prisma } from "../../../db";
 import type { NextApiRequest, NextApiResponse } from "next";
-const prisma = new PrismaClient();
 
 type Data = {
   message: string;

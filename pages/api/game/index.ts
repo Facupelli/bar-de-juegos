@@ -1,15 +1,17 @@
-import { PrismaClient } from "@prisma/client";
+import { prisma } from "../../../db";
 import type { NextApiRequest, NextApiResponse } from "next";
-const prisma = new PrismaClient();
-
-type Data = {
-  message: string;
-};
 
 export default async function handleGame(
   req: NextApiRequest,
-  res: NextApiResponse<Data>
+  res: NextApiResponse
 ) {
+  if (req.method === "GET") {
+    const games = await prisma.game.findMany({});
+
+    res.json(games);
+    return;
+  }
+
   if (req.method === "POST") {
     const {
       name,
