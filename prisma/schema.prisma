@@ -1,0 +1,62 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role{
+  USER
+  EMPLOYEE
+  ADMIN
+}
+
+model User {
+  id                      String        @default(cuid()) @id
+  role                    Role          @default(USER)
+  fullName                String?
+  membership              Membership?    @relation(fields: [membershipId], references: [id])
+  membershipId            String
+  games                   Game[]
+  drinks                  Drink[]
+  totalPoints             Int           @default(0)
+  totalPointsSpent        Int           @default(0)
+  createdAt               DateTime      @default(now()) @map(name: "created_at")
+  updatedAt               DateTime      @updatedAt @map(name: "updated_at")
+}
+
+model Membership {
+  id                      String        @default(cuid()) @id
+  name                    String
+  users                   User[]
+  promotions              Promotion[]
+}
+
+model Promotion {
+  id                      String        @default(cuid()) @id
+  name                    String 
+  memberships             Membership[]
+  drinks                  Drink[]
+  games                   Game[]
+}
+
+model Game {
+  id                      String        @default(cuid()) @id
+  name                    String
+  points                  Int
+  users                   User[]
+  promotions              Promotion[]
+}
+
+model Drink {
+  id                      String        @default(cuid()) @id
+  name                    String
+  points                  Int
+  users                   User[]
+  promotions              Promotion[]
+}
