@@ -1,4 +1,5 @@
 import Head from "next/head";
+import LoginInput from "../src/components/LoginInpunt/LoginInput";
 import styles from "../styles/Home.module.css";
 
 export default function Home() {
@@ -12,6 +13,7 @@ export default function Home() {
 
       <main className={styles.main}>
         <h1>BAR DE JUEGOS</h1>
+        <LoginInput />
       </main>
 
       <footer className={styles.footer}></footer>
