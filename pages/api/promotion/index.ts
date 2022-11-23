@@ -1,7 +1,7 @@
 import { prisma } from "../../../db";
 import type { NextApiRequest, NextApiResponse } from "next";
 
-export default async function handlerUser(
+export default async function handlerPromotion(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
@@ -12,19 +12,21 @@ export default async function handlerUser(
     return;
   }
 
-  if (req.method === "POST") {
-    const {
-      name,
-      drinksIds,
-      gamesIds,
-      membershipsIds,
-    }: {
-      name: string;
-      drinksIds: string[];
-      gamesIds: string[];
-      membershipsIds: string[];
-    } = req.body;
+  const {
+    id,
+    name,
+    drinksIds,
+    gamesIds,
+    membershipsIds,
+  }: {
+    id: string;
+    name: string;
+    drinksIds: string[];
+    gamesIds: string[];
+    membershipsIds: string[];
+  } = req.body;
 
+  if (req.method === "POST") {
     if (name && drinksIds && gamesIds && membershipsIds) {
       const newPromotion = await prisma.promotion.create({
         data: {
@@ -39,6 +41,23 @@ export default async function handlerUser(
       return;
     }
 
+    res.status(400).json({ message: "missing data" });
+  }
+
+  if (req.method === "PUT") {
+    if (id && (name || drinksIds || gamesIds || membershipsIds)) {
+      const updatePromotion = await prisma.promotion.update({
+        where: { id },
+        data: {
+          name,
+          drinks: { connect: drinksIds.map((id) => ({ id })) },
+          games: { connect: gamesIds.map((id) => ({ id })) },
+          memberships: { connect: membershipsIds.map((id) => ({ id })) },
+        },
+      });
+      res.status(200).json({ message: "success" });
+      return;
+    }
     res.status(400).json({ message: "missing data" });
   }
 }

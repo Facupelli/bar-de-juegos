@@ -12,15 +12,17 @@ export default async function handleDrink(
     return;
   }
 
-  if (req.method === "POST") {
-    const {
-      name,
-      points,
-    }: {
-      name: string;
-      points: number;
-    } = req.body;
+  const {
+    id,
+    name,
+    points,
+  }: {
+    id: string;
+    name: string;
+    points: number;
+  } = req.body;
 
+  if (req.method === "POST") {
     if (name && points) {
       const newGame = await prisma.drink.create({
         data: {
@@ -33,6 +35,22 @@ export default async function handleDrink(
       return;
     }
 
+    res.status(400).json({ message: "missing data" });
+  }
+
+  if (req.method === "PUT") {
+    if (id && (name || points)) {
+      const updateDrink = await prisma.drink.update({
+        where: { id },
+        data: {
+          name,
+          points,
+        },
+      });
+
+      res.status(200).json({ message: "success" });
+      return;
+    }
     res.status(400).json({ message: "missing data" });
   }
 }

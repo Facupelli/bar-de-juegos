@@ -1,52 +1,53 @@
 import { prisma } from "../../../db";
 import type { NextApiRequest, NextApiResponse } from "next";
+import { Promotion } from "../../../src/types/model";
 
-export default async function handleGame(
+export default async function handlerMembership(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
   if (req.method === "GET") {
-    const games = await prisma.game.findMany({});
+    const memberships = prisma.membership.findMany({});
 
-    res.json(games);
+    res.status(200).json(memberships);
     return;
   }
 
   const {
     id,
     name,
-    points,
+    promotionsIds,
   }: {
     id: string;
     name: string;
-    points: number;
+    promotionsIds: string[];
   } = req.body;
 
   if (req.method === "POST") {
-    if (name && points) {
-      const newGame = await prisma.game.create({
+    if (name || promotionsIds) {
+      const newMembership = await prisma.membership.create({
         data: {
           name,
-          points,
+          promotions: { connect: promotionsIds.map((id) => ({ id })) },
         },
       });
 
-      res.status(200).json({ message: "succes" });
+      res.status(200).json({ message: "success" });
       return;
     }
+
     res.status(400).json({ message: "missing data" });
   }
 
   if (req.method === "PUT") {
-    if (id && (name || points)) {
-      const updateGame = await prisma.game.update({
+    if (id && (name || promotionsIds)) {
+      const updateMembership = await prisma.membership.update({
         where: { id },
         data: {
           name,
-          points,
+          promotions: { connect: promotionsIds.map((id) => ({ id })) },
         },
       });
-
       res.status(200).json({ message: "success" });
       return;
     }
