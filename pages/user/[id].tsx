@@ -1,11 +1,20 @@
 import axios from "axios";
 import { GetServerSideProps } from "next";
 import Head from "next/head";
-import { User } from "../../src/types/model";
+import PostPointsCard from "../../src/components/PostPointsCard/PostPointsCard";
+import { Drink, Game, User } from "../../src/types/model";
 
 import s from "./UserDetail.module.scss";
 
-export default function Home({ user }: { user: User }) {
+export default function Home({
+  user,
+  drinks,
+  games,
+}: {
+  user: User;
+  drinks: Drink[];
+  games: Game[];
+}) {
   return (
     <div className={s.container}>
       <Head>
@@ -16,7 +25,16 @@ export default function Home({ user }: { user: User }) {
 
       <main className={s.main}>
         <h2>USER DETAIL</h2>
-        <p>{user.fullName}</p>
+        <section>
+          <article>
+            <p>{user.fullName}</p>
+            <p>{user.membership.name}</p>
+            <p>Puntos: {user.totalPoints}</p>
+            <p>Puntos Gastados: {user.totalPointsSpent}</p>
+          </article>
+
+          <PostPointsCard drinks={drinks} games={games} />
+        </section>
       </main>
     </div>
   );
@@ -25,14 +43,20 @@ export default function Home({ user }: { user: User }) {
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const id = context.query.id;
 
-  const response = await axios(`http://localhost:3000/api/user/${id}`);
-  const user = response.data;
+  const userResponse = await axios(`http://localhost:3000/api/user/${id}`);
+  const user = userResponse.data;
 
-  console.log(user);
+  const drinksResponse = await axios("http://localhost:3000/api/drink");
+  const drinks = drinksResponse.data;
+
+  const gamesResponse = await axios("http://localhost:3000/api/game");
+  const games = gamesResponse.data;
 
   return {
     props: {
-      user: user,
+      user,
+      drinks,
+      games,
     },
   };
 };

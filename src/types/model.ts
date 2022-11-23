@@ -2,7 +2,9 @@ export type User = {
   id: string;
   role: string;
   fullName: string;
-  membershipId: string;
+  membership: Membership;
+  games: Game[];
+  drinks: Drink[];
   totalPoints: number;
   totalPointsSpent: number;
   createdAt: Date;

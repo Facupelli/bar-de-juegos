@@ -1,3 +1,5 @@
+import { useRouter } from "next/router";
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 
 import s from "./LoginInput.module.scss";
@@ -12,21 +14,27 @@ export default function LoginInput() {
     handleSubmit,
     watch,
     formState: { errors },
+    setFocus,
   } = useForm();
-
-  const onSubmit = async (data: SubmitData) => {
-    console.log(data);
-  };
+  const router = useRouter();
 
   const id = watch("id");
 
-  if (id.length === 9) {
+  const onSubmit = async (id: string) => {
+    router.push(`/user/${id}`);
+  };
+
+  if (id?.length === 9) {
     onSubmit(id);
   }
 
+  useEffect(() => {
+    setFocus("id");
+  }, [setFocus]);
+
   return (
-    <section>
-      <input type="text" {...register("id")} />
+    <section className={s.section}>
+      <input type="password" {...register("id")} autoFocus />
     </section>
   );
 }
