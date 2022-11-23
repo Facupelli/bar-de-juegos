@@ -1,13 +1,12 @@
 import { prisma } from "../../../db";
 import type { NextApiRequest, NextApiResponse } from "next";
-import { Promotion } from "../../../src/types/model";
 
 export default async function handlerMembership(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
   if (req.method === "GET") {
-    const memberships = prisma.membership.findMany({});
+    const memberships = await prisma.membership.findMany({});
 
     res.status(200).json(memberships);
     return;
@@ -28,7 +27,7 @@ export default async function handlerMembership(
       const newMembership = await prisma.membership.create({
         data: {
           name,
-          promotions: { connect: promotionsIds.map((id) => ({ id })) },
+          // promotions: { connect: promotionsIds.map((id) => ({ id })) },
         },
       });
 

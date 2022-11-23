@@ -6,7 +6,13 @@ export default async function handlerPromotion(
   res: NextApiResponse
 ) {
   if (req.method === "GET") {
-    const promotions = prisma.promotion.findMany({});
+    const promotions = await prisma.promotion.findMany({
+      include: {
+        drinks: true,
+        games: true,
+        memberships: true,
+      },
+    });
 
     res.status(200).json(promotions);
     return;
@@ -27,7 +33,7 @@ export default async function handlerPromotion(
   } = req.body;
 
   if (req.method === "POST") {
-    if (name && drinksIds && gamesIds && membershipsIds) {
+    if (name && (drinksIds || gamesIds) && membershipsIds) {
       const newPromotion = await prisma.promotion.create({
         data: {
           name,

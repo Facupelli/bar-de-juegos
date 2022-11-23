@@ -21,7 +21,7 @@ export type Membership = {
 export type Promotion = {
   id: string;
   name: string;
-  memebership: Membership;
+  memberships: Membership[];
   drinks: Drink[];
   games: Game[];
 };

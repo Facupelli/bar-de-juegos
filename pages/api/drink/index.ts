@@ -27,7 +27,7 @@ export default async function handleDrink(
       const newGame = await prisma.drink.create({
         data: {
           name,
-          points,
+          points: Number(points),
         },
       });
 
@@ -44,7 +44,7 @@ export default async function handleDrink(
         where: { id },
         data: {
           name,
-          points,
+          points: Number(points),
         },
       });
 

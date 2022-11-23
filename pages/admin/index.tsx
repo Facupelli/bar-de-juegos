@@ -1,8 +1,27 @@
+import { GetServerSideProps } from "next";
+import axios from "axios";
 import Head from "next/head";
 
-import s from "./Admin.module.scss";
+import CreateGame from "../../src/components/admin/CreateGameDrink/CreateGameDrink";
+import CreateMembership from "../../src/components/admin/CreateMembership/CreateMembership";
 
-export default function Home() {
+import s from "./Admin.module.scss";
+import { Drink, Game, Membership, Promotion } from "../../src/types/model";
+import CreatePromotion from "../../src/components/admin/CreatePromotion/CreatePromotion";
+
+type Props = {
+  drinks: Drink[];
+  games: Game[];
+  memberships: Membership[];
+  promotions: Promotion[];
+};
+
+export default function Home({
+  drinks,
+  games,
+  memberships,
+  promotions,
+}: Props) {
   return (
     <div className={s.container}>
       <Head>
@@ -13,7 +32,81 @@ export default function Home() {
 
       <main className={s.main}>
         <h2>ADMIN</h2>
+
+        <CreateMembership />
+        <CreateGame game />
+        <CreateGame />
+
+        <CreatePromotion
+          games={games}
+          drinks={drinks}
+          memberships={memberships}
+        />
+
+        <div>
+          <h4>Juegos</h4>
+          {games.map((game) => (
+            <p>
+              {game.name} {game.points}pts
+            </p>
+          ))}
+        </div>
+
+        <div>
+          <h4>Bebidas</h4>
+          {drinks.map((drink) => (
+            <p>
+              {drink.name} {drink.points}pts
+            </p>
+          ))}
+        </div>
+
+        <div>
+          <h4>Promociones</h4>
+          {promotions?.map((promotion) => (
+            <>
+              <p>{promotion.name}</p>
+              <h6>Membresia</h6>
+              {promotion.memberships.map((membership) => (
+                <p>{membership.name}</p>
+              ))}
+              <h6>Bebidas</h6>
+              {promotion.drinks?.map((drink) => (
+                <p>{drink.name}</p>
+              ))}
+              <h6>Juegos</h6>
+              {promotion.games?.map((game) => (
+                <p>{game.name}</p>
+              ))}
+            </>
+          ))}
+        </div>
       </main>
     </div>
   );
 }
+
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  const membershipsResponse = await axios(
+    "http://localhost:3000/api/membership"
+  );
+  const memberships = membershipsResponse.data;
+
+  const drinksResponse = await axios("http://localhost:3000/api/drink");
+  const drinks = drinksResponse.data;
+
+  const gamesResponse = await axios("http://localhost:3000/api/game");
+  const games = gamesResponse.data;
+
+  const promotionsResponse = await axios("http://localhost:3000/api/promotion");
+  const promotions = promotionsResponse.data;
+
+  return {
+    props: {
+      memberships,
+      drinks,
+      games,
+      promotions,
+    },
+  };
+};

@@ -27,7 +27,7 @@ export default async function handleGame(
       const newGame = await prisma.game.create({
         data: {
           name,
-          points,
+          points: Number(points),
         },
       });
 
@@ -43,7 +43,7 @@ export default async function handleGame(
         where: { id },
         data: {
           name,
-          points,
+          points: Number(points),
         },
       });
 
