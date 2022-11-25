@@ -2,12 +2,12 @@ import { GetServerSideProps } from "next";
 import axios from "axios";
 import Head from "next/head";
 
-import CreateGame from "../../src/components/admin/CreateGameDrink/CreateGameDrink";
-import CreateMembership from "../../src/components/admin/CreateMembership/CreateMembership";
+import CreateGame from "../../src/components/Admin/CreateGameDrink/CreateGameDrink";
+import CreateMembership from "../../src/components/Admin/CreateMembership/CreateMembership";
 
 import s from "./Admin.module.scss";
 import { Drink, Game, Membership, Promotion } from "../../src/types/model";
-import CreatePromotion from "../../src/components/admin/CreatePromotion/CreatePromotion";
+import CreatePromotion from "../../src/components/Admin/CreatePromotion/CreatePromotion";
 
 type Props = {
   drinks: Drink[];

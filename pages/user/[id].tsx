@@ -11,13 +11,14 @@ export default function Home({
   drinks,
   games,
   promotions,
+  userId,
 }: {
   user: User;
   drinks: Drink[];
   games: Game[];
   promotions: Promotion[];
+  userId: string;
 }) {
-  console.log(user);
   return (
     <div className={s.container}>
       <Head>
@@ -36,12 +37,12 @@ export default function Home({
             <p>Puntos Gastados: {user.totalPointsSpent}</p>
           </article>
 
-          <PostPointsCard drinks={drinks} games={games} />
+          <PostPointsCard drinks={drinks} games={games} userId={userId} />
 
           <article>
             <p>Promociones Validas:</p>
             {user.membership.promotions.map((promotion) => (
-              <p>{promotion.name}</p>
+              <p key={promotion.id}>{promotion.name}</p>
             ))}
           </article>
         </section>
@@ -72,6 +73,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       user,
       drinks,
       games,
+      userId: id,
       // promotions,
     },
   };

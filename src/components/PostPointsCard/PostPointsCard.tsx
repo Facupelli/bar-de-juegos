@@ -1,14 +1,16 @@
 import { useForm } from "react-hook-form";
 import { Drink, Game } from "../../types/model";
+import AddConsumption from "../UserDetail/AddCosumption/AddConsumption";
 
 import s from "./PostPointsCard.module.scss";
 
 type Props = {
   drinks: Drink[];
   games: Game[];
+  userId: string;
 };
 
-export default function PostPointsCard({ drinks, games }: Props) {
+export default function PostPointsCard({ drinks, games, userId }: Props) {
   const {
     register,
     handleSubmit,
@@ -19,21 +21,8 @@ export default function PostPointsCard({ drinks, games }: Props) {
 
   return (
     <article>
-      <form>
-        <label>Bebida:</label>
-        <select>
-          {drinks?.length > 0 &&
-            drinks.map((drink) => (
-              <option value={drink.id}>{drink.name}</option>
-            ))}
-        </select>
-
-        <label>Juego:</label>
-        <select>
-          {games?.length > 0 &&
-            games.map((game) => <option value={game.id}>{game.name}</option>)}
-        </select>
-      </form>
+      <AddConsumption consumptions={drinks} name="Bebida" userId={userId} />
+      <AddConsumption consumptions={games} name="Juego" userId={userId} />
     </article>
   );
 }

@@ -22,8 +22,8 @@ model User {
   fullName                String?
   membership              Membership?    @relation(fields: [membershipId], references: [id])
   membershipId            String
-  games                   Game[]
-  drinks                  Drink[]
+  games                   GamesOnUser[]
+  drinks                  DrinksOnUser[]
   promotions              Promotion[]
   totalPoints             Int           @default(0)
   totalPointsSpent        Int           @default(0)
@@ -51,14 +51,35 @@ model Game {
   id                      String        @default(cuid()) @id
   name                    String
   points                  Int
-  users                   User[]
+  users                   GamesOnUser[]
   promotions              Promotion[]
+}
+
+model GamesOnUser {
+  user                  User           @relation(fields: [userId], references: [id])
+  userId                String
+  game                  Game          @relation(fields: [gameId], references: [id])
+  gameId                String
+  quantity              Int
+
+  @@id([userId, gameId])
 }
 
 model Drink {
   id                      String        @default(cuid()) @id
   name                    String
   points                  Int
-  users                   User[]
+  users                   DrinksOnUser[]
   promotions              Promotion[]
 }
+
+model DrinksOnUser {
+  user                  User           @relation(fields: [userId], references: [id])
+  userId                String
+  drink                 Drink          @relation(fields: [drinkId], references: [id])
+  drinkId               String
+  quantity              Int
+
+  @@id([userId, drinkId])
+}
+
