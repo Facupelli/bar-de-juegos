@@ -10,57 +10,68 @@ export default async function handlerUser(
   res: NextApiResponse<Data>
 ) {
   if (req.method === "POST") {
-    const { id, membershipId }: { id: string; membershipId: string } = req.body;
-
-    if (id && membershipId) {
-      const newUser = await prisma.user.create({
-        data: {
-          id,
-          membershipId,
-        },
-      });
-
-      res.status(200).json({ message: "success" });
+    try{
+      const { id, membershipId }: { id: string; membershipId: string } = req.body;
+  
+      if (id && membershipId) {
+        const newUser = await prisma.user.create({
+          data: {
+            id,
+            membershipId,
+          },
+        });
+  
+        res.status(200).json({ message: "success" });
+        return;
+      }
+  
+      res.status(400).json({ message: "missing data" });
       return;
-    }
 
-    res.status(400).json({ message: "missing data" });
-    return;
+    }catch(e){
+      console.error(e)
+      res.status(500).json({message:"error"})
+    }
   }
 
   if (req.method === "PUT") {
-    const {
-      id,
-      fullName,
-      points,
-    }: { id: string; fullName: string; points: number } = req.body;
-
-    type data = {
-      fullName: string;
-      totalPoints: { increment: number };
-    };
-
-    const data: data = {
-      fullName: "",
-      totalPoints: {
-        increment: 0,
-      },
-    };
-
-    if (fullName) data.fullName = fullName;
-    if (points) data.totalPoints.increment = points;
-
-    if (id) {
-      const updateUser = await prisma.user.update({
-        where: { id },
-        data,
-      });
-
-      res.status(200).json({ message: "success" });
+    try{
+      const {
+        id,
+        fullName,
+        points,
+      }: { id: string; fullName: string; points: number } = req.body;
+  
+      type data = {
+        fullName: string;
+        totalPoints: { increment: number };
+      };
+  
+      const data: data = {
+        fullName: "",
+        totalPoints: {
+          increment: 0,
+        },
+      };
+  
+      if (fullName) data.fullName = fullName;
+      if (points) data.totalPoints.increment = points;
+  
+      if (id) {
+        const updateUser = await prisma.user.update({
+          where: { id },
+          data,
+        });
+  
+        res.status(200).json({ message: "success" });
+        return;
+      }
+  
+      res.status(400).json({ message: "missing data" });
       return;
+    }catch(e){
+      console.error(e)
+      res.status(500).json({message:"error"})
     }
-
-    res.status(400).json({ message: "missing data" });
-    return;
   }
 }

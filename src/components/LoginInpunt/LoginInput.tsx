@@ -24,7 +24,7 @@ export default function LoginInput() {
     router.push(`/user/${id}`);
   };
 
-  if (id?.length === 9) {
+  if (id?.length === 25) {
     onSubmit(id);
   }
 

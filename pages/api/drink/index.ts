@@ -6,10 +6,15 @@ export default async function handleDrink(
   res: NextApiResponse
 ) {
   if (req.method === "GET") {
-    const drinks = await prisma.drink.findMany({});
+    try {
+      const drinks = await prisma.drink.findMany({});
 
-    res.json(drinks);
-    return;
+      res.json(drinks);
+      return;
+    } catch (e) {
+      console.error(e);
+      res.status(500).json({ message: "error" });
+    }
   }
 
   const {
@@ -23,34 +28,44 @@ export default async function handleDrink(
   } = req.body;
 
   if (req.method === "POST") {
-    if (name && points) {
-      const newGame = await prisma.drink.create({
-        data: {
-          name,
-          points: Number(points),
-        },
-      });
+    try {
+      if (name && points) {
+        const newGame = await prisma.drink.create({
+          data: {
+            name,
+            points: Number(points),
+          },
+        });
 
-      res.status(200).json({ message: "success" });
-      return;
+        res.status(200).json({ message: "success" });
+        return;
+      }
+
+      res.status(400).json({ message: "missing data" });
+    } catch (e) {
+      console.error(e);
+      res.status(500).json({ message: "error" });
     }
-
-    res.status(400).json({ message: "missing data" });
   }
 
   if (req.method === "PUT") {
-    if (id && (name || points)) {
-      const updateDrink = await prisma.drink.update({
-        where: { id },
-        data: {
-          name,
-          points: Number(points),
-        },
-      });
+    try {
+      if (id && (name || points)) {
+        const updateDrink = await prisma.drink.update({
+          where: { id },
+          data: {
+            name,
+            points: Number(points),
+          },
+        });
 
-      res.status(200).json({ message: "success" });
-      return;
+        res.status(200).json({ message: "success" });
+        return;
+      }
+      res.status(400).json({ message: "missing data" });
+    } catch (e) {
+      console.error(e);
+      res.status(500).json({ message: "error" });
     }
-    res.status(400).json({ message: "missing data" });
   }
 }

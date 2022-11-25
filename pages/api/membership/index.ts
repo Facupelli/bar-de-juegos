@@ -6,10 +6,15 @@ export default async function handlerMembership(
   res: NextApiResponse
 ) {
   if (req.method === "GET") {
-    const memberships = await prisma.membership.findMany({});
+    try {
+      const memberships = await prisma.membership.findMany({});
 
-    res.status(200).json(memberships);
-    return;
+      res.status(200).json(memberships);
+      return;
+    } catch (e) {
+      console.error(e);
+      res.status(500).json({ message: "error" });
+    }
   }
 
   const {
@@ -23,33 +28,43 @@ export default async function handlerMembership(
   } = req.body;
 
   if (req.method === "POST") {
-    if (name || promotionsIds) {
-      const newMembership = await prisma.membership.create({
-        data: {
-          name,
-          // promotions: { connect: promotionsIds.map((id) => ({ id })) },
-        },
-      });
+    try {
+      if (name || promotionsIds) {
+        const newMembership = await prisma.membership.create({
+          data: {
+            name,
+            // promotions: { connect: promotionsIds.map((id) => ({ id })) },
+          },
+        });
 
-      res.status(200).json({ message: "success" });
-      return;
+        res.status(200).json({ message: "success" });
+        return;
+      }
+
+      res.status(400).json({ message: "missing data" });
+    } catch (e) {
+      console.error(e);
+      res.status(500).json({ message: "error" });
     }
-
-    res.status(400).json({ message: "missing data" });
   }
 
   if (req.method === "PUT") {
-    if (id && (name || promotionsIds)) {
-      const updateMembership = await prisma.membership.update({
-        where: { id },
-        data: {
-          name,
-          promotions: { connect: promotionsIds.map((id) => ({ id })) },
-        },
-      });
-      res.status(200).json({ message: "success" });
-      return;
+    try {
+      if (id && (name || promotionsIds)) {
+        const updateMembership = await prisma.membership.update({
+          where: { id },
+          data: {
+            name,
+            promotions: { connect: promotionsIds.map((id) => ({ id })) },
+          },
+        });
+        res.status(200).json({ message: "success" });
+        return;
+      }
+      res.status(400).json({ message: "missing data" });
+    } catch (e) {
+      console.error(e);
+      res.status(500).json({ message: "error" });
     }
-    res.status(400).json({ message: "missing data" });
   }
 }
