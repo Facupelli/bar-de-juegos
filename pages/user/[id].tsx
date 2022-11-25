@@ -2,7 +2,7 @@ import axios from "axios";
 import { GetServerSideProps } from "next";
 import Head from "next/head";
 import PostPointsCard from "../../src/components/PostPointsCard/PostPointsCard";
-import { Drink, Game, User } from "../../src/types/model";
+import { Drink, Game, Promotion, User } from "../../src/types/model";
 
 import s from "./UserDetail.module.scss";
 
@@ -10,11 +10,14 @@ export default function Home({
   user,
   drinks,
   games,
+  promotions,
 }: {
   user: User;
   drinks: Drink[];
   games: Game[];
+  promotions: Promotion[];
 }) {
+  console.log(user);
   return (
     <div className={s.container}>
       <Head>
@@ -34,6 +37,13 @@ export default function Home({
           </article>
 
           <PostPointsCard drinks={drinks} games={games} />
+
+          <article>
+            <p>Promociones Validas:</p>
+            {user.membership.promotions.map((promotion) => (
+              <p>{promotion.name}</p>
+            ))}
+          </article>
         </section>
       </main>
     </div>
@@ -52,11 +62,17 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   const gamesResponse = await axios("http://localhost:3000/api/game");
   const games = gamesResponse.data;
 
+  // const promotionsResponse = await axios(
+  //   `http://localhost:3000/api/promotions?membership=${user.membership}`
+  // );
+  // const promotions = promotionsResponse.data;
+
   return {
     props: {
       user,
       drinks,
       games,
+      // promotions,
     },
   };
 };

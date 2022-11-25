@@ -5,6 +5,7 @@ export type User = {
   membership: Membership;
   games: Game[];
   drinks: Drink[];
+  promotions: Promotion[];
   totalPoints: number;
   totalPointsSpent: number;
   createdAt: Date;
@@ -24,6 +25,7 @@ export type Promotion = {
   memberships: Membership[];
   drinks: Drink[];
   games: Game[];
+  users: User[];
 };
 
 export type Drink = {
