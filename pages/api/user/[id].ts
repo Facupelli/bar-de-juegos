@@ -13,8 +13,8 @@ export default async function handlerUser(
         where: { id },
         include: {
           membership: { include: { promotions: true } },
-          games: true,
-          drinks: true,
+          games: { include: { game: true } },
+          drinks: { include: { drink: true } },
         },
       });
 

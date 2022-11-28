@@ -3,13 +3,27 @@ export type User = {
   role: string;
   fullName: string;
   membership: Membership;
-  games: Game[];
-  drinks: Drink[];
+  games: IncludeGame[];
+  drinks: IncludeDrink[];
   promotions: Promotion[];
   totalPoints: number;
   totalPointsSpent: number;
   createdAt: Date;
   updatedAt: Date;
+};
+
+type IncludeDrink = {
+  drink: Drink;
+  drinkId: string;
+  quantity: number;
+  userId: string;
+};
+
+type IncludeGame = {
+  game: Game;
+  gameId: string;
+  quantity: number;
+  userId: string;
 };
 
 export type Membership = {

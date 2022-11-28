@@ -44,21 +44,27 @@ export default function CreatePromotion({ memberships, games, drinks }: Props) {
       <label>Membresias:</label>
       <select multiple {...register("membershipsIds")}>
         {memberships?.map((membership) => (
-          <option value={membership.id}>{membership.name}</option>
+          <option key={membership.id} value={membership.id}>
+            {membership.name}
+          </option>
         ))}
       </select>
 
       <label>Juegos:</label>
       <select multiple {...register("gamesIds")}>
         {games?.map((game) => (
-          <option value={game.id}>{game.name}</option>
+          <option key={game.id} value={game.id}>
+            {game.name}
+          </option>
         ))}
       </select>
 
       <label>Bebidas:</label>
       <select multiple {...register("drinksIds")}>
         {drinks?.map((drink) => (
-          <option value={drink.id}>{drink.name}</option>
+          <option key={drink.id} value={drink.id}>
+            {drink.name}
+          </option>
         ))}
       </select>
 

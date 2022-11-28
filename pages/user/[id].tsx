@@ -19,6 +19,8 @@ export default function Home({
   promotions: Promotion[];
   userId: string;
 }) {
+  console.log(user);
+
   return (
     <div className={s.container}>
       <Head>
@@ -43,6 +45,28 @@ export default function Home({
             <p>Promociones Validas:</p>
             {user.membership.promotions.map((promotion) => (
               <p key={promotion.id}>{promotion.name}</p>
+            ))}
+          </article>
+
+          {/* drinks */}
+          <article>
+            {user.drinks.map((drink) => (
+              <div key={drink.drink.id}>
+                <p>
+                  {drink.drink.name} {drink.quantity}
+                </p>
+              </div>
+            ))}
+          </article>
+
+          {/* games */}
+          <article>
+            {user.games.map((game) => (
+              <div key={game.game.id}>
+                <p>
+                  {game.game.name} {game.quantity}
+                </p>
+              </div>
             ))}
           </article>
         </section>
