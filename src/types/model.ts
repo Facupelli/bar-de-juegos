@@ -46,7 +46,7 @@ export type Drink = {
   id: string;
   name: string;
   points: number;
-  users: User[];
+  users: DrinksOnUser[];
   promotions: Promotion[];
 };
 
@@ -54,6 +54,22 @@ export type Game = {
   id: string;
   name: string;
   points: number;
-  users: User[];
+  users: GamesOnUser[];
   promotions: Promotion[];
+};
+
+export type DrinksOnUser = {
+  user: User;
+  userId: string;
+  drink: Drink;
+  drinkId: string;
+  quantity: number;
+};
+
+export type GamesOnUser = {
+  user: User;
+  userId: string;
+  game: Game;
+  gameId: string;
+  quantity: number;
 };

@@ -7,7 +7,9 @@ export default async function handleGame(
 ) {
   if (req.method === "GET") {
     try {
-      const games = await prisma.game.findMany({});
+      const games = await prisma.game.findMany({
+        include: { users: { select: { quantity: true } } },
+      });
 
       res.json(games);
       return;

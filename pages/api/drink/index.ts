@@ -7,7 +7,9 @@ export default async function handleDrink(
 ) {
   if (req.method === "GET") {
     try {
-      const drinks = await prisma.drink.findMany({});
+      const drinks = await prisma.drink.findMany({
+        include: { users: { select: { quantity: true } } },
+      });
 
       res.json(drinks);
       return;
