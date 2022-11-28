@@ -1,51 +1,47 @@
 import axios from "axios";
 import { GetServerSideProps } from "next";
-import { Drink, DrinksOnUser, Game, GamesOnUser } from "../../src/types/model";
+import RankingTable from "../../src/components/Ranking/RankingTable/RankingTable";
+import RankingRow from "../../src/components/Ranking/TableRow/RankingRow";
+import {
+  Drink,
+  DrinksOnUser,
+  Game,
+  GamesOnUser,
+  SortedDrinks,
+  SortedGames,
+} from "../../src/types/model";
 
 import s from "./Ranking.module.scss";
-
-type SortedDrinks = {
-  id: string;
-  name: string;
-  points: number;
-  users: DrinksOnUser[];
-  total: number;
-};
-
-type SortedGames = {
-  id: string;
-  name: string;
-  points: number;
-  users: GamesOnUser[];
-  total: number;
-};
 
 type Props = {
   drinks: SortedDrinks[];
   games: SortedGames[];
 };
 
+const trDrinkTitle = ["Bebida", "Total"];
+const trGameTitle = ["Juego", "Total"];
+
 export default function Ranking({ drinks, games }: Props) {
-  console.log(drinks);
   return (
     <section>
       <h2>RANKING</h2>
+
       <article>
         <h5>Bebida mas bebida</h5>
-        {drinks.map((drink) => (
-          <div key={drink.id}>
-            {drink.name} x{drink.total}
-          </div>
-        ))}
+        <RankingTable trTitles={trDrinkTitle}>
+          {drinks.map((drink) => (
+            <RankingRow key={drink.id} row={drink} />
+          ))}
+        </RankingTable>
       </article>
 
       <article>
         <h5>Juego mas jugado</h5>
-        {games.map((game) => (
-          <div key={game.id}>
-            {game.name} x{game.total}
-          </div>
-        ))}
+        <RankingTable trTitles={trGameTitle}>
+          {games.map((game) => (
+            <RankingRow key={game.id} row={game} />
+          ))}
+        </RankingTable>
       </article>
     </section>
   );

@@ -73,3 +73,19 @@ export type GamesOnUser = {
   gameId: string;
   quantity: number;
 };
+
+export type SortedDrinks = {
+  id: string;
+  name: string;
+  points: number;
+  users: DrinksOnUser[];
+  total: number;
+};
+
+export type SortedGames = {
+  id: string;
+  name: string;
+  points: number;
+  users: GamesOnUser[];
+  total: number;
+};

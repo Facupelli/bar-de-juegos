@@ -1,0 +1,20 @@
+.table {
+  margin: 1rem 0rem;
+  width: 100%;
+  border-collapse: collapse;
+
+  thead {
+    font-size: 12px;
+    font-weight: 300;
+    border-bottom: 1px solid gray;
+
+    tr th {
+      text-align: left;
+      padding-bottom: 0.5rem;
+    }
+  }
+
+  tbody {
+    font-size: 14px;
+  }
+}
