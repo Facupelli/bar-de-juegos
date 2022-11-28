@@ -1,0 +1,11 @@
+.main {
+  max-width: 1200px;
+  margin: auto;
+
+  .grid {
+    margin: 1rem 0rem;
+    display: grid;
+    grid-auto-flow: column;
+    gap: 3rem;
+  }
+}

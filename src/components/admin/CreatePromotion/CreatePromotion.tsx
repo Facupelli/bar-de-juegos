@@ -2,6 +2,8 @@ import axios from "axios";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { Drink, Game, Membership } from "../../../types/model";
 
+import s from "./CreatePromotion.module.scss";
+
 type Props = {
   memberships: Membership[];
   games: Game[];
@@ -35,7 +37,7 @@ export default function CreatePromotion({ memberships, games, drinks }: Props) {
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmitPromotion)}>
+    <form onSubmit={handleSubmit(onSubmitPromotion)} className={s.form}>
       <h4>CREAR PROMOCION</h4>
 
       <label>Nombre:</label>

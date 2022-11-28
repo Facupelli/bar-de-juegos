@@ -34,8 +34,11 @@ export default function Home({
         <h2>ADMIN</h2>
 
         <CreateMembership />
-        <CreateGame game />
-        <CreateGame />
+
+        <section className={s.grid}>
+          <CreateGame game />
+          <CreateGame />
+        </section>
 
         <CreatePromotion
           games={games}
@@ -43,44 +46,46 @@ export default function Home({
           memberships={memberships}
         />
 
-        <div>
-          <h4>Juegos</h4>
-          {games.map((game) => (
-            <p key={game.id}>
-              {game.name} {game.points}pts
-            </p>
-          ))}
-        </div>
+        <section className={s.grid}>
+          <div>
+            <h4>Juegos</h4>
+            {games.map((game) => (
+              <p key={game.id}>
+                {game.name} {game.points}pts
+              </p>
+            ))}
+          </div>
 
-        <div>
-          <h4>Bebidas</h4>
-          {drinks.map((drink) => (
-            <p key={drink.id}>
-              {drink.name} {drink.points}pts
-            </p>
-          ))}
-        </div>
+          <div>
+            <h4>Bebidas</h4>
+            {drinks.map((drink) => (
+              <p key={drink.id}>
+                {drink.name} {drink.points}pts
+              </p>
+            ))}
+          </div>
 
-        <div>
-          <h4>Promociones</h4>
-          {promotions?.map((promotion) => (
-            <div key={promotion.id}>
-              <p>{promotion.name}</p>
-              <h6>Membresia</h6>
-              {promotion.memberships.map((membership) => (
-                <p key={membership.id}>{membership.name}</p>
-              ))}
-              <h6>Bebidas</h6>
-              {promotion.drinks?.map((drink) => (
-                <p key={drink.id}>{drink.name}</p>
-              ))}
-              <h6>Juegos</h6>
-              {promotion.games?.map((game) => (
-                <p key={game.id}>{game.name}</p>
-              ))}
-            </div>
-          ))}
-        </div>
+          <div>
+            <h4>Promociones</h4>
+            {promotions?.map((promotion) => (
+              <div key={promotion.id}>
+                <p>{promotion.name}</p>
+                <h6>Membresia</h6>
+                {promotion.memberships.map((membership) => (
+                  <p key={membership.id}>{membership.name}</p>
+                ))}
+                <h6>Bebidas</h6>
+                {promotion.drinks?.map((drink) => (
+                  <p key={drink.id}>{drink.name}</p>
+                ))}
+                <h6>Juegos</h6>
+                {promotion.games?.map((game) => (
+                  <p key={game.id}>{game.name}</p>
+                ))}
+              </div>
+            ))}
+          </div>
+        </section>
       </main>
     </div>
   );

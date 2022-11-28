@@ -1,6 +1,8 @@
 import axios from "axios";
 import { useForm, SubmitHandler } from "react-hook-form";
 
+import s from "./CreateGameDrink.module.scss";
+
 type Props = {
   game?: boolean;
 };
@@ -30,7 +32,7 @@ export default function CreateGame({ game }: Props) {
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmitGame)}>
+    <form onSubmit={handleSubmit(onSubmitGame)} className={s.form}>
       <h4>CREAR {game ? "JUEGO" : "BEBIDA"}</h4>
       <label>Nombre:</label>
       <input type="text" {...register("name")} />
