@@ -1,15 +1,8 @@
 import axios from "axios";
 import { GetServerSideProps } from "next";
-import RankingTable from "../../src/components/Ranking/RankingTable/RankingTable";
+import RankingTable from "../../src/components/Ranking/Table/Table";
 import RankingRow from "../../src/components/Ranking/TableRow/RankingRow";
-import {
-  Drink,
-  DrinksOnUser,
-  Game,
-  GamesOnUser,
-  SortedDrinks,
-  SortedGames,
-} from "../../src/types/model";
+import { Drink, Game, SortedDrinks, SortedGames } from "../../src/types/model";
 
 import s from "./Ranking.module.scss";
 

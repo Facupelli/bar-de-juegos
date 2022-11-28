@@ -1,4 +1,4 @@
-import s from "./RankingTable.module.scss";
+import s from "./Table.module.scss";
 
 type Props = {
   children?: React.ReactNode;
