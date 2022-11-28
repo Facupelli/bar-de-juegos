@@ -1,6 +1,4 @@
 .main {
-  section {
-    display: grid;
-    grid-auto-flow: column;
-  }
+  max-width: 1200px;
+  margin: auto;
 }

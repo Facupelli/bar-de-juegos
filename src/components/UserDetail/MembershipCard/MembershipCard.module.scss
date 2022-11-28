@@ -1,0 +1,42 @@
+.wrapper {
+  perspective: 1000px;
+  transition: transform 0.5s ease-in-out;
+  width: 400px;
+}
+
+.bg {
+  background: rgba(0, 0, 0, 0.3);
+  position: absolute;
+  top: 0;
+  left: 0;
+  filter: blur(20px);
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+}
+
+.ticket {
+  box-shadow: 0 0 10px 5px rgba(0, 0, 0, 0.3);
+  padding: 1.5rem;
+  border-radius: 0.5rem;
+  border: 2px solid wheat;
+  position: relative;
+  aspect-ratio: 18/9;
+  width: 400px;
+
+  .membership_name {
+    strong {
+      font-weight: 700;
+    }
+    font-size: 1.2rem;
+    text-align: right;
+  }
+
+  strong {
+    font-weight: 600;
+  }
+
+  .margin_t {
+    margin-top: 0.5rem;
+  }
+}

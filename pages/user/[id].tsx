@@ -2,6 +2,7 @@ import axios from "axios";
 import { GetServerSideProps } from "next";
 import Head from "next/head";
 import PostPointsCard from "../../src/components/PostPointsCard/PostPointsCard";
+import MembershipCard from "../../src/components/UserDetail/MembershipCard/MembershipCard";
 import { Drink, Game, Promotion, User } from "../../src/types/model";
 
 import s from "./UserDetail.module.scss";
@@ -19,8 +20,6 @@ export default function Home({
   promotions: Promotion[];
   userId: string;
 }) {
-  console.log(user);
-
   return (
     <div className={s.container}>
       <Head>
@@ -32,12 +31,7 @@ export default function Home({
       <main className={s.main}>
         <h2>USER DETAIL</h2>
         <section>
-          <article>
-            <p>{user.fullName}</p>
-            <p>{user.membership.name}</p>
-            <p>Puntos: {user.totalPoints}</p>
-            <p>Puntos Gastados: {user.totalPointsSpent}</p>
-          </article>
+          <MembershipCard user={user} />
 
           <PostPointsCard drinks={drinks} games={games} userId={userId} />
 
