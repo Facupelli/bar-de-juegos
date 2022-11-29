@@ -1,0 +1,17 @@
+.nav {
+  height: 70px;
+  padding: 1rem;
+
+  ul {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1.5rem;
+
+    li {
+      list-style: none;
+      text-decoration: none;
+      font-weight: 700;
+      cursor: pointer;
+    }
+  }
+}

@@ -24,10 +24,18 @@ model User {
   membershipId            String
   consumptions            ConsumptionOnUser[]
   promotions              PromotionOnUser[]
+  loggedInfo              UserLoggedInfo?
   totalPoints             Int                   @default(0)
   totalPointsSpent        Int                   @default(0)
   createdAt               DateTime              @default(now()) @map(name: "created_at")
   updatedAt               DateTime              @updatedAt @map(name: "updated_at")
+}
+
+model UserLoggedInfo {
+  email                   String                @unique
+  name                    String
+  user                    User                  @relation(fields: [userId], references: [id])
+  userId                  String                @unique
 }
 
 model Membership {
