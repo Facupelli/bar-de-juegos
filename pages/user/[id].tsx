@@ -6,6 +6,7 @@ import MembershipCard from "../../src/components/UserDetail/MembershipCard/Membe
 import { Consumption, Promotion, User } from "../../src/types/model";
 
 import s from "./UserDetail.module.scss";
+import AddPromotion from "../../src/components/UserDetail/AddPromotion/AddPromotion";
 
 type Props = {
   user: User;
@@ -38,18 +39,18 @@ export default function Home({
 
       <main className={s.main}>
         <h2>USER DETAIL</h2>
-        <section>
-          <MembershipCard user={user} />
 
+        <section className={s.grid}>
           <PostPointsCard consumptions={consumptions} userId={userId} />
+          <AddPromotion
+            promotions={user.membership.promotions}
+            userId={userId}
+            userPoints={user.totalPoints}
+          />
+          <MembershipCard user={user} />
+        </section>
 
-          <article>
-            <p>Promociones Validas:</p>
-            {user.membership.promotions.map((promotion) => (
-              <p key={promotion.id}>{promotion.name}</p>
-            ))}
-          </article>
-
+        <section>
           <article className={s.last_consumptions}>
             <h4>Ultimas consumciones</h4>
             {user.consumptions.slice(0, 10).map((consumption) => (

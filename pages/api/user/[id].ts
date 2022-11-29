@@ -36,6 +36,7 @@ export default async function handlerUser(
         points,
         consumptionType,
         quantity,
+        promotionId,
       }: {
         userId: string;
         operation: string;
@@ -43,7 +44,26 @@ export default async function handlerUser(
         points: number;
         consumptionType: string;
         quantity: number;
+        promotionId: string;
       } = req.body;
+
+      if (promotionId) {
+        const user = await prisma.user.update({
+          where: { id: userId },
+          data: {
+            totalPoints: {
+              decrement: Number(points),
+            },
+            totalPointsSpent: {
+              increment: Number(points),
+            },
+            promotions: { connect: { id: promotionId } },
+          },
+        });
+
+        res.status(200).json({ message: "success" });
+        return;
+      }
 
       if (operation === "addPoints") {
         const consumptionOnUser = await prisma.consumptionOnUser.create({

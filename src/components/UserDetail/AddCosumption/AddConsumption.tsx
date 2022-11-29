@@ -1,8 +1,8 @@
 import { useForm, SubmitHandler } from "react-hook-form";
-
-import s from ".AddConsumption.module.scss";
 import { Consumption } from "../../../types/model";
 import axios from "axios";
+
+import s from ".AddConsumption.module.scss";
 
 type Props = {
   consumptions: Consumption[];
