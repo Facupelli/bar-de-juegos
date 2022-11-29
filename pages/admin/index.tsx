@@ -2,12 +2,16 @@ import { GetServerSideProps } from "next";
 import axios from "axios";
 import Head from "next/head";
 
-import CreateGame from "../../src/components/Admin/CreateGameDrink/CreateGameDrink";
-import CreateMembership from "../../src/components/Admin/CreateMembership/CreateMembership";
+import Table from "../../src/components/Ranking/Table/Table";
+import CreateMembership from "../../src/components/admin/CreateMembership/CreateMembership";
+import CreateGame from "../../src/components/admin/CreateGameDrink/CreateGameDrink";
+import CreatePromotion from "../../src/components/admin/CreatePromotion/CreatePromotion";
+
+import { Drink, Game, Membership, Promotion } from "../../src/types/model";
 
 import s from "./Admin.module.scss";
-import { Drink, Game, Membership, Promotion } from "../../src/types/model";
-import CreatePromotion from "../../src/components/Admin/CreatePromotion/CreatePromotion";
+import PromotionRow from "../../src/components/admin/PromotionRow/PromotionRow";
+import GameDrinkRow from "../../src/components/admin/GameDrinkRow/GameDrinkROw";
 
 type Props = {
   drinks: Drink[];
@@ -15,6 +19,9 @@ type Props = {
   memberships: Membership[];
   promotions: Promotion[];
 };
+
+const trPromotionTitles = ["Nombre", "Membresias", "Bebidas", "Juegos"];
+const trGameDrinkTitles = ["Nombre", "Puntos"];
 
 export default function Home({
   drinks,
@@ -49,41 +56,29 @@ export default function Home({
         <section className={s.grid}>
           <div>
             <h4>Juegos</h4>
-            {games.map((game) => (
-              <p key={game.id}>
-                {game.name} {game.points}pts
-              </p>
-            ))}
+            <Table trTitles={trGameDrinkTitles}>
+              {games.map((game) => (
+                <GameDrinkRow key={game.id} game={game} isGame />
+              ))}
+            </Table>
           </div>
 
           <div>
             <h4>Bebidas</h4>
-            {drinks.map((drink) => (
-              <p key={drink.id}>
-                {drink.name} {drink.points}pts
-              </p>
-            ))}
+            <Table trTitles={trGameDrinkTitles}>
+              {drinks.map((drink) => (
+                <GameDrinkRow key={drink.id} drink={drink} isDrink />
+              ))}
+            </Table>
           </div>
 
           <div>
             <h4>Promociones</h4>
-            {promotions?.map((promotion) => (
-              <div key={promotion.id}>
-                <p>{promotion.name}</p>
-                <h6>Membresia</h6>
-                {promotion.memberships.map((membership) => (
-                  <p key={membership.id}>{membership.name}</p>
-                ))}
-                <h6>Bebidas</h6>
-                {promotion.drinks?.map((drink) => (
-                  <p key={drink.id}>{drink.name}</p>
-                ))}
-                <h6>Juegos</h6>
-                {promotion.games?.map((game) => (
-                  <p key={game.id}>{game.name}</p>
-                ))}
-              </div>
-            ))}
+            <Table trTitles={trPromotionTitles}>
+              {promotions?.map((promotion) => (
+                <PromotionRow key={promotion.id} promotion={promotion} />
+              ))}
+            </Table>
           </div>
         </section>
       </main>

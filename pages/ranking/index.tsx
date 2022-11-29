@@ -1,7 +1,7 @@
 import axios from "axios";
 import { GetServerSideProps } from "next";
 import RankingTable from "../../src/components/Ranking/Table/Table";
-import RankingRow from "../../src/components/Ranking/TableRow/RankingRow";
+import RankingRow from "../../src/components/Ranking/RankingRow/RankingRow";
 import { Drink, Game, SortedDrinks, SortedGames } from "../../src/types/model";
 
 import s from "./Ranking.module.scss";

@@ -5,7 +5,7 @@ type Props = {
   trTitles: string[];
 };
 
-export default function RankingTable({ trTitles = [], children }: Props) {
+export default function Table({ trTitles = [], children }: Props) {
   return (
     <table className={s.table}>
       <thead>

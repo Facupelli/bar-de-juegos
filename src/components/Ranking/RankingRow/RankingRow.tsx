@@ -7,11 +7,9 @@ type Props = {
 
 export default function RankingRow({ row }: Props) {
   return (
-    <>
-      <tr className={s.row}>
-        <td>{row.name}</td>
-        <td>{row.total}</td>
-      </tr>
-    </>
+    <tr className={s.row}>
+      <td>{row.name}</td>
+      <td>{row.total}</td>
+    </tr>
   );
 }
