@@ -1,4 +1,4 @@
-import { Consumption } from "../../../types/model";
+import { Consumption, ConsumptionOnUser } from "../../../types/model";
 import s from "./ConsumptionRow.module.scss";
 
 type Props = {

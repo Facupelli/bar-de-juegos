@@ -7,6 +7,7 @@ import { Consumption, Promotion, User } from "../../src/types/model";
 
 import s from "./UserDetail.module.scss";
 import AddPromotion from "../../src/components/UserDetail/AddPromotion/AddPromotion";
+import Table from "../../src/components/Ranking/Table/Table";
 
 type Props = {
   user: User;
@@ -21,6 +22,8 @@ type Props = {
   promotions: Promotion[];
   userId: string;
 };
+
+const trLastConsumptionsTitles = ["consumicion", "cantidad", "fecha"];
 
 export default function Home({
   user,
@@ -40,7 +43,7 @@ export default function Home({
       <main className={s.main}>
         <h2>USER DETAIL</h2>
 
-        <section className={s.grid}>
+        <section className={`${s.grid} ${s.j_between}`}>
           <PostPointsCard consumptions={consumptions} userId={userId} />
           <AddPromotion
             promotions={user.membership.promotions}
@@ -50,31 +53,36 @@ export default function Home({
           <MembershipCard user={user} />
         </section>
 
-        <section>
-          <article className={s.last_consumptions}>
-            <h4>Ultimas consumciones</h4>
+        <article className={s.last_consumptions}>
+          <h4>Ultimas consumciones</h4>
+          <Table trTitles={trLastConsumptionsTitles}>
             {user.consumptions.slice(0, 10).map((consumption) => (
-              <div key={consumption.id}>
-                <p>
-                  {consumption.consumption.name} {consumption.quantity}
-                </p>
-                <p className={s.date}>
+              <tr key={consumption.id}>
+                <td>{consumption.consumption.name}</td>
+                <td>{consumption.quantity}</td>
+                <td>
                   {new Date(consumption.createdAt).toLocaleDateString("es-AR", {
                     year: "numeric",
                     day: "numeric",
                     month: "short",
+                  })}{" "}
+                  {new Date(consumption.createdAt).toLocaleTimeString("es-AR", {
+                    hour: "2-digit",
+                    minute: "2-digit",
                   })}
-                </p>
-              </div>
+                </td>
+              </tr>
             ))}
-          </article>
+          </Table>
+        </article>
 
+        <section className={s.grid}>
           <article className={s.last_consumptions}>
             <h4>Bebidas</h4>
             {userConsumptions.drinks?.map((consumption) => (
               <div key={consumption.id}>
                 <p>
-                  {consumption.name} {consumption.users.length}
+                  {consumption.name} x{consumption.users.length}
                 </p>
               </div>
             ))}
