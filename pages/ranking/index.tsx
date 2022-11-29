@@ -2,24 +2,9 @@ import axios from "axios";
 import { GetServerSideProps } from "next";
 import RankingTable from "../../src/components/Ranking/Table/Table";
 import RankingRow from "../../src/components/Ranking/RankingRow/RankingRow";
-import {
-  Consumption,
-  ConsumptionOnUser,
-  ConsumptionType,
-  Promotion,
-} from "../../src/types/model";
+import { Consumption, SortedConsumption } from "../../src/types/model";
 
 import s from "./Ranking.module.scss";
-
-type SortedConsumption = {
-  id: string;
-  name: string;
-  type: typeof ConsumptionType;
-  points: number;
-  users: ConsumptionOnUser[];
-  promotions: Promotion[];
-  total: number;
-};
 
 type Props = {
   drinks: SortedConsumption[];

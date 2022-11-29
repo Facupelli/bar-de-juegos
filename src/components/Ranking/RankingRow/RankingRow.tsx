@@ -1,8 +1,8 @@
-import { SortedDrinks, SortedGames } from "../../../types/model";
+import { SortedConsumption } from "../../../types/model";
 import s from "./RankingRow.module.scss";
 
 type Props = {
-  row: SortedDrinks | SortedGames;
+  row: SortedConsumption;
 };
 
 export default function RankingRow({ row }: Props) {

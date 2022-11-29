@@ -54,7 +54,7 @@ export default function Home({
         </section>
 
         <article className={s.last_consumptions}>
-          <h4>Ultimas consumciones</h4>
+          <h4>Ultimas consumiciones</h4>
           <Table trTitles={trLastConsumptionsTitles}>
             {user.consumptions.slice(0, 10).map((consumption) => (
               <tr key={consumption.id}>

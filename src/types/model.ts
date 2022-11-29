@@ -28,6 +28,16 @@ export type Consumption = {
   promotions: ConsumptionOnPromotion[];
 };
 
+export type SortedConsumption = {
+  id: string;
+  name: string;
+  type: typeof ConsumptionType;
+  points: number;
+  users: ConsumptionOnUser[];
+  promotions: Promotion[];
+  total: number;
+};
+
 export type ConsumptionOnUser = {
   id: string;
   user: User;
