@@ -1,5 +1,5 @@
-import { Consumption } from "../../types/model";
-import AddConsumption from "../UserDetail/AddCosumption/AddConsumption";
+import { Consumption } from "../../../types/model";
+import AddConsumption from "../AddCosumption/AddConsumption";
 
 import s from "./PostPointsCard.module.scss";
 

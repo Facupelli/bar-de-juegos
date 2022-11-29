@@ -1,7 +1,7 @@
 import axios from "axios";
 import { GetServerSideProps } from "next";
 import Head from "next/head";
-import PostPointsCard from "../../src/components/PostPointsCard/PostPointsCard";
+import PostPointsCard from "../../src/components/UserDetail/PostPointsCard/PostPointsCard";
 import MembershipCard from "../../src/components/UserDetail/MembershipCard/MembershipCard";
 import { Consumption, Promotion, User } from "../../src/types/model";
 
