@@ -4,18 +4,20 @@ import Head from "next/head";
 
 import Table from "../../src/components/Ranking/Table/Table";
 import CreateMembership from "../../src/components/admin/CreateMembership/CreateMembership";
-import CreateGame from "../../src/components/admin/CreateGameDrink/CreateGameDrink";
 import CreatePromotion from "../../src/components/admin/CreatePromotion/CreatePromotion";
+import PromotionRow from "../../src/components/admin/PromotionRow/PromotionRow";
+import CreateConsumption from "../../src/components/admin/CreateConsumption/CreateConsumption";
+import ConsumptionRow from "../../src/components/admin/ConsumptionRow/ConsumptionRow";
 
-import { Drink, Game, Membership, Promotion } from "../../src/types/model";
+import { Consumption, Membership, Promotion } from "../../src/types/model";
 
 import s from "./Admin.module.scss";
-import PromotionRow from "../../src/components/admin/PromotionRow/PromotionRow";
-import GameDrinkRow from "../../src/components/admin/GameDrinkRow/GameDrinkROw";
 
 type Props = {
-  drinks: Drink[];
-  games: Game[];
+  consumptions: {
+    drinks: Consumption[];
+    games: Consumption[];
+  };
   memberships: Membership[];
   promotions: Promotion[];
 };
@@ -23,12 +25,7 @@ type Props = {
 const trPromotionTitles = ["Nombre", "Membresias", "Bebidas", "Juegos"];
 const trGameDrinkTitles = ["Nombre", "Puntos"];
 
-export default function Home({
-  drinks,
-  games,
-  memberships,
-  promotions,
-}: Props) {
+export default function Home({ consumptions, memberships, promotions }: Props) {
   return (
     <div className={s.container}>
       <Head>
@@ -43,31 +40,35 @@ export default function Home({
         <CreateMembership />
 
         <section className={s.grid}>
-          <CreateGame game />
-          <CreateGame />
+          <CreateConsumption />
         </section>
 
         <CreatePromotion
-          games={games}
-          drinks={drinks}
+          consumptions={consumptions}
           memberships={memberships}
         />
 
         <section className={s.grid}>
           <div>
-            <h4>Juegos</h4>
+            <h4>Bebidas</h4>
             <Table trTitles={trGameDrinkTitles}>
-              {games.map((game) => (
-                <GameDrinkRow key={game.id} game={game} isGame />
+              {consumptions.drinks.map((consumption) => (
+                <ConsumptionRow
+                  key={consumption.id}
+                  consumption={consumption}
+                />
               ))}
             </Table>
           </div>
 
           <div>
-            <h4>Bebidas</h4>
+            <h4>Juegos</h4>
             <Table trTitles={trGameDrinkTitles}>
-              {drinks.map((drink) => (
-                <GameDrinkRow key={drink.id} drink={drink} isDrink />
+              {consumptions.games.map((consumption) => (
+                <ConsumptionRow
+                  key={consumption.id}
+                  consumption={consumption}
+                />
               ))}
             </Table>
           </div>
@@ -92,11 +93,10 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   );
   const memberships = membershipsResponse.data;
 
-  const drinksResponse = await axios("http://localhost:3000/api/drink");
-  const drinks = drinksResponse.data;
-
-  const gamesResponse = await axios("http://localhost:3000/api/game");
-  const games = gamesResponse.data;
+  const consumptionsResponse = await axios(
+    "http://localhost:3000/api/consumption"
+  );
+  const consumptions = consumptionsResponse.data;
 
   const promotionsResponse = await axios("http://localhost:3000/api/promotion");
   const promotions = promotionsResponse.data;
@@ -104,9 +104,8 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   return {
     props: {
       memberships,
-      drinks,
-      games,
       promotions,
+      consumptions,
     },
   };
 };

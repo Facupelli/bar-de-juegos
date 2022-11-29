@@ -2,13 +2,28 @@ import axios from "axios";
 import { GetServerSideProps } from "next";
 import RankingTable from "../../src/components/Ranking/Table/Table";
 import RankingRow from "../../src/components/Ranking/RankingRow/RankingRow";
-import { Drink, Game, SortedDrinks, SortedGames } from "../../src/types/model";
+import {
+  Consumption,
+  ConsumptionOnUser,
+  ConsumptionType,
+  Promotion,
+} from "../../src/types/model";
 
 import s from "./Ranking.module.scss";
 
+type SortedConsumption = {
+  id: string;
+  name: string;
+  type: typeof ConsumptionType;
+  points: number;
+  users: ConsumptionOnUser[];
+  promotions: Promotion[];
+  total: number;
+};
+
 type Props = {
-  drinks: SortedDrinks[];
-  games: SortedGames[];
+  drinks: SortedConsumption[];
+  games: SortedConsumption[];
 };
 
 const trDrinkTitle = ["Bebida", "Total"];
@@ -41,10 +56,13 @@ export default function Ranking({ drinks, games }: Props) {
 }
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  const drinksResponse = await axios("http://localhost:3000/api/drink");
-  const drinks: Drink[] = drinksResponse.data;
+  const consumptionResponse = await axios(
+    "http://localhost:3000/api/consumption"
+  );
+  const consumptions: { drinks: Consumption[]; games: Consumption[] } =
+    consumptionResponse.data;
 
-  const drinksReducedQuantity = drinks.map((drink) => ({
+  const drinksReducedQuantity = consumptions.drinks.map((drink) => ({
     ...drink,
     total: drink.users.reduce((acc, curr) => {
       return acc + curr.quantity;
@@ -55,10 +73,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     a.total > b.total ? -1 : 1
   );
 
-  const gamesResponse = await axios("http://localhost:3000/api/game");
-  const games: Game[] = gamesResponse.data;
-
-  const gamesReducedQuantity = games.map((game) => ({
+  const gamesReducedQuantity = consumptions.games.map((game) => ({
     ...game,
     total: game.users.reduce((acc, curr) => {
       return acc + curr.quantity;

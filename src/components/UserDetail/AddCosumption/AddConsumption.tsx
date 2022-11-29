@@ -1,11 +1,11 @@
 import { useForm, SubmitHandler } from "react-hook-form";
 
 import s from ".AddConsumption.module.scss";
-import { Drink, Game } from "../../../types/model";
+import { Consumption } from "../../../types/model";
 import axios from "axios";
 
 type Props = {
-  consumptions: Drink[] | Game[];
+  consumptions: Consumption[];
   name: string;
   userId: string;
 };
@@ -34,7 +34,7 @@ export default function AddConsumption({ consumptions, name, userId }: Props) {
         consumptionId,
         points: consumptionPoints,
         operation: "addPoints",
-        consumptionType: name === "Juego" ? "game" : "drink",
+        consumptionType: name === "Juego" ? "GAME" : "DRINK",
         quantity: 1,
       }
     );

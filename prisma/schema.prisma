@@ -22,8 +22,7 @@ model User {
   fullName                String?
   membership              Membership?    @relation(fields: [membershipId], references: [id])
   membershipId            String
-  games                   GamesOnUser[]
-  drinks                  DrinksOnUser[]
+  consumptions            ConsumptionOnUser[]
   promotions              Promotion[]
   totalPoints             Int           @default(0)
   totalPointsSpent        Int           @default(0)
@@ -38,48 +37,71 @@ model Membership {
   promotions              Promotion[]
 }
 
+enum ConsumptionType {
+  DRINK
+  GAME
+}
+
+model Consumption {
+  id                      String        @default(cuid()) @id
+  name                    String
+  type                    ConsumptionType
+  points                  Int
+  users                   ConsumptionOnUser[]
+  promotions              Promotion[]
+}
+
+model ConsumptionOnUser {
+  id                      String            @default(cuid()) @id
+  user                    User              @relation(fields: [userId], references: [id])
+  userId                  String
+  consumption             Consumption       @relation(fields: [consumptionId], references: [id])
+  consumptionId           String
+  quantity                Int
+  createdAt               DateTime          @default(now()) @map(name: "created_at")
+}
+
 model Promotion {
   id                      String        @default(cuid()) @id
   name                    String 
   memberships             Membership[]
-  drinks                  Drink[]
-  games                   Game[]
   users                   User[]
+  consumptions            Consumption[]
 }
 
-model Game {
-  id                      String        @default(cuid()) @id
-  name                    String
-  points                  Int
-  users                   GamesOnUser[]
-  promotions              Promotion[]
-}
+// model Game {
+//   id                      String        @default(cuid()) @id
+//   name                    String
+//   points                  Int
+//   users                   GamesOnUser[]
+//   promotions              Promotion[]
+// }
 
-model GamesOnUser {
-  user                  User           @relation(fields: [userId], references: [id])
-  userId                String
-  game                  Game          @relation(fields: [gameId], references: [id])
-  gameId                String
-  quantity              Int
+// model GamesOnUser {
+//   id                    String        @default(cuid()) @id
+//   user                  User           @relation(fields: [userId], references: [id])
+//   userId                String
+//   game                  Game          @relation(fields: [gameId], references: [id])
+//   gameId                String
+//   quantity              Int
+//   createdAt             DateTime      @default(now()) @map(name: "created_at")
+// }
 
-  @@id([userId, gameId])
-}
+// model Drink {
+//   id                      String        @default(cuid()) @id
+//   name                    String
+//   points                  Int
+//   users                   DrinksOnUser[]
+//   promotions              Promotion[]
+// }
 
-model Drink {
-  id                      String        @default(cuid()) @id
-  name                    String
-  points                  Int
-  users                   DrinksOnUser[]
-  promotions              Promotion[]
-}
-
-model DrinksOnUser {
-  user                  User           @relation(fields: [userId], references: [id])
-  userId                String
-  drink                 Drink          @relation(fields: [drinkId], references: [id])
-  drinkId               String
-  quantity              Int
-
-  @@id([userId, drinkId])
-}
+// model DrinksOnUser {
+//   id                    String        @default(cuid()) @id
+//   user                  User           @relation(fields: [userId], references: [id])
+//   userId                String
+//   drink                 Drink          @relation(fields: [drinkId], references: [id])
+//   drinkId               String
+//   quantity              Int
+//   createdAt             DateTime      @default(now()) @map(name: "created_at")
+// }
 

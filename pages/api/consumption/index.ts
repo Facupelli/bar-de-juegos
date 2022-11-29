@@ -1,20 +1,24 @@
 import { prisma } from "../../../db";
 import type { NextApiRequest, NextApiResponse } from "next";
+import { ConsumptionType } from "../../../src/types/model";
 
-export default async function handlerPromotion(
+export default async function handleConsumption(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
   if (req.method === "GET") {
     try {
-      const promotions = await prisma.promotion.findMany({
-        include: {
-          consumptions: true,
-          memberships: true,
-        },
+      const drinkConsumptions = await prisma.consumption.findMany({
+        where: { type: "DRINK" },
+        include: { users: true },
       });
 
-      res.status(200).json(promotions);
+      const gamesConsumptions = await prisma.consumption.findMany({
+        where: { type: "GAME" },
+        include: { users: true },
+      });
+
+      res.json({ drinks: drinkConsumptions, games: gamesConsumptions });
       return;
     } catch (e) {
       console.error(e);
@@ -24,24 +28,24 @@ export default async function handlerPromotion(
 
   const {
     id,
+    type,
     name,
-    consumptionsIds,
-    membershipsIds,
+    points,
   }: {
     id: string;
+    type: typeof ConsumptionType[keyof typeof ConsumptionType];
     name: string;
-    consumptionsIds: string[];
-    membershipsIds: string[];
+    points: number;
   } = req.body;
 
   if (req.method === "POST") {
     try {
-      if (name && consumptionsIds && membershipsIds) {
-        const newPromotion = await prisma.promotion.create({
+      if (name && points) {
+        const newConsumption = await prisma.consumption.create({
           data: {
             name,
-            consumptions: { connect: consumptionsIds.map((id) => ({ id })) },
-            memberships: { connect: membershipsIds.map((id) => ({ id })) },
+            points: Number(points),
+            type,
           },
         });
 
@@ -58,15 +62,15 @@ export default async function handlerPromotion(
 
   if (req.method === "PUT") {
     try {
-      if (id && name && consumptionsIds && membershipsIds) {
-        const updatePromotion = await prisma.promotion.update({
+      if (id && (name || points)) {
+        const updateDrink = await prisma.consumption.update({
           where: { id },
           data: {
             name,
-            consumptions: { connect: consumptionsIds.map((id) => ({ id })) },
-            memberships: { connect: membershipsIds.map((id) => ({ id })) },
+            points: Number(points),
           },
         });
+
         res.status(200).json({ message: "success" });
         return;
       }

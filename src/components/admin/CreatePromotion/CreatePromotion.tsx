@@ -1,16 +1,18 @@
 import axios from "axios";
 import { useForm, SubmitHandler } from "react-hook-form";
-import { Drink, Game, Membership } from "../../../types/model";
+import { Consumption, Membership } from "../../../types/model";
 
 import s from "./CreatePromotion.module.scss";
 
 type Props = {
   memberships: Membership[];
-  games: Game[];
-  drinks: Drink[];
+  consumptions: {
+    drinks: Consumption[];
+    games: Consumption[];
+  };
 };
 
-export default function CreatePromotion({ memberships, games, drinks }: Props) {
+export default function CreatePromotion({ memberships, consumptions }: Props) {
   const {
     register,
     handleSubmit,
@@ -54,7 +56,7 @@ export default function CreatePromotion({ memberships, games, drinks }: Props) {
 
       <label>Juegos:</label>
       <select multiple {...register("gamesIds")}>
-        {games?.map((game) => (
+        {consumptions.games?.map((game) => (
           <option key={game.id} value={game.id}>
             {game.name}
           </option>
@@ -63,7 +65,7 @@ export default function CreatePromotion({ memberships, games, drinks }: Props) {
 
       <label>Bebidas:</label>
       <select multiple {...register("drinksIds")}>
-        {drinks?.map((drink) => (
+        {consumptions.drinks?.map((drink) => (
           <option key={drink.id} value={drink.id}>
             {drink.name}
           </option>

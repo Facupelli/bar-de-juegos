@@ -3,8 +3,7 @@ export type User = {
   role: string;
   fullName: string;
   membership: Membership;
-  games: IncludeGame[];
-  drinks: IncludeDrink[];
+  consumptions: ConsumptionOnUser[];
   promotions: Promotion[];
   totalPoints: number;
   totalPointsSpent: number;
@@ -12,18 +11,31 @@ export type User = {
   updatedAt: Date;
 };
 
-type IncludeDrink = {
-  drink: Drink;
-  drinkId: string;
-  quantity: number;
-  userId: string;
+export const ConsumptionType: {
+  DRINK: "DRINK";
+  GAME: "GAME";
+} = {
+  DRINK: "DRINK",
+  GAME: "GAME",
 };
 
-type IncludeGame = {
-  game: Game;
-  gameId: string;
-  quantity: number;
+export type Consumption = {
+  id: string;
+  name: string;
+  type: typeof ConsumptionType;
+  points: number;
+  users: ConsumptionOnUser[];
+  promotions: Promotion[];
+};
+
+export type ConsumptionOnUser = {
+  id: string;
+  user: User;
   userId: string;
+  consumption: Consumption;
+  consumptionId: string;
+  quantity: number;
+  createdAt: Date;
 };
 
 export type Membership = {
@@ -37,55 +49,6 @@ export type Promotion = {
   id: string;
   name: string;
   memberships: Membership[];
-  drinks: Drink[];
-  games: Game[];
+  consumptions: Consumption[];
   users: User[];
-};
-
-export type Drink = {
-  id: string;
-  name: string;
-  points: number;
-  users: DrinksOnUser[];
-  promotions: Promotion[];
-};
-
-export type Game = {
-  id: string;
-  name: string;
-  points: number;
-  users: GamesOnUser[];
-  promotions: Promotion[];
-};
-
-export type DrinksOnUser = {
-  user: User;
-  userId: string;
-  drink: Drink;
-  drinkId: string;
-  quantity: number;
-};
-
-export type GamesOnUser = {
-  user: User;
-  userId: string;
-  game: Game;
-  gameId: string;
-  quantity: number;
-};
-
-export type SortedDrinks = {
-  id: string;
-  name: string;
-  points: number;
-  users: DrinksOnUser[];
-  total: number;
-};
-
-export type SortedGames = {
-  id: string;
-  name: string;
-  points: number;
-  users: GamesOnUser[];
-  total: number;
 };

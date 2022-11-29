@@ -1,3 +1,4 @@
+import { ConsumptionType } from "@prisma/client";
 import { Promotion } from "../../../types/model";
 import s from "./PromotionRow.module.scss";
 
@@ -12,8 +13,18 @@ export default function PromotionRow({ promotion }: Props) {
       <td>
         {promotion.memberships.map((membership) => membership.name).join(", ")}
       </td>
-      <td>{promotion.drinks.map((drink) => drink.name).join(", ")}</td>
-      <td>{promotion.games.map((game) => game.name).join(", ")}</td>
+      <td>
+        {promotion.consumptions
+          .filter((consumption) => consumption.type === "DRINK")
+          .map((consumption) => consumption.name)
+          .join(", ")}
+      </td>
+      <td>
+        {promotion.consumptions
+          .filter((consumption) => consumption.type === "GAME")
+          .map((consumption) => consumption.name)
+          .join(", ")}
+      </td>
     </tr>
   );
 }

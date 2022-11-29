@@ -3,23 +3,26 @@ import { GetServerSideProps } from "next";
 import Head from "next/head";
 import PostPointsCard from "../../src/components/PostPointsCard/PostPointsCard";
 import MembershipCard from "../../src/components/UserDetail/MembershipCard/MembershipCard";
-import { Drink, Game, Promotion, User } from "../../src/types/model";
+import { Consumption, Promotion, User } from "../../src/types/model";
 
 import s from "./UserDetail.module.scss";
 
-export default function Home({
-  user,
-  drinks,
-  games,
-  promotions,
-  userId,
-}: {
+type Props = {
   user: User;
-  drinks: Drink[];
-  games: Game[];
+  consumptions: {
+    drinks: Consumption[];
+    games: Consumption[];
+  };
   promotions: Promotion[];
   userId: string;
-}) {
+};
+
+export default function Home({
+  user,
+  consumptions,
+  promotions,
+  userId,
+}: Props) {
   return (
     <div className={s.container}>
       <Head>
@@ -33,7 +36,7 @@ export default function Home({
         <section>
           <MembershipCard user={user} />
 
-          <PostPointsCard drinks={drinks} games={games} userId={userId} />
+          <PostPointsCard consumptions={consumptions} userId={userId} />
 
           <article>
             <p>Promociones Validas:</p>
@@ -44,25 +47,25 @@ export default function Home({
 
           {/* drinks */}
           <article>
-            {user.drinks.map((drink) => (
-              <div key={drink.drink.id}>
+            {user.consumptions.map((consumption) => (
+              <div key={consumption.id}>
                 <p>
-                  {drink.drink.name} {drink.quantity}
+                  {consumption.consumption.name} {consumption.quantity}
                 </p>
               </div>
             ))}
           </article>
 
           {/* games */}
-          <article>
+          {/* <article>
             {user.games.map((game) => (
-              <div key={game.game.id}>
+              <div key={game.id}>
                 <p>
                   {game.game.name} {game.quantity}
                 </p>
               </div>
             ))}
-          </article>
+          </article> */}
         </section>
       </main>
     </div>
@@ -75,11 +78,10 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   const userResponse = await axios(`http://localhost:3000/api/user/${id}`);
   const user = userResponse.data;
 
-  const drinksResponse = await axios("http://localhost:3000/api/drink");
-  const drinks = drinksResponse.data;
-
-  const gamesResponse = await axios("http://localhost:3000/api/game");
-  const games = gamesResponse.data;
+  const consumptionsResponse = await axios(
+    "http://localhost:3000/api/consumption"
+  );
+  const consumptions = consumptionsResponse.data;
 
   // const promotionsResponse = await axios(
   //   `http://localhost:3000/api/promotions?membership=${user.membership}`
@@ -89,8 +91,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   return {
     props: {
       user,
-      drinks,
-      games,
+      consumptions,
       userId: id,
       // promotions,
     },
