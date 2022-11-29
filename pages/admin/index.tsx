@@ -22,7 +22,13 @@ type Props = {
   promotions: Promotion[];
 };
 
-const trPromotionTitles = ["Nombre", "Membresias", "Bebidas", "Juegos"];
+const trPromotionTitles = [
+  "Nombre",
+  "Membresias",
+  "Bebidas",
+  "Juegos",
+  "Puntos",
+];
 const trGameDrinkTitles = ["Nombre", "Puntos"];
 
 export default function Home({ consumptions, memberships, promotions }: Props) {

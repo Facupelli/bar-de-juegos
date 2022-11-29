@@ -13,6 +13,10 @@ type Props = {
     drinks: Consumption[];
     games: Consumption[];
   };
+  userConsumptions: {
+    drinks: Consumption[];
+    games: Consumption[];
+  };
   promotions: Promotion[];
   userId: string;
 };
@@ -20,6 +24,7 @@ type Props = {
 export default function Home({
   user,
   consumptions,
+  userConsumptions,
   promotions,
   userId,
 }: Props) {
@@ -45,27 +50,45 @@ export default function Home({
             ))}
           </article>
 
-          {/* drinks */}
-          <article>
-            {user.consumptions.map((consumption) => (
+          <article className={s.last_consumptions}>
+            <h4>Ultimas consumciones</h4>
+            {user.consumptions.slice(0, 10).map((consumption) => (
               <div key={consumption.id}>
                 <p>
                   {consumption.consumption.name} {consumption.quantity}
+                </p>
+                <p className={s.date}>
+                  {new Date(consumption.createdAt).toLocaleDateString("es-AR", {
+                    year: "numeric",
+                    day: "numeric",
+                    month: "short",
+                  })}
                 </p>
               </div>
             ))}
           </article>
 
-          {/* games */}
-          {/* <article>
-            {user.games.map((game) => (
-              <div key={game.id}>
+          <article className={s.last_consumptions}>
+            <h4>Bebidas</h4>
+            {userConsumptions.drinks?.map((consumption) => (
+              <div key={consumption.id}>
                 <p>
-                  {game.game.name} {game.quantity}
+                  {consumption.name} {consumption.users.length}
                 </p>
               </div>
             ))}
-          </article> */}
+          </article>
+
+          <article className={s.last_consumptions}>
+            <h4>Juegos</h4>
+            {userConsumptions.games?.map((consumption) => (
+              <div key={consumption.id}>
+                <p>
+                  {consumption.name} {consumption.users.length}
+                </p>
+              </div>
+            ))}
+          </article>
         </section>
       </main>
     </div>
@@ -83,6 +106,11 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   );
   const consumptions = consumptionsResponse.data;
 
+  const userConsumptionsResponse = await axios(
+    `http://localhost:3000/api/consumption?userId=${user.id}`
+  );
+  const userConsumptions = userConsumptionsResponse.data;
+
   // const promotionsResponse = await axios(
   //   `http://localhost:3000/api/promotions?membership=${user.membership}`
   // );
@@ -92,6 +120,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     props: {
       user,
       consumptions,
+      userConsumptions,
       userId: id,
       // promotions,
     },

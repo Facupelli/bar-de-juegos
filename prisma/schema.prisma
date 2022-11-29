@@ -64,6 +64,7 @@ model ConsumptionOnUser {
 model Promotion {
   id                      String            @default(cuid()) @id
   name                    String 
+  points                  Int
   memberships             Membership[]
   users                   User[]
   consumptions            ConsumptionOnPromotion[]

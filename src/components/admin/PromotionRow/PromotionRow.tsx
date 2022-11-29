@@ -1,4 +1,3 @@
-import { ConsumptionType } from "@prisma/client";
 import { Promotion } from "../../../types/model";
 import s from "./PromotionRow.module.scss";
 
@@ -25,6 +24,7 @@ export default function PromotionRow({ promotion }: Props) {
           .map((consumption) => consumption.consumption.name)
           .join(", ")}
       </td>
+      <td>{promotion.points}</td>
     </tr>
   );
 }

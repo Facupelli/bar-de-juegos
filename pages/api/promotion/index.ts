@@ -28,21 +28,24 @@ export default async function handlerPromotion(
     consumptionsIds,
     membershipsIds,
     quantity = 1,
+    points,
   }: {
     id: string;
     name: string;
     consumptionsIds: string[];
     membershipsIds: string[];
     quantity: number;
+    points: number;
   } = req.body;
 
   if (req.method === "POST") {
     try {
-      if (name && consumptionsIds && membershipsIds) {
+      if (name && consumptionsIds && membershipsIds && points) {
         const newPromotion = await prisma.promotion.create({
           data: {
             name,
             memberships: { connect: membershipsIds.map((id) => ({ id })) },
+            points: Number(points),
           },
         });
 

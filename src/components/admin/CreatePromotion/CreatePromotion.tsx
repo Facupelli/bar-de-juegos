@@ -25,6 +25,7 @@ export default function CreatePromotion({ memberships, consumptions }: Props) {
     membershipsIds: string[];
     gamesIds: string[];
     drinksIds: string[];
+    points: number;
   };
 
   const onSubmitPromotion: SubmitHandler<PromotionData> = async (data) => {
@@ -34,6 +35,7 @@ export default function CreatePromotion({ memberships, consumptions }: Props) {
         name: data.name,
         membershipsIds: data.membershipsIds,
         consumptionsIds: [...data.drinksIds, ...data.gamesIds],
+        points: data.points,
       }
     );
 
@@ -75,6 +77,9 @@ export default function CreatePromotion({ memberships, consumptions }: Props) {
           </option>
         ))}
       </select>
+
+      <label>Puntos:</label>
+      <input type="text" {...register("points")} />
 
       <button type="submit">CREAR</button>
     </form>

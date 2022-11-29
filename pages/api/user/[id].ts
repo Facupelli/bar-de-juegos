@@ -13,7 +13,10 @@ export default async function handlerUser(
         where: { id },
         include: {
           membership: { include: { promotions: true } },
-          consumptions: { include: { consumption: true } },
+          consumptions: {
+            include: { consumption: true },
+            orderBy: { createdAt: "desc" },
+          },
         },
       });
 

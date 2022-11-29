@@ -7,6 +7,27 @@ export default async function handleConsumption(
   res: NextApiResponse
 ) {
   if (req.method === "GET") {
+    const userId = req.query.userId as string;
+    if (userId) {
+      try {
+        const drinkConsumptions = await prisma.consumption.findMany({
+          include: { users: { where: { userId: userId } } },
+          where: { type: "DRINK" },
+        });
+
+        const gameConsumptions = await prisma.consumption.findMany({
+          include: { users: { where: { userId: userId } } },
+          where: { type: "GAME" },
+        });
+
+        res.json({ drinks: drinkConsumptions, games: gameConsumptions });
+        return;
+      } catch (e) {
+        console.error(e);
+        res.status(500).json({ message: "error" });
+      }
+    }
+
     try {
       const drinkConsumptions = await prisma.consumption.findMany({
         where: { type: "DRINK" },

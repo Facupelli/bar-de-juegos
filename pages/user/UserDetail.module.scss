@@ -1,4 +1,13 @@
 .main {
   max-width: 1200px;
   margin: auto;
+
+  .last_consumptions {
+    margin: 2rem 0rem;
+
+    .date {
+      font-size: 0.8rem;
+      color: rgb(150, 150, 150);
+    }
+  }
 }
