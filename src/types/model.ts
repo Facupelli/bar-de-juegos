@@ -25,7 +25,7 @@ export type Consumption = {
   type: typeof ConsumptionType;
   points: number;
   users: ConsumptionOnUser[];
-  promotions: Promotion[];
+  promotions: ConsumptionOnPromotion[];
 };
 
 export type ConsumptionOnUser = {
@@ -49,6 +49,15 @@ export type Promotion = {
   id: string;
   name: string;
   memberships: Membership[];
-  consumptions: Consumption[];
+  consumptions: ConsumptionOnPromotion[];
   users: User[];
+};
+
+export type ConsumptionOnPromotion = {
+  consumption: Consumption;
+  consumptionId: string;
+  promotion: Promotion;
+  promotionId: string;
+  quantity: number;
+  createdAt: Date;
 };

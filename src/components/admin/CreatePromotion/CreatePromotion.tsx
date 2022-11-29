@@ -30,7 +30,11 @@ export default function CreatePromotion({ memberships, consumptions }: Props) {
   const onSubmitPromotion: SubmitHandler<PromotionData> = async (data) => {
     const postMembership = await axios.post(
       "http://localhost:3000/api/promotion",
-      data
+      {
+        name: data.name,
+        membershipsIds: data.membershipsIds,
+        consumptionsIds: [...data.drinksIds, ...data.gamesIds],
+      }
     );
 
     if (postMembership.data.message) {

@@ -9,7 +9,7 @@ export default async function handlerPromotion(
     try {
       const promotions = await prisma.promotion.findMany({
         include: {
-          consumptions: true,
+          consumptions: { include: { consumption: true } },
           memberships: true,
         },
       });
@@ -27,11 +27,13 @@ export default async function handlerPromotion(
     name,
     consumptionsIds,
     membershipsIds,
+    quantity = 1,
   }: {
     id: string;
     name: string;
     consumptionsIds: string[];
     membershipsIds: string[];
+    quantity: number;
   } = req.body;
 
   if (req.method === "POST") {
@@ -40,10 +42,21 @@ export default async function handlerPromotion(
         const newPromotion = await prisma.promotion.create({
           data: {
             name,
-            consumptions: { connect: consumptionsIds.map((id) => ({ id })) },
             memberships: { connect: membershipsIds.map((id) => ({ id })) },
           },
         });
+
+        await prisma.$transaction(
+          consumptionsIds.map((consumptionId) =>
+            prisma.consumptionOnPromotion.create({
+              data: {
+                promotion: { connect: { id: newPromotion.id } },
+                consumption: { connect: { id: consumptionId } },
+                quantity: Number(quantity),
+              },
+            })
+          )
+        );
 
         res.status(200).json({ message: "success" });
         return;
@@ -63,7 +76,6 @@ export default async function handlerPromotion(
           where: { id },
           data: {
             name,
-            consumptions: { connect: consumptionsIds.map((id) => ({ id })) },
             memberships: { connect: membershipsIds.map((id) => ({ id })) },
           },
         });

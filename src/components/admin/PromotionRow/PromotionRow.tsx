@@ -15,14 +15,14 @@ export default function PromotionRow({ promotion }: Props) {
       </td>
       <td>
         {promotion.consumptions
-          .filter((consumption) => consumption.type === "DRINK")
-          .map((consumption) => consumption.name)
+          .filter((consumption) => consumption.consumption.type === "DRINK")
+          .map((consumption) => consumption.consumption.name)
           .join(", ")}
       </td>
       <td>
         {promotion.consumptions
-          .filter((consumption) => consumption.type === "GAME")
-          .map((consumption) => consumption.name)
+          .filter((consumption) => consumption.consumption.type === "GAME")
+          .map((consumption) => consumption.consumption.name)
           .join(", ")}
       </td>
     </tr>

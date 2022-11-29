@@ -48,7 +48,7 @@ model Consumption {
   type                    ConsumptionType
   points                  Int
   users                   ConsumptionOnUser[]
-  promotions              Promotion[]
+  promotions              ConsumptionOnPromotion[]
 }
 
 model ConsumptionOnUser {
@@ -62,11 +62,22 @@ model ConsumptionOnUser {
 }
 
 model Promotion {
-  id                      String        @default(cuid()) @id
+  id                      String            @default(cuid()) @id
   name                    String 
   memberships             Membership[]
   users                   User[]
-  consumptions            Consumption[]
+  consumptions            ConsumptionOnPromotion[]
+}
+
+model ConsumptionOnPromotion {
+  consumption             Consumption       @relation(fields: [consumptionId], references: [id])
+  consumptionId           String
+  promotion               Promotion         @relation(fields: [promotionId], references: [id])
+  promotionId             String
+  quantity                Int
+  createdAt               DateTime          @default(now()) @map(name: "created_at")
+
+  @@id([consumptionId, promotionId])
 }
 
 // model Game {
