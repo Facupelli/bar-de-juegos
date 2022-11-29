@@ -48,6 +48,14 @@ export default async function handlerUser(
       } = req.body;
 
       if (promotionId) {
+        const promotionOnUser = await prisma.promotionOnUser.create({
+          data: {
+            promotionId,
+            userId,
+            quantity: Number(quantity),
+          },
+        });
+
         const user = await prisma.user.update({
           where: { id: userId },
           data: {
@@ -57,7 +65,6 @@ export default async function handlerUser(
             totalPointsSpent: {
               increment: Number(points),
             },
-            promotions: { connect: { id: promotionId } },
           },
         });
 

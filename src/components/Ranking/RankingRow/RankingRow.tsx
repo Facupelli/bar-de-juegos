@@ -2,14 +2,15 @@ import { SortedConsumption } from "../../../types/model";
 import s from "./RankingRow.module.scss";
 
 type Props = {
-  row: SortedConsumption;
+  name: string;
+  total: string;
 };
 
-export default function RankingRow({ row }: Props) {
+export default function RankingRow({ name, total }: Props) {
   return (
     <tr className={s.row}>
-      <td>{row.name}</td>
-      <td>{row.total}</td>
+      <td>{name}</td>
+      <td>{total}</td>
     </tr>
   );
 }

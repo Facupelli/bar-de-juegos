@@ -6,6 +6,24 @@ export default async function handlerPromotion(
   res: NextApiResponse
 ) {
   if (req.method === "GET") {
+    const ranking = req.query.ranking as string;
+
+    if (ranking) {
+      try {
+        const promotions = await prisma.promotion.findMany({
+          include: {
+            users: true,
+          },
+        });
+
+        res.status(200).json(promotions);
+        return;
+      } catch (e) {
+        console.error(e);
+        res.status(500).json({ message: "error" });
+      }
+    }
+
     try {
       const promotions = await prisma.promotion.findMany({
         include: {

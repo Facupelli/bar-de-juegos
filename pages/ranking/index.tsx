@@ -2,19 +2,26 @@ import axios from "axios";
 import { GetServerSideProps } from "next";
 import RankingTable from "../../src/components/Ranking/Table/Table";
 import RankingRow from "../../src/components/Ranking/RankingRow/RankingRow";
-import { Consumption, SortedConsumption } from "../../src/types/model";
+import {
+  Consumption,
+  SortedConsumption,
+  Promotion,
+  SortedPromotion,
+} from "../../src/types/model";
 
 import s from "./Ranking.module.scss";
 
 type Props = {
   drinks: SortedConsumption[];
   games: SortedConsumption[];
+  promotions: SortedPromotion[];
 };
 
 const trDrinkTitle = ["Bebida", "Total"];
 const trGameTitle = ["Juego", "Total"];
+const trPromotionTitle = ["Promocion", "Total"];
 
-export default function Ranking({ drinks, games }: Props) {
+export default function Ranking({ drinks, games, promotions }: Props) {
   return (
     <section>
       <h2>RANKING</h2>
@@ -23,7 +30,7 @@ export default function Ranking({ drinks, games }: Props) {
         <h5>Bebida mas bebida</h5>
         <RankingTable trTitles={trDrinkTitle}>
           {drinks.map((drink) => (
-            <RankingRow key={drink.id} row={drink} />
+            <RankingRow key={drink.id} name={drink.name} total={drink.total} />
           ))}
         </RankingTable>
       </article>
@@ -32,7 +39,20 @@ export default function Ranking({ drinks, games }: Props) {
         <h5>Juego mas jugado</h5>
         <RankingTable trTitles={trGameTitle}>
           {games.map((game) => (
-            <RankingRow key={game.id} row={game} />
+            <RankingRow key={game.id} name={game.name} total={game.total} />
+          ))}
+        </RankingTable>
+      </article>
+
+      <article>
+        <h5>Promo mas canjeada</h5>
+        <RankingTable trTitles={trPromotionTitle}>
+          {promotions.map((promotion) => (
+            <RankingRow
+              key={promotion.id}
+              name={promotion.name}
+              total={promotion.total}
+            />
           ))}
         </RankingTable>
       </article>
@@ -69,10 +89,27 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     a.total > b.total ? -1 : 1
   );
 
+  const promotionsResponse = await axios(
+    "http://localhost:3000/api/promotion?ranking=true"
+  );
+  const promotions: Promotion[] = promotionsResponse.data;
+
+  const promotionsReducedQuantity = promotions.map((promotion) => ({
+    ...promotion,
+    total: promotion.users.reduce((acc, curr) => {
+      return acc + curr.quantity;
+    }, 0),
+  }));
+
+  const sortedPromotions = promotionsReducedQuantity.sort((a, b) =>
+    a.total > b.total ? -1 : 1
+  );
+
   return {
     props: {
       drinks: sortedDrinks,
       games: sortedGames,
+      promotions: sortedPromotions,
     },
   };
 };

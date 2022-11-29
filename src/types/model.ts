@@ -4,7 +4,7 @@ export type User = {
   fullName: string;
   membership: Membership;
   consumptions: ConsumptionOnUser[];
-  promotions: Promotion[];
+  promotions: PromotionOnUser[];
   totalPoints: number;
   totalPointsSpent: number;
   createdAt: Date;
@@ -35,7 +35,7 @@ export type SortedConsumption = {
   points: number;
   users: ConsumptionOnUser[];
   promotions: Promotion[];
-  total: number;
+  total: string;
 };
 
 export type ConsumptionOnUser = {
@@ -60,8 +60,18 @@ export type Promotion = {
   name: string;
   memberships: Membership[];
   consumptions: ConsumptionOnPromotion[];
-  users: User[];
+  users: PromotionOnUser[];
   points: number;
+};
+
+export type SortedPromotion = {
+  id: string;
+  name: string;
+  memberships: Membership[];
+  consumptions: ConsumptionOnPromotion[];
+  users: PromotionOnUser[];
+  points: number;
+  total: string;
 };
 
 export type ConsumptionOnPromotion = {
@@ -69,6 +79,16 @@ export type ConsumptionOnPromotion = {
   consumptionId: string;
   promotion: Promotion;
   promotionId: string;
+  quantity: number;
+  createdAt: Date;
+};
+
+export type PromotionOnUser = {
+  id: string;
+  promotion: Promotion;
+  promotionId: string;
+  user: User;
+  userId: string;
   quantity: number;
   createdAt: Date;
 };
