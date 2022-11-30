@@ -1,5 +1,7 @@
-import { GetServerSideProps } from "next";
 import axios from "axios";
+import { unstable_getServerSession } from "next-auth";
+import { GetServerSideProps } from "next";
+import { authOptions } from "../api/auth/[...nextauth]";
 import Head from "next/head";
 
 import Table from "../../src/components/Ranking/Table/Table";
@@ -94,24 +96,41 @@ export default function Home({ consumptions, memberships, promotions }: Props) {
 }
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  const membershipsResponse = await axios(
-    "http://localhost:3000/api/membership"
+  const session = await unstable_getServerSession(
+    context.req,
+    context.res,
+    authOptions
   );
-  const memberships = membershipsResponse.data;
 
-  const consumptionsResponse = await axios(
-    "http://localhost:3000/api/consumption"
-  );
-  const consumptions = consumptionsResponse.data;
+  if (session?.user.role === "ADMIN") {
+    const membershipsResponse = await axios(
+      "http://localhost:3000/api/membership"
+    );
+    const memberships = membershipsResponse.data;
 
-  const promotionsResponse = await axios("http://localhost:3000/api/promotion");
-  const promotions = promotionsResponse.data;
+    const consumptionsResponse = await axios(
+      "http://localhost:3000/api/consumption"
+    );
+    const consumptions = consumptionsResponse.data;
+
+    const promotionsResponse = await axios(
+      "http://localhost:3000/api/promotion"
+    );
+    const promotions = promotionsResponse.data;
+
+    return {
+      props: {
+        memberships,
+        promotions,
+        consumptions,
+      },
+    };
+  }
 
   return {
-    props: {
-      memberships,
-      promotions,
-      consumptions,
+    redirect: {
+      destination: "/",
+      permanent: false,
     },
   };
 };

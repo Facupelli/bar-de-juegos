@@ -8,6 +8,8 @@ import { Consumption, Promotion, User } from "../../src/types/model";
 import s from "./UserDetail.module.scss";
 import AddPromotion from "../../src/components/UserDetail/AddPromotion/AddPromotion";
 import Table from "../../src/components/Ranking/Table/Table";
+import { authOptions } from "../api/auth/[...nextauth]";
+import { unstable_getServerSession } from "next-auth";
 
 type Props = {
   user: User;
@@ -105,33 +107,49 @@ export default function Home({
 }
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  const id = context.query.id;
-
-  const userResponse = await axios(`http://localhost:3000/api/user/${id}`);
-  const user = userResponse.data;
-
-  const consumptionsResponse = await axios(
-    "http://localhost:3000/api/consumption"
+  const session = await unstable_getServerSession(
+    context.req,
+    context.res,
+    authOptions
   );
-  const consumptions = consumptionsResponse.data;
 
-  const userConsumptionsResponse = await axios(
-    `http://localhost:3000/api/consumption?userId=${user.id}`
-  );
-  const userConsumptions = userConsumptionsResponse.data;
+  if (session?.user.role === "ADMIN" || session?.user.role === "EMPLOYEE") {
+    const id = context.query.id as String;
 
-  // const promotionsResponse = await axios(
-  //   `http://localhost:3000/api/promotions?membership=${user.membership}`
-  // );
-  // const promotions = promotionsResponse.data;
+    const userResponse = await axios(`http://localhost:3000/api/user/${id}`);
+    const user: User = userResponse.data;
+
+    const consumptionsResponse = await axios(
+      "http://localhost:3000/api/consumption"
+    );
+    const consumptions: Consumption[] = consumptionsResponse.data;
+
+    const userConsumptionsResponse = await axios(
+      `http://localhost:3000/api/consumption?userId=${user.id}`
+    );
+    const userConsumptions: Consumption[] = userConsumptionsResponse.data;
+
+    // const promotionsResponse = await axios(
+    //   `http://localhost:3000/api/promotions?membership=${user.membership}`
+    // );
+    // const promotions = promotionsResponse.data;
+
+    return {
+      props: {
+        user,
+        consumptions,
+        userConsumptions,
+        userId: id,
+        // promotions,
+      },
+    };
+  }
 
   return {
-    props: {
-      user,
-      consumptions,
-      userConsumptions,
-      userId: id,
-      // promotions,
+    redirect: {
+      destination: "/",
+      permanent: false,
     },
+    porps: {},
   };
 };
