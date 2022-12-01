@@ -1,6 +1,8 @@
 import axios from "axios";
 import { useForm, SubmitHandler } from "react-hook-form";
 
+import s from "./CreateMembership.module.scss";
+
 export default function CreateMembership() {
   const {
     register,
@@ -26,11 +28,11 @@ export default function CreateMembership() {
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmitMembership)}>
+    <form onSubmit={handleSubmit(onSubmitMembership)} className={s.form}>
       <h4>CREAR MEMBRESIA</h4>
       <label>Nombre:</label>
       <input type="text" {...register("name")} />
-      <label>Puntos:</label>
+      <label>Puntos Minimos:</label>
       <input type="text" {...register("minPoints")} />
       <button>CREAR</button>
     </form>
