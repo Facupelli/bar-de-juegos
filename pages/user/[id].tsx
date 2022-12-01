@@ -1,15 +1,18 @@
 import axios from "axios";
 import { GetServerSideProps } from "next";
 import Head from "next/head";
-import PostPointsCard from "../../src/components/UserDetail/PostPointsCard/PostPointsCard";
-import MembershipCard from "../../src/components/UserDetail/MembershipCard/MembershipCard";
 import { Consumption, Promotion, User } from "../../src/types/model";
-
-import s from "./UserDetail.module.scss";
-import AddPromotion from "../../src/components/UserDetail/AddPromotion/AddPromotion";
-import Table from "../../src/components/Ranking/Table/Table";
 import { authOptions } from "../api/auth/[...nextauth]";
 import { unstable_getServerSession } from "next-auth";
+import { useRouter } from "next/router";
+
+//COMPONENTS
+import PostPointsCard from "../../src/components/UserDetail/PostPointsCard/PostPointsCard";
+import MembershipCard from "../../src/components/UserDetail/MembershipCard/MembershipCard";
+import AddPromotion from "../../src/components/UserDetail/AddPromotion/AddPromotion";
+import Table from "../../src/components/Ranking/Table/Table";
+
+import s from "./UserDetail.module.scss";
 
 type Props = {
   user: User;
@@ -34,6 +37,8 @@ export default function Home({
   promotions,
   userId,
 }: Props) {
+  const router = useRouter();
+
   return (
     <div className={s.container}>
       <Head>
@@ -54,29 +59,6 @@ export default function Home({
           />
           <MembershipCard user={user} />
         </section>
-
-        <article className={s.margin}>
-          <h4>Ultimas consumiciones</h4>
-          <Table trTitles={trLastConsumptionsTitles}>
-            {user.consumptions.slice(0, 10).map((consumption) => (
-              <tr key={consumption.id}>
-                <td>{consumption.consumption.name}</td>
-                <td>{consumption.quantity}</td>
-                <td>
-                  {new Date(consumption.createdAt).toLocaleDateString("es-AR", {
-                    year: "numeric",
-                    day: "numeric",
-                    month: "short",
-                  })}{" "}
-                  {new Date(consumption.createdAt).toLocaleTimeString("es-AR", {
-                    hour: "2-digit",
-                    minute: "2-digit",
-                  })}
-                </td>
-              </tr>
-            ))}
-          </Table>
-        </article>
 
         <section className={s.grid}>
           <article className={s.margin}>
@@ -101,6 +83,36 @@ export default function Home({
             ))}
           </article>
         </section>
+
+        <section className={s.margin}>
+          <h4>Ultimas consumiciones</h4>
+          <Table trTitles={trLastConsumptionsTitles}>
+            {user.consumptions.slice(0, 10).map((consumption) => (
+              <tr key={consumption.id}>
+                <td>{consumption.consumption.name}</td>
+                <td>{consumption.quantity}</td>
+                <td>
+                  {new Date(consumption.createdAt).toLocaleDateString("es-AR", {
+                    year: "numeric",
+                    day: "numeric",
+                    month: "short",
+                  })}
+                  {" - "}
+                  {new Date(consumption.createdAt).toLocaleTimeString("es-AR", {
+                    hour: "2-digit",
+                    minute: "2-digit",
+                  })}
+                </td>
+              </tr>
+            ))}
+          </Table>
+        </section>
+
+        <div className={s.btn_wrrapper}>
+          <button type="button" onClick={() => router.push("/")}>
+            LISTO
+          </button>
+        </div>
       </main>
     </div>
   );
