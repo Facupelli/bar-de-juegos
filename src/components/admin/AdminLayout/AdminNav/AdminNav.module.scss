@@ -1,0 +1,16 @@
+.nav {
+  width: 180px;
+  height: 100vh;
+  position: fixed;
+  overflow-y: auto;
+
+  ul {
+    display: flex;
+    flex-direction: column;
+    padding: 0;
+    li {
+      list-style: none;
+      text-decoration: none;
+    }
+  }
+}

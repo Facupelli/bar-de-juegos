@@ -1,0 +1,9 @@
+.admin_layout {
+  display: flex;
+  column-gap: 2rem;
+
+  > div {
+    margin-left: 180px;
+    width: 100%;
+  }
+}
