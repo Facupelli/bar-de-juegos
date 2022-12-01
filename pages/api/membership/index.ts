@@ -40,11 +40,10 @@ export default async function handlerMembership(
           },
         });
 
-        res.status(200).json({ message: "success" });
-        return;
+        return res.status(200).json({ message: "success" });
       }
 
-      res.status(400).json({ message: "missing data" });
+      return res.status(400).json({ message: "missing data" });
     } catch (e) {
       console.error(e);
       res.status(500).json({ message: "error" });
@@ -61,10 +60,9 @@ export default async function handlerMembership(
             promotions: { connect: promotionsIds.map((id) => ({ id })) },
           },
         });
-        res.status(200).json({ message: "success" });
-        return;
+        return res.status(200).json({ message: "success" });
       }
-      res.status(400).json({ message: "missing data" });
+      return res.status(400).json({ message: "missing data" });
     } catch (e) {
       console.error(e);
       res.status(500).json({ message: "error" });

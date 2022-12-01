@@ -16,8 +16,7 @@ export default async function handlerPromotion(
           },
         });
 
-        res.status(200).json(promotions);
-        return;
+        return res.status(200).json(promotions);
       } catch (e) {
         console.error(e);
         res.status(500).json({ message: "error" });
@@ -32,8 +31,7 @@ export default async function handlerPromotion(
         },
       });
 
-      res.status(200).json(promotions);
-      return;
+      return res.status(200).json(promotions);
     } catch (e) {
       console.error(e);
       res.status(500).json({ message: "error" });
@@ -79,11 +77,10 @@ export default async function handlerPromotion(
           )
         );
 
-        res.status(200).json({ message: "success" });
-        return;
+        return res.status(200).json({ message: "success" });
       }
 
-      res.status(400).json({ message: "missing data" });
+      return res.status(400).json({ message: "missing data" });
     } catch (e) {
       console.error(e);
       res.status(500).json({ message: "error" });
@@ -100,10 +97,9 @@ export default async function handlerPromotion(
             memberships: { connect: membershipsIds.map((id) => ({ id })) },
           },
         });
-        res.status(200).json({ message: "success" });
-        return;
+        return res.status(200).json({ message: "success" });
       }
-      res.status(400).json({ message: "missing data" });
+      return res.status(400).json({ message: "missing data" });
     } catch (e) {
       console.error(e);
       res.status(500).json({ message: "error" });

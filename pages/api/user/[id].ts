@@ -20,7 +20,7 @@ export default async function handlerUser(
         },
       });
 
-      res.status(200).json(user);
+      return res.status(200).json(user);
     } catch (e) {
       console.error(e);
       res.status(500).json({ message: "error" });
@@ -68,8 +68,7 @@ export default async function handlerUser(
           },
         });
 
-        res.status(200).json({ message: "success" });
-        return;
+        return res.status(200).json({ message: "success" });
       }
 
       if (operation === "addPoints") {
@@ -90,11 +89,10 @@ export default async function handlerUser(
           },
         });
 
-        res.status(200).json({ message: "success" });
-        return;
+        return res.status(200).json({ message: "success" });
       }
 
-      res.status(400).json({ message: "missing operation" });
+      return res.status(400).json({ message: "missing operation" });
     } catch (e) {
       console.error(e);
       res.status(500).json({ message: "error" });

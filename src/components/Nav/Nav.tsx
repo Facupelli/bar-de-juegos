@@ -15,6 +15,10 @@ export default function Nav() {
           <Link href="/">INICIO</Link>
         </li>
 
+        <li>
+          <Link href="/ranking">RANKINGS</Link>
+        </li>
+
         {session?.user.role === "ADMIN" && (
           <li>
             <Link href="/admin">ADMIN</Link>
