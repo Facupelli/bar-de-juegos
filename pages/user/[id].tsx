@@ -13,6 +13,7 @@ import AddPromotion from "../../src/components/UserDetail/AddPromotion/AddPromot
 import Table from "../../src/components/Ranking/Table/Table";
 
 import s from "./UserDetail.module.scss";
+import PromotionTale from "../../src/components/admin/PromotionTable/PromotionTable";
 
 type Props = {
   user: User;
@@ -60,28 +61,36 @@ export default function Home({
           <MembershipCard user={user} />
         </section>
 
-        <section className={s.grid}>
-          <article className={s.margin}>
-            <h4>Bebidas</h4>
-            {userConsumptions.drinks?.map((consumption) => (
-              <div key={consumption.id}>
-                <p>
-                  {consumption.name} x{consumption.users.length}
-                </p>
-              </div>
-            ))}
-          </article>
+        <section>
+          <h5>Promociones para membresia {user.membership.name}</h5>
+          <PromotionTale promotions={user.membership.promotions} />
+        </section>
 
-          <article className={s.margin}>
-            <h4>Juegos</h4>
-            {userConsumptions.games?.map((consumption) => (
-              <div key={consumption.id}>
-                <p>
-                  {consumption.name} {consumption.users.length}
-                </p>
-              </div>
-            ))}
-          </article>
+        <section>
+          <h5>Consumiciones totales</h5>
+          <div className={`${s.grid} ${s.margin}`}>
+            <article>
+              <h4>Bebidas</h4>
+              {userConsumptions.drinks?.map((consumption) => (
+                <div key={consumption.id}>
+                  <p>
+                    {consumption.name} x{consumption.users.length}
+                  </p>
+                </div>
+              ))}
+            </article>
+
+            <article>
+              <h4>Juegos</h4>
+              {userConsumptions.games?.map((consumption) => (
+                <div key={consumption.id}>
+                  <p>
+                    {consumption.name} {consumption.users.length}
+                  </p>
+                </div>
+              ))}
+            </article>
+          </div>
         </section>
 
         <section className={s.margin}>

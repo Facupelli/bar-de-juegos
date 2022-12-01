@@ -7,14 +7,15 @@ import Head from "next/head";
 import Table from "../../src/components/Ranking/Table/Table";
 import CreateMembership from "../../src/components/admin/CreateMembership/CreateMembership";
 import CreatePromotion from "../../src/components/admin/CreatePromotion/CreatePromotion";
-import PromotionRow from "../../src/components/admin/PromotionRow/PromotionRow";
 import CreateConsumption from "../../src/components/admin/CreateConsumption/CreateConsumption";
 import ConsumptionRow from "../../src/components/admin/ConsumptionRow/ConsumptionRow";
+import PromotionTale from "../../src/components/admin/PromotionTable/PromotionTable";
+import MembershipRow from "../../src/components/admin/MembershipRow/MembershipRow";
+import Nav from "../../src/components/Nav/Nav";
 
 import { Consumption, Membership, Promotion } from "../../src/types/model";
 
 import s from "./Admin.module.scss";
-import Nav from "../../src/components/Nav/Nav";
 
 type Props = {
   consumptions: {
@@ -25,14 +26,7 @@ type Props = {
   promotions: Promotion[];
 };
 
-const trPromotionTitles = [
-  "Nombre",
-  "Membresias",
-  "Bebidas",
-  "Juegos",
-  "Puntos",
-];
-const trGameDrinkTitles = ["Nombre", "Puntos"];
+const trTitles = ["Nombre", "Puntos"];
 
 export default function Home({ consumptions, memberships, promotions }: Props) {
   return (
@@ -62,7 +56,7 @@ export default function Home({ consumptions, memberships, promotions }: Props) {
         <section className={s.grid}>
           <div>
             <h4>Bebidas</h4>
-            <Table trTitles={trGameDrinkTitles}>
+            <Table trTitles={trTitles}>
               {consumptions.drinks.map((consumption) => (
                 <ConsumptionRow
                   key={consumption.id}
@@ -74,7 +68,7 @@ export default function Home({ consumptions, memberships, promotions }: Props) {
 
           <div>
             <h4>Juegos</h4>
-            <Table trTitles={trGameDrinkTitles}>
+            <Table trTitles={trTitles}>
               {consumptions.games.map((consumption) => (
                 <ConsumptionRow
                   key={consumption.id}
@@ -85,12 +79,17 @@ export default function Home({ consumptions, memberships, promotions }: Props) {
           </div>
 
           <div>
-            <h4>Promociones</h4>
-            <Table trTitles={trPromotionTitles}>
-              {promotions?.map((promotion) => (
-                <PromotionRow key={promotion.id} promotion={promotion} />
+            <h4>Membresías</h4>
+            <Table trTitles={trTitles}>
+              {memberships.map((membership) => (
+                <MembershipRow key={membership.id} membership={membership} />
               ))}
             </Table>
+          </div>
+
+          <div>
+            <h4>Promociones</h4>
+            <PromotionTale promotions={promotions} />
           </div>
         </section>
       </main>

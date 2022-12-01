@@ -12,7 +12,16 @@ export default async function handlerUser(
       const user = await prisma.user.findUnique({
         where: { id },
         include: {
-          membership: { include: { promotions: true } },
+          membership: {
+            include: {
+              promotions: {
+                include: {
+                  consumptions: { include: { consumption: true } },
+                  memberships: true,
+                },
+              },
+            },
+          },
           consumptions: {
             include: { consumption: true },
             orderBy: { createdAt: "desc" },
