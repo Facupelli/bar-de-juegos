@@ -7,6 +7,7 @@ import {
   SortedConsumption,
   Promotion,
   SortedPromotion,
+  User,
 } from "../../src/types/model";
 
 import s from "./Ranking.module.scss";
@@ -15,47 +16,68 @@ type Props = {
   drinks: SortedConsumption[];
   games: SortedConsumption[];
   promotions: SortedPromotion[];
+  users: User[];
 };
 
 const trDrinkTitle = ["Bebida", "Total"];
 const trGameTitle = ["Juego", "Total"];
 const trPromotionTitle = ["Promocion", "Total"];
+const trUsersTitle = ["Nombre", "Puntos Canjeados"];
 
-export default function Ranking({ drinks, games, promotions }: Props) {
+export default function Ranking({ drinks, games, promotions, users }: Props) {
   return (
     <section>
       <h2>RANKING</h2>
 
-      <article>
-        <h5>Bebida mas bebida</h5>
-        <RankingTable trTitles={trDrinkTitle}>
-          {drinks.map((drink) => (
-            <RankingRow key={drink.id} name={drink.name} total={drink.total} />
-          ))}
-        </RankingTable>
-      </article>
+      <div className={s.grid}>
+        <article>
+          <h5>Bebida más bebida</h5>
+          <RankingTable trTitles={trDrinkTitle}>
+            {drinks?.map((drink) => (
+              <RankingRow
+                key={drink.id}
+                name={drink.name}
+                total={drink.total}
+              />
+            ))}
+          </RankingTable>
+        </article>
 
-      <article>
-        <h5>Juego mas jugado</h5>
-        <RankingTable trTitles={trGameTitle}>
-          {games.map((game) => (
-            <RankingRow key={game.id} name={game.name} total={game.total} />
-          ))}
-        </RankingTable>
-      </article>
+        <article>
+          <h5>Juego más jugado</h5>
+          <RankingTable trTitles={trGameTitle}>
+            {games?.map((game) => (
+              <RankingRow key={game.id} name={game.name} total={game.total} />
+            ))}
+          </RankingTable>
+        </article>
 
-      <article>
-        <h5>Promo mas canjeada</h5>
-        <RankingTable trTitles={trPromotionTitle}>
-          {promotions.map((promotion) => (
-            <RankingRow
-              key={promotion.id}
-              name={promotion.name}
-              total={promotion.total}
-            />
-          ))}
-        </RankingTable>
-      </article>
+        <article>
+          <h5>Promo más canjeada</h5>
+          <RankingTable trTitles={trPromotionTitle}>
+            {promotions?.map((promotion) => (
+              <RankingRow
+                key={promotion.id}
+                name={promotion.name}
+                total={promotion.total}
+              />
+            ))}
+          </RankingTable>
+        </article>
+
+        <article>
+          <h5>Jugadores con más canjes</h5>
+          <RankingTable trTitles={trPromotionTitle}>
+            {users?.map((user) => (
+              <RankingRow
+                key={user.id}
+                name={user.fullName}
+                total={String(user.totalPointsSpent)}
+              />
+            ))}
+          </RankingTable>
+        </article>
+      </div>
     </section>
   );
 }
@@ -105,11 +127,17 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     a.total > b.total ? -1 : 1
   );
 
+  const usersRersponse = await axios(
+    "http://localhost:3000/api/user?userRanking=true"
+  );
+  const users = usersRersponse.data;
+
   return {
     props: {
       drinks: sortedDrinks,
       games: sortedGames,
       promotions: sortedPromotions,
+      users,
     },
   };
 };

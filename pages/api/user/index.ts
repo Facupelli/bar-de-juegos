@@ -14,6 +14,7 @@ export default async function handlerUser(
           orderBy: {
             totalPointsSpent: "desc",
           },
+          take: 10,
         });
 
         return res.status(200).json(users);
