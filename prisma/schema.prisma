@@ -41,6 +41,7 @@ model UserLoggedInfo {
 model Membership {
   id                      String                @default(cuid()) @id
   name                    String
+  minPoints               Int
   users                   User[]
   promotions              Promotion[]
 }

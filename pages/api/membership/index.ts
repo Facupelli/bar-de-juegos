@@ -20,10 +20,12 @@ export default async function handlerMembership(
   const {
     id,
     name,
+    minPoints,
     promotionsIds,
   }: {
     id: string;
     name: string;
+    minPoints: number;
     promotionsIds: string[];
   } = req.body;
 
@@ -33,6 +35,7 @@ export default async function handlerMembership(
         const newMembership = await prisma.membership.create({
           data: {
             name,
+            minPoints: Number(minPoints),
             // promotions: { connect: promotionsIds.map((id) => ({ id })) },
           },
         });

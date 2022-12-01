@@ -51,6 +51,7 @@ export type ConsumptionOnUser = {
 export type Membership = {
   id: string;
   name: string;
+  minPoints: number;
   users: User[];
   promotions: Promotion[];
 };

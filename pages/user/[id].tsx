@@ -55,7 +55,7 @@ export default function Home({
           <MembershipCard user={user} />
         </section>
 
-        <article className={s.last_consumptions}>
+        <article className={s.margin}>
           <h4>Ultimas consumiciones</h4>
           <Table trTitles={trLastConsumptionsTitles}>
             {user.consumptions.slice(0, 10).map((consumption) => (
@@ -79,7 +79,7 @@ export default function Home({
         </article>
 
         <section className={s.grid}>
-          <article className={s.last_consumptions}>
+          <article className={s.margin}>
             <h4>Bebidas</h4>
             {userConsumptions.drinks?.map((consumption) => (
               <div key={consumption.id}>
@@ -90,7 +90,7 @@ export default function Home({
             ))}
           </article>
 
-          <article className={s.last_consumptions}>
+          <article className={s.margin}>
             <h4>Juegos</h4>
             {userConsumptions.games?.map((consumption) => (
               <div key={consumption.id}>

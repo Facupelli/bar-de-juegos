@@ -11,6 +11,7 @@ export default function CreateMembership() {
 
   type MembershipData = {
     name: string;
+    minPoints: number;
   };
 
   const onSubmitMembership: SubmitHandler<MembershipData> = async (data) => {
@@ -29,6 +30,8 @@ export default function CreateMembership() {
       <h4>CREAR MEMBRESIA</h4>
       <label>Nombre:</label>
       <input type="text" {...register("name")} />
+      <label>Puntos:</label>
+      <input type="text" {...register("minPoints")} />
       <button>CREAR</button>
     </form>
   );

@@ -20,6 +20,7 @@ export default function MembershipCard({ user }: Props) {
         <p className={s.membership_name}>
           <strong>{user.membership.name}</strong>
         </p>
+        <p className={s.text_align_right}>{user.membership.minPoints}pts</p>
         <div className={s.margin_t}>
           <p>{user.fullName}</p>
           <p>
