@@ -49,6 +49,7 @@ model Membership {
 enum ConsumptionType {
   DRINK
   GAME
+  FOOD
 }
 
 model Consumption {

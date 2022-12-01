@@ -14,6 +14,7 @@ import { Consumption } from "../../../src/types/model";
 import s from "./ConsumptionPage.module.scss";
 import Table from "../../../src/components/Ranking/Table/Table";
 import ConsumptionRow from "../../../src/components/admin/ConsumptionRow/ConsumptionRow";
+import CreateButton from "../../../src/components/admin/CreateButton/CreateButton";
 
 type Props = {
   consumptions: {
@@ -37,6 +38,7 @@ export default function PromotionPage({ consumptions }: Props) {
 
       <main className={s.main}>
         <AdminLayout>
+          <CreateButton title="CONSUMICIÓN" />
           <div>
             <h4>Bebidas</h4>
             <Table trTitles={trTitles}>

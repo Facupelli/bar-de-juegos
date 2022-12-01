@@ -14,9 +14,11 @@ export type User = {
 export const ConsumptionType: {
   DRINK: "DRINK";
   GAME: "GAME";
+  FOOD: "FOOD";
 } = {
   DRINK: "DRINK",
   GAME: "GAME",
+  FOOD: "FOOD",
 };
 
 export type Consumption = {

@@ -12,6 +12,7 @@ import PromotionTale from "../../../src/components/admin/PromotionTable/Promotio
 import { Promotion } from "../../../src/types/model";
 
 import s from "./PromotionPage.module.scss";
+import CreateButton from "../../../src/components/admin/CreateButton/CreateButton";
 
 type Props = {
   promotions: Promotion[];
@@ -30,6 +31,7 @@ export default function PromotionPage({ promotions }: Props) {
 
       <main className={s.main}>
         <AdminLayout>
+          <CreateButton title="PROMOCIÓN" />
           <div>
             <h4>Promociones</h4>
             <PromotionTale promotions={promotions} />

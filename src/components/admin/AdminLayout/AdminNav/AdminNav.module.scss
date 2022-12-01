@@ -6,11 +6,16 @@
 
   ul {
     display: flex;
+    row-gap: 0.5rem;
     flex-direction: column;
     padding: 0;
     li {
       list-style: none;
       text-decoration: none;
+
+      &:hover {
+        color: gray;
+      }
     }
   }
 }

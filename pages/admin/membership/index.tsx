@@ -3,16 +3,20 @@ import Head from "next/head";
 import { GetServerSideProps } from "next";
 import { unstable_getServerSession } from "next-auth";
 import { authOptions } from "../../api/auth/[...nextauth]";
+import { useState } from "react";
 
 //COMPONENTS
 import Nav from "../../../src/components/Nav/Nav";
 import Table from "../../../src/components/Ranking/Table/Table";
 import MembershipRow from "../../../src/components/admin/MembershipRow/MembershipRow";
 import AdminLayout from "../../../src/components/admin/AdminLayout/AdminLayout";
+import CreateButton from "../../../src/components/admin/CreateButton/CreateButton";
 
 import { Membership } from "../../../src/types/model";
 
 import s from "./MembershipPage.module.scss";
+import Modal from "../../../src/components/Modal/Modal";
+import CreateMembership from "../../../src/components/admin/CreateMembership/CreateMembership";
 
 type Props = {
   memberships: Membership[];
@@ -21,6 +25,8 @@ type Props = {
 const trTitles = ["Nombre", "Puntos"];
 
 export default function MembershipPage({ memberships }: Props) {
+  const [openCreateModal, setOpenCreateModal] = useState<boolean>(false);
+
   return (
     <div className={s.container}>
       <Head>
@@ -29,10 +35,18 @@ export default function MembershipPage({ memberships }: Props) {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
+      <Modal isOpen={openCreateModal}>
+        <CreateMembership />
+      </Modal>
+
       <Nav />
 
       <main className={s.main}>
         <AdminLayout>
+          <CreateButton
+            title="MEMBRESÍA"
+            onClick={() => setOpenCreateModal(true)}
+          />
           <div>
             <h4>Membresías</h4>
             <Table trTitles={trTitles}>
