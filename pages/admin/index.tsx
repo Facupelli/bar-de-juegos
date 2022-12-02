@@ -1,35 +1,16 @@
-import axios from "axios";
 import { unstable_getServerSession } from "next-auth";
 import { GetServerSideProps } from "next";
 import { authOptions } from "../api/auth/[...nextauth]";
 import Head from "next/head";
 
-import Table from "../../src/components/Ranking/Table/Table";
-import CreateMembership from "../../src/components/admin/CreateMembership/CreateMembership";
-import CreatePromotion from "../../src/components/admin/CreatePromotion/CreatePromotion";
-import CreateConsumption from "../../src/components/admin/CreateConsumption/CreateConsumption";
-import ConsumptionRow from "../../src/components/admin/ConsumptionRow/ConsumptionRow";
-import PromotionTale from "../../src/components/admin/PromotionTable/PromotionTable";
-import MembershipRow from "../../src/components/admin/MembershipRow/MembershipRow";
 import Nav from "../../src/components/Nav/Nav";
-
-import { Consumption, Membership, Promotion } from "../../src/types/model";
-
-import s from "./Admin.module.scss";
 import AdminLayout from "../../src/components/admin/AdminLayout/AdminLayout";
 
-type Props = {
-  consumptions: {
-    drinks: Consumption[];
-    games: Consumption[];
-  };
-  memberships: Membership[];
-  promotions: Promotion[];
-};
+import s from "./Admin.module.scss";
 
 const trTitles = ["Nombre", "Puntos"];
 
-export default function Home({ consumptions, memberships, promotions }: Props) {
+export default function Home() {
   return (
     <div className={s.container}>
       <Head>
@@ -44,15 +25,6 @@ export default function Home({ consumptions, memberships, promotions }: Props) {
         <AdminLayout>
           <div></div>
         </AdminLayout>
-
-        {/* <CreateMembership />
-
-        <CreateConsumption />
-
-        <CreatePromotion
-          consumptions={consumptions}
-          memberships={memberships}
-        /> */}
       </main>
     </div>
   );
@@ -66,26 +38,9 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   );
 
   if (session?.user.role === "ADMIN") {
-    const membershipsResponse = await axios(
-      "http://localhost:3000/api/membership"
-    );
-    const memberships = membershipsResponse.data;
-
-    const consumptionsResponse = await axios(
-      "http://localhost:3000/api/consumption"
-    );
-    const consumptions = consumptionsResponse.data;
-
-    const promotionsResponse = await axios(
-      "http://localhost:3000/api/promotion"
-    );
-    const promotions = promotionsResponse.data;
-
     return {
       props: {
-        memberships,
-        promotions,
-        consumptions,
+        session,
       },
     };
   }

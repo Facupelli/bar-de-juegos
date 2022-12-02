@@ -1,5 +1,8 @@
-.form {
-  margin: 1rem 0rem;
+.flex_column {
   display: flex;
   flex-direction: column;
+}
+
+.gap {
+  gap: 1rem;
 }

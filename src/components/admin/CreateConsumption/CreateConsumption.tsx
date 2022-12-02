@@ -30,17 +30,29 @@ export default function CreateConsumption() {
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmitConsumption)} className={s.form}>
+    <form
+      onSubmit={handleSubmit(onSubmitConsumption)}
+      className={`${s.flex_column} ${s.gap}`}
+    >
       <h4>CREAR CONSUMICION</h4>
-      <label>Tipo:</label>
-      <select {...register("type")}>
-        <option value="DRINK">Bebida</option>
-        <option value="GAME">Juego</option>
-      </select>
-      <label>Nombre:</label>
-      <input type="text" {...register("name")} />
-      <label>Puntos:</label>
-      <input type="text" {...register("points")} />
+
+      <div className={s.flex_column}>
+        <label>Tipo:</label>
+        <select {...register("type")}>
+          <option value="DRINK">Bebida</option>
+          <option value="GAME">Juego</option>
+        </select>
+      </div>
+
+      <div className={s.flex_column}>
+        <label>Nombre:</label>
+        <input type="text" {...register("name")} />
+      </div>
+
+      <div className={s.flex_column}>
+        <label>Puntos:</label>
+        <input type="text" {...register("points")} />
+      </div>
       <button type="submit">CREAR</button>
     </form>
   );

@@ -28,12 +28,22 @@ export default function CreateMembership() {
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmitMembership)} className={s.form}>
+    <form
+      onSubmit={handleSubmit(onSubmitMembership)}
+      className={`${s.flex_column} ${s.gap}`}
+    >
       <h4>CREAR MEMBRESIA</h4>
-      <label>Nombre:</label>
-      <input type="text" {...register("name")} />
-      <label>Puntos Minimos:</label>
-      <input type="text" {...register("minPoints")} />
+
+      <div className={s.flex_column}>
+        <label>Nombre:</label>
+        <input type="text" {...register("name")} />
+      </div>
+
+      <div className={s.flex_column}>
+        <label>Puntos Minimos:</label>
+        <input type="text" {...register("minPoints")} />
+      </div>
+
       <button>CREAR</button>
     </form>
   );
