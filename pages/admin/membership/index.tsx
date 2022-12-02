@@ -35,7 +35,10 @@ export default function MembershipPage({ memberships }: Props) {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <Modal isOpen={openCreateModal}>
+      <Modal
+        isOpen={openCreateModal}
+        handleCloseModal={() => setOpenCreateModal(false)}
+      >
         <CreateMembership />
       </Modal>
 

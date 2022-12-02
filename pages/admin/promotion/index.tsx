@@ -3,22 +3,36 @@ import Head from "next/head";
 import { GetServerSideProps } from "next";
 import { unstable_getServerSession } from "next-auth";
 import { authOptions } from "../../api/auth/[...nextauth]";
+import { useState } from "react";
 
 //COMPONENTS
 import Nav from "../../../src/components/Nav/Nav";
 import AdminLayout from "../../../src/components/admin/AdminLayout/AdminLayout";
 import PromotionTale from "../../../src/components/admin/PromotionTable/PromotionTable";
+import CreateButton from "../../../src/components/admin/CreateButton/CreateButton";
 
-import { Promotion } from "../../../src/types/model";
+import { Consumption, Membership, Promotion } from "../../../src/types/model";
 
 import s from "./PromotionPage.module.scss";
-import CreateButton from "../../../src/components/admin/CreateButton/CreateButton";
+import Modal from "../../../src/components/Modal/Modal";
+import CreatePromotion from "../../../src/components/admin/CreatePromotion/CreatePromotion";
 
 type Props = {
   promotions: Promotion[];
+  memberships: Membership[];
+  consumptions: {
+    drinks: Consumption[];
+    games: Consumption[];
+  };
 };
 
-export default function PromotionPage({ promotions }: Props) {
+export default function PromotionPage({
+  promotions,
+  memberships,
+  consumptions,
+}: Props) {
+  const [openCreateModal, setOpenCreateModal] = useState<boolean>(false);
+
   return (
     <div className={s.container}>
       <Head>
@@ -27,11 +41,24 @@ export default function PromotionPage({ promotions }: Props) {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
+      <Modal
+        isOpen={openCreateModal}
+        handleCloseModal={() => setOpenCreateModal(false)}
+      >
+        <CreatePromotion
+          memberships={memberships}
+          consumptions={consumptions}
+        />
+      </Modal>
+
       <Nav />
 
       <main className={s.main}>
         <AdminLayout>
-          <CreateButton title="PROMOCIÓN" />
+          <CreateButton
+            title="PROMOCIÓN"
+            onClick={() => setOpenCreateModal(true)}
+          />
           <div>
             <h4>Promociones</h4>
             <PromotionTale promotions={promotions} />
@@ -50,6 +77,16 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   );
 
   if (session?.user.role === "ADMIN") {
+    const membershipsResponse = await axios(
+      "http://localhost:3000/api/membership"
+    );
+    const memberships = membershipsResponse.data;
+
+    const consumptionsResponse = await axios(
+      "http://localhost:3000/api/consumption"
+    );
+    const consumptions = consumptionsResponse.data;
+
     const promotionsResponse = await axios(
       "http://localhost:3000/api/promotion"
     );
@@ -57,7 +94,9 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
     return {
       props: {
+        memberships,
         promotions,
+        consumptions,
       },
     };
   }

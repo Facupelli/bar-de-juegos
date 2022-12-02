@@ -3,18 +3,20 @@ import Head from "next/head";
 import { GetServerSideProps } from "next";
 import { unstable_getServerSession } from "next-auth";
 import { authOptions } from "../../api/auth/[...nextauth]";
+import { useState } from "react";
 
 //COMPONENTS
 import Nav from "../../../src/components/Nav/Nav";
 import AdminLayout from "../../../src/components/admin/AdminLayout/AdminLayout";
-import PromotionTale from "../../../src/components/admin/PromotionTable/PromotionTable";
+import Table from "../../../src/components/Ranking/Table/Table";
+import ConsumptionRow from "../../../src/components/admin/ConsumptionRow/ConsumptionRow";
+import CreateButton from "../../../src/components/admin/CreateButton/CreateButton";
 
 import { Consumption } from "../../../src/types/model";
 
 import s from "./ConsumptionPage.module.scss";
-import Table from "../../../src/components/Ranking/Table/Table";
-import ConsumptionRow from "../../../src/components/admin/ConsumptionRow/ConsumptionRow";
-import CreateButton from "../../../src/components/admin/CreateButton/CreateButton";
+import Modal from "../../../src/components/Modal/Modal";
+import CreateConsumption from "../../../src/components/admin/CreateConsumption/CreateConsumption";
 
 type Props = {
   consumptions: {
@@ -26,6 +28,8 @@ type Props = {
 const trTitles = ["Nombre", "Puntos"];
 
 export default function PromotionPage({ consumptions }: Props) {
+  const [openCreateModal, setOpenCreateModal] = useState<boolean>(false);
+
   return (
     <div className={s.container}>
       <Head>
@@ -34,11 +38,21 @@ export default function PromotionPage({ consumptions }: Props) {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
+      <Modal
+        isOpen={openCreateModal}
+        handleCloseModal={() => setOpenCreateModal(false)}
+      >
+        <CreateConsumption />
+      </Modal>
+
       <Nav />
 
       <main className={s.main}>
         <AdminLayout>
-          <CreateButton title="CONSUMICIÓN" />
+          <CreateButton
+            title="CONSUMICIÓN"
+            onClick={() => setOpenCreateModal(true)}
+          />
           <div>
             <h4>Bebidas</h4>
             <Table trTitles={trTitles}>

@@ -14,7 +14,7 @@ const trPromotionTitles = [
   "Puntos",
 ];
 
-export default function PromotionTale({ promotions }: Props) {
+export default function PromotionTable({ promotions }: Props) {
   return (
     <Table trTitles={trPromotionTitles}>
       {promotions?.map((promotion) => (
