@@ -1,5 +1,6 @@
 import { Consumption } from "../../../types/model";
-import AddConsumption from "../AddCosumption/AddConsumption";
+
+import AddConsumption from "./AddCosumption/AddConsumption";
 
 import s from "./PostPointsCard.module.scss";
 
@@ -11,7 +12,7 @@ type Props = {
   userId: string;
 };
 
-export default function PostPointsCard({ consumptions, userId }: Props) {
+export default function AddConsumptionList({ consumptions, userId }: Props) {
   return (
     <article>
       <AddConsumption

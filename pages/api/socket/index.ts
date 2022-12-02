@@ -1,6 +1,5 @@
 import { Server as ServerIO } from "socket.io";
 import { Server as NetServer } from "http";
-import { prisma } from "../../../db";
 import type { NextApiRequest } from "next";
 import { NextApiResponseServerIO } from "../../../src/types/next";
 

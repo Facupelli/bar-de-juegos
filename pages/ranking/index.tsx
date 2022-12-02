@@ -45,6 +45,10 @@ export default function Ranking({ drinks, games, promotions, users }: Props) {
       // setConnected(true);
     });
 
+    socket.on("addConsumption", () => {
+      console.log("ACTUALIZAR RANKING DE CONSUMICIONES");
+    });
+
     if (socket) return () => socket.disconnect();
   }, []);
 

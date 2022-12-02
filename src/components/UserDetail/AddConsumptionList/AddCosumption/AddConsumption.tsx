@@ -1,6 +1,6 @@
-import { useForm, SubmitHandler } from "react-hook-form";
-import { Consumption } from "../../../types/model";
 import axios from "axios";
+import { useForm, SubmitHandler } from "react-hook-form";
+import { Consumption } from "../../../../types/model";
 
 import s from ".AddConsumption.module.scss";
 
@@ -38,6 +38,8 @@ export default function AddConsumption({ consumptions, name, userId }: Props) {
         quantity: 1,
       }
     );
+
+    await axios.post(`http://localhost:3000/api/socket/postConsumption`);
 
     if (postConsumption.data.message === "success") {
       console.log("success");

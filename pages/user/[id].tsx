@@ -1,19 +1,26 @@
 import axios from "axios";
+import { io, Socket } from "socket.io-client";
 import { GetServerSideProps } from "next";
 import Head from "next/head";
 import { Consumption, Promotion, User } from "../../src/types/model";
 import { authOptions } from "../api/auth/[...nextauth]";
 import { unstable_getServerSession } from "next-auth";
 import { useRouter } from "next/router";
+import { useEffect } from "react";
 
 //COMPONENTS
-import PostPointsCard from "../../src/components/UserDetail/PostPointsCard/PostPointsCard";
 import MembershipCard from "../../src/components/UserDetail/MembershipCard/MembershipCard";
 import AddPromotion from "../../src/components/UserDetail/AddPromotion/AddPromotion";
 import Table from "../../src/components/Ranking/Table/Table";
 import PromotionTale from "../../src/components/admin/PromotionTable/PromotionTable";
 
+import {
+  ClientToServerEvents,
+  ServerToClientEvents,
+} from "../../src/types/socketio";
+
 import s from "./UserDetail.module.scss";
+import AddConsumptionList from "../../src/components/UserDetail/AddConsumptionList/AddConsumptionList";
 
 type Props = {
   user: User;
@@ -52,7 +59,7 @@ export default function Home({
         <h2>USER DETAIL</h2>
 
         <section className={`${s.grid} ${s.j_between}`}>
-          <PostPointsCard consumptions={consumptions} userId={userId} />
+          <AddConsumptionList consumptions={consumptions} userId={userId} />
           <AddPromotion
             promotions={user.membership.promotions}
             userId={userId}
