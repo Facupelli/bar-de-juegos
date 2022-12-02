@@ -1,9 +1,24 @@
 import axios from "axios";
 import { useForm, SubmitHandler } from "react-hook-form";
 
+import { Membership } from "../../../types/model";
+
 import s from "./CreateMembership.module.scss";
 
-export default function CreateMembership() {
+type Props = {
+  setMembershipsList: React.Dispatch<React.SetStateAction<Membership[]>>;
+  setOpenCreateModal: React.Dispatch<React.SetStateAction<boolean>>;
+};
+
+type MembershipData = {
+  name: string;
+  minPoints: number;
+};
+
+export default function CreateMembership({
+  setMembershipsList,
+  setOpenCreateModal,
+}: Props) {
   const {
     register,
     handleSubmit,
@@ -11,9 +26,11 @@ export default function CreateMembership() {
     formState: { errors },
   } = useForm<MembershipData>();
 
-  type MembershipData = {
-    name: string;
-    minPoints: number;
+  const fetchMemberships = async () => {
+    const { data }: { data: Membership[] } = await axios(
+      "http://localhost:3000/api/membership"
+    );
+    return data;
   };
 
   const onSubmitMembership: SubmitHandler<MembershipData> = async (data) => {
@@ -24,6 +41,8 @@ export default function CreateMembership() {
 
     if (postMembership.data.message) {
       console.log(postMembership.data.message);
+      setMembershipsList(await fetchMemberships());
+      setOpenCreateModal(false);
     }
   };
 

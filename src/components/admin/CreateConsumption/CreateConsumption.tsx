@@ -2,9 +2,30 @@ import { ConsumptionType } from "@prisma/client";
 import axios from "axios";
 import { useForm, SubmitHandler } from "react-hook-form";
 
+import { Consumption } from "../../../types/model";
+
 import s from "./CreateConsumption.module.scss";
 
-export default function CreateConsumption() {
+type Props = {
+  setConsumptionsList: React.Dispatch<
+    React.SetStateAction<{
+      drinks: Consumption[];
+      games: Consumption[];
+    }>
+  >;
+  setOpenCreateModal: React.Dispatch<React.SetStateAction<boolean>>;
+};
+
+type FormData = {
+  name: string;
+  type: ConsumptionType;
+  points: number;
+};
+
+export default function CreateConsumption({
+  setConsumptionsList,
+  setOpenCreateModal,
+}: Props) {
   const {
     register,
     handleSubmit,
@@ -12,10 +33,16 @@ export default function CreateConsumption() {
     formState: { errors },
   } = useForm<FormData>();
 
-  type FormData = {
-    name: string;
-    type: ConsumptionType;
-    points: number;
+  const fetchConsumptions = async () => {
+    const {
+      data,
+    }: {
+      data: {
+        drinks: Consumption[];
+        games: Consumption[];
+      };
+    } = await axios("http://localhost:3000/api/consumption");
+    return data;
   };
 
   const onSubmitConsumption: SubmitHandler<FormData> = async (data) => {
@@ -26,6 +53,8 @@ export default function CreateConsumption() {
 
     if (postConsumption.data.message) {
       console.log(postConsumption.data.message);
+      setConsumptionsList(await fetchConsumptions());
+      setOpenCreateModal(false);
     }
   };
 

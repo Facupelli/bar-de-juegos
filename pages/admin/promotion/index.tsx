@@ -10,12 +10,12 @@ import Nav from "../../../src/components/Nav/Nav";
 import AdminLayout from "../../../src/components/admin/AdminLayout/AdminLayout";
 import PromotionTale from "../../../src/components/admin/PromotionTable/PromotionTable";
 import CreateButton from "../../../src/components/admin/CreateButton/CreateButton";
+import Modal from "../../../src/components/Modal/Modal";
+import CreatePromotion from "../../../src/components/admin/CreatePromotion/CreatePromotion";
 
 import { Consumption, Membership, Promotion } from "../../../src/types/model";
 
 import s from "./PromotionPage.module.scss";
-import Modal from "../../../src/components/Modal/Modal";
-import CreatePromotion from "../../../src/components/admin/CreatePromotion/CreatePromotion";
 
 type Props = {
   promotions: Promotion[];
@@ -33,6 +33,8 @@ export default function PromotionPage({
 }: Props) {
   const [openCreateModal, setOpenCreateModal] = useState<boolean>(false);
 
+  const [promotionsList, setPromotionsList] = useState<Promotion[]>(promotions);
+
   return (
     <div className={s.container}>
       <Head>
@@ -48,6 +50,8 @@ export default function PromotionPage({
         <CreatePromotion
           memberships={memberships}
           consumptions={consumptions}
+          setOpenCreateModal={setOpenCreateModal}
+          setPromotionsList={setPromotionsList}
         />
       </Modal>
 
@@ -61,7 +65,7 @@ export default function PromotionPage({
           />
           <div>
             <h4>Promociones</h4>
-            <PromotionTale promotions={promotions} />
+            <PromotionTale promotions={promotionsList} />
           </div>
         </AdminLayout>
       </main>

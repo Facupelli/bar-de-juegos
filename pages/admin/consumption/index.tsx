@@ -30,6 +30,11 @@ const trTitles = ["Nombre", "Puntos"];
 export default function PromotionPage({ consumptions }: Props) {
   const [openCreateModal, setOpenCreateModal] = useState<boolean>(false);
 
+  const [consumptionsList, setConsumptionsList] = useState<{
+    drinks: Consumption[];
+    games: Consumption[];
+  }>(consumptions);
+
   return (
     <div className={s.container}>
       <Head>
@@ -42,7 +47,10 @@ export default function PromotionPage({ consumptions }: Props) {
         isOpen={openCreateModal}
         handleCloseModal={() => setOpenCreateModal(false)}
       >
-        <CreateConsumption />
+        <CreateConsumption
+          setConsumptionsList={setConsumptionsList}
+          setOpenCreateModal={setOpenCreateModal}
+        />
       </Modal>
 
       <Nav />
@@ -56,7 +64,7 @@ export default function PromotionPage({ consumptions }: Props) {
           <div>
             <h4>Bebidas</h4>
             <Table trTitles={trTitles}>
-              {consumptions.drinks.map((consumption) => (
+              {consumptionsList.drinks.map((consumption) => (
                 <ConsumptionRow
                   key={consumption.id}
                   consumption={consumption}
@@ -68,7 +76,7 @@ export default function PromotionPage({ consumptions }: Props) {
           <div>
             <h4>Juegos</h4>
             <Table trTitles={trTitles}>
-              {consumptions.games.map((consumption) => (
+              {consumptionsList.games.map((consumption) => (
                 <ConsumptionRow
                   key={consumption.id}
                   consumption={consumption}

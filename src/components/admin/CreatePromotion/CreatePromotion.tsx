@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useForm, SubmitHandler } from "react-hook-form";
-import { Consumption, Membership } from "../../../types/model";
+
+import { Consumption, Membership, Promotion } from "../../../types/model";
 
 import s from "./CreatePromotion.module.scss";
 
@@ -10,9 +11,24 @@ type Props = {
     drinks: Consumption[];
     games: Consumption[];
   };
+  setPromotionsList: React.Dispatch<React.SetStateAction<Promotion[]>>;
+  setOpenCreateModal: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
-export default function CreatePromotion({ memberships, consumptions }: Props) {
+type PromotionData = {
+  name: string;
+  membershipsIds: string[];
+  gamesIds: string[];
+  drinksIds: string[];
+  points: number;
+};
+
+export default function CreatePromotion({
+  memberships,
+  consumptions,
+  setPromotionsList,
+  setOpenCreateModal,
+}: Props) {
   const {
     register,
     handleSubmit,
@@ -20,12 +36,11 @@ export default function CreatePromotion({ memberships, consumptions }: Props) {
     formState: { errors },
   } = useForm<PromotionData>();
 
-  type PromotionData = {
-    name: string;
-    membershipsIds: string[];
-    gamesIds: string[];
-    drinksIds: string[];
-    points: number;
+  const fetchPromotions = async () => {
+    const { data }: { data: Promotion[] } = await axios(
+      "http://localhost:3000/api/promotion"
+    );
+    return data;
   };
 
   const onSubmitPromotion: SubmitHandler<PromotionData> = async (data) => {
@@ -41,6 +56,8 @@ export default function CreatePromotion({ memberships, consumptions }: Props) {
 
     if (postMembership.data.message) {
       console.log(postMembership.data.message);
+      setPromotionsList(await fetchPromotions());
+      setOpenCreateModal(false);
     }
   };
 

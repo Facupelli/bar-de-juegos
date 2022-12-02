@@ -4,6 +4,7 @@ import { GetServerSideProps } from "next";
 import { unstable_getServerSession } from "next-auth";
 import { authOptions } from "../../api/auth/[...nextauth]";
 import { useState } from "react";
+import { useQuery } from "react-query";
 
 //COMPONENTS
 import Nav from "../../../src/components/Nav/Nav";
@@ -11,12 +12,12 @@ import Table from "../../../src/components/Ranking/Table/Table";
 import MembershipRow from "../../../src/components/admin/MembershipRow/MembershipRow";
 import AdminLayout from "../../../src/components/admin/AdminLayout/AdminLayout";
 import CreateButton from "../../../src/components/admin/CreateButton/CreateButton";
+import Modal from "../../../src/components/Modal/Modal";
+import CreateMembership from "../../../src/components/admin/CreateMembership/CreateMembership";
 
 import { Membership } from "../../../src/types/model";
 
 import s from "./MembershipPage.module.scss";
-import Modal from "../../../src/components/Modal/Modal";
-import CreateMembership from "../../../src/components/admin/CreateMembership/CreateMembership";
 
 type Props = {
   memberships: Membership[];
@@ -26,6 +27,9 @@ const trTitles = ["Nombre", "Puntos"];
 
 export default function MembershipPage({ memberships }: Props) {
   const [openCreateModal, setOpenCreateModal] = useState<boolean>(false);
+
+  const [membershipsList, setMembershipsList] =
+    useState<Membership[]>(memberships);
 
   return (
     <div className={s.container}>
@@ -39,7 +43,10 @@ export default function MembershipPage({ memberships }: Props) {
         isOpen={openCreateModal}
         handleCloseModal={() => setOpenCreateModal(false)}
       >
-        <CreateMembership />
+        <CreateMembership
+          setMembershipsList={setMembershipsList}
+          setOpenCreateModal={setOpenCreateModal}
+        />
       </Modal>
 
       <Nav />
@@ -53,7 +60,7 @@ export default function MembershipPage({ memberships }: Props) {
           <div>
             <h4>Membresías</h4>
             <Table trTitles={trTitles}>
-              {memberships.map((membership) => (
+              {membershipsList.map((membership) => (
                 <MembershipRow key={membership.id} membership={membership} />
               ))}
             </Table>

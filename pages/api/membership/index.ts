@@ -7,7 +7,9 @@ export default async function handlerMembership(
 ) {
   if (req.method === "GET") {
     try {
-      const memberships = await prisma.membership.findMany({});
+      const memberships = await prisma.membership.findMany({
+        orderBy: { minPoints: "asc" },
+      });
 
       res.status(200).json(memberships);
       return;
