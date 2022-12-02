@@ -70,7 +70,7 @@ export default function MembershipPage({ memberships }: Props) {
         isOpen={openDeleteModal}
         handleCloseModal={() => setOpenDeleteModal(false)}
       >
-        <h4>Seguro que quieres eliminar?</h4>
+        <h4>Seguro que quieres eliminar para siempre?</h4>
         <button type="button" onClick={() => handleDeleteMembership(deleteId)}>
           ELIMINAR
         </button>

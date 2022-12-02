@@ -111,7 +111,7 @@ export default async function handlerPromotion(
       const { promotionId }: { promotionId: string } = req.body;
 
       if (promotionId) {
-        const deletePromotion = await prisma.membership.delete({
+        const deletePromotion = await prisma.promotion.delete({
           where: { id: promotionId },
         });
 

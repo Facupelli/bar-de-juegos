@@ -4,11 +4,12 @@ import { GetServerSideProps } from "next";
 import { unstable_getServerSession } from "next-auth";
 import { authOptions } from "../../api/auth/[...nextauth]";
 import { useState } from "react";
+import { fetchPromotions } from "../../../src/utils/fetching";
 
 //COMPONENTS
 import Nav from "../../../src/components/Nav/Nav";
 import AdminLayout from "../../../src/components/admin/AdminLayout/AdminLayout";
-import PromotionTale from "../../../src/components/admin/PromotionTable/PromotionTable";
+import PromotionTable from "../../../src/components/admin/PromotionTable/PromotionTable";
 import CreateButton from "../../../src/components/admin/CreateButton/CreateButton";
 import Modal from "../../../src/components/Modal/Modal";
 import CreatePromotion from "../../../src/components/admin/CreatePromotion/CreatePromotion";
@@ -33,7 +34,22 @@ export default function PromotionPage({
 }: Props) {
   const [openCreateModal, setOpenCreateModal] = useState<boolean>(false);
 
+  const [openDeleteModal, setOpenDeleteModal] = useState<boolean>(false);
+  const [deleteId, setDeleteId] = useState<string>("");
+
   const [promotionsList, setPromotionsList] = useState<Promotion[]>(promotions);
+
+  const handleDeletePromotion = async (promotionId: string) => {
+    const { data } = await axios.delete("http://localhost:3000/api/promotion", {
+      data: { promotionId },
+    });
+
+    if (data.message === "success") {
+      console.log("success");
+      setPromotionsList(await fetchPromotions());
+      setOpenDeleteModal(false);
+    }
+  };
 
   return (
     <div className={s.container}>
@@ -55,6 +71,16 @@ export default function PromotionPage({
         />
       </Modal>
 
+      <Modal
+        isOpen={openDeleteModal}
+        handleCloseModal={() => setOpenDeleteModal(false)}
+      >
+        <h4>Seguro que quieres eliminar para siempre?</h4>
+        <button type="button" onClick={() => handleDeletePromotion(deleteId)}>
+          ELIMINAR
+        </button>
+      </Modal>
+
       <Nav />
 
       <main className={s.main}>
@@ -65,7 +91,11 @@ export default function PromotionPage({
           />
           <div>
             <h4>Promociones</h4>
-            <PromotionTale promotions={promotionsList} />
+            <PromotionTable
+              promotions={promotionsList}
+              setOpenDeleteModal={setOpenDeleteModal}
+              setDeleteId={setDeleteId}
+            />
           </div>
         </AdminLayout>
       </main>

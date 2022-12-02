@@ -74,7 +74,7 @@ export default function ConsumptionPage({ consumptions }: Props) {
         isOpen={openDeleteModal}
         handleCloseModal={() => setOpenDeleteModal(false)}
       >
-        <h4>Seguro que quieres eliminar?</h4>
+        <h4>Seguro que quieres eliminar para siempre?</h4>
         <button type="button" onClick={() => handleDeleteConsumption(deleteId)}>
           ELIMINAR
         </button>

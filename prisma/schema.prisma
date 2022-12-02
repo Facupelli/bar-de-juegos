@@ -63,9 +63,9 @@ model Consumption {
 
 model ConsumptionOnUser {
   id                      String            @default(cuid()) @id
-  user                    User              @relation(fields: [userId], references: [id])
+  user                    User              @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId                  String
-  consumption             Consumption       @relation(fields: [consumptionId], references: [id])
+  consumption             Consumption       @relation(fields: [consumptionId], references: [id], onDelete: Cascade)
   consumptionId           String
   quantity                Int
   createdAt               DateTime          @default(now()) @map(name: "created_at")
@@ -75,15 +75,16 @@ model Promotion {
   id                      String                     @default(cuid()) @id
   name                    String 
   points                  Int
+  active                  Boolean                    @default(true)
   memberships             Membership[]
   users                   PromotionOnUser[]
   consumptions            ConsumptionOnPromotion[]
 }
 
 model ConsumptionOnPromotion {
-  consumption             Consumption       @relation(fields: [consumptionId], references: [id])
+  consumption             Consumption       @relation(fields: [consumptionId], references: [id], onDelete: Cascade)
   consumptionId           String
-  promotion               Promotion         @relation(fields: [promotionId], references: [id])
+  promotion               Promotion         @relation(fields: [promotionId], references: [id], onDelete: Cascade)
   promotionId             String
   quantity                Int
   createdAt               DateTime          @default(now()) @map(name: "created_at")
@@ -93,9 +94,9 @@ model ConsumptionOnPromotion {
 
 model PromotionOnUser {
   id                      String            @default(cuid()) @id
-  promotion               Promotion         @relation(fields: [promotionId], references: [id])
+  promotion               Promotion         @relation(fields: [promotionId], references: [id], onDelete: Cascade)
   promotionId             String
-  user                    User       @relation(fields: [userId], references: [id])
+  user                    User              @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId                  String
   quantity                Int
   createdAt               DateTime          @default(now()) @map(name: "created_at")

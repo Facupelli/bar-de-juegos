@@ -3,9 +3,15 @@ import s from "./PromotionRow.module.scss";
 
 type Props = {
   promotion: Promotion;
+  setOpenDeleteModal: React.Dispatch<React.SetStateAction<boolean>> | undefined;
+  setDeleteId: React.Dispatch<React.SetStateAction<string>> | undefined;
 };
 
-export default function PromotionRow({ promotion }: Props) {
+export default function PromotionRow({
+  promotion,
+  setOpenDeleteModal,
+  setDeleteId,
+}: Props) {
   return (
     <tr className={s.row}>
       <td>{promotion.name}</td>
@@ -25,6 +31,16 @@ export default function PromotionRow({ promotion }: Props) {
           .join(", ")}
       </td>
       <td>{promotion.points}</td>
+      {setDeleteId && setOpenDeleteModal && (
+        <td
+          onClick={() => {
+            setDeleteId(promotion.id);
+            setOpenDeleteModal(true);
+          }}
+        >
+          X
+        </td>
+      )}
     </tr>
   );
 }

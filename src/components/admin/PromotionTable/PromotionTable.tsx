@@ -4,6 +4,10 @@ import PromotionRow from "./PromotionRow/PromotionRow";
 
 type Props = {
   promotions: Promotion[];
+  setOpenDeleteModal?:
+    | React.Dispatch<React.SetStateAction<boolean>>
+    | undefined;
+  setDeleteId?: React.Dispatch<React.SetStateAction<string>> | undefined;
 };
 
 const trPromotionTitles = [
@@ -14,11 +18,20 @@ const trPromotionTitles = [
   "Puntos",
 ];
 
-export default function PromotionTable({ promotions }: Props) {
+export default function PromotionTable({
+  promotions,
+  setOpenDeleteModal,
+  setDeleteId,
+}: Props) {
   return (
     <Table trTitles={trPromotionTitles}>
       {promotions?.map((promotion) => (
-        <PromotionRow key={promotion.id} promotion={promotion} />
+        <PromotionRow
+          key={promotion.id}
+          promotion={promotion}
+          setDeleteId={setDeleteId}
+          setOpenDeleteModal={setOpenDeleteModal}
+        />
       ))}
     </Table>
   );
