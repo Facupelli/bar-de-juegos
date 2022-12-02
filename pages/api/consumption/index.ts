@@ -23,7 +23,7 @@ export default async function handleConsumption(
         return res.json({ drinks: drinkConsumptions, games: gameConsumptions });
       } catch (e) {
         console.error(e);
-        res.status(500).json({ message: "error" });
+        res.status(500).json({ message: `e: ${e}` });
       }
     }
 
@@ -41,7 +41,7 @@ export default async function handleConsumption(
       return res.json({ drinks: drinkConsumptions, games: gamesConsumptions });
     } catch (e) {
       console.error(e);
-      res.status(500).json({ message: "error" });
+      res.status(500).json({ message: `e: ${e}` });
     }
   }
 
@@ -74,7 +74,7 @@ export default async function handleConsumption(
       return res.status(400).json({ message: "missing data" });
     } catch (e) {
       console.error(e);
-      res.status(500).json({ message: "error" });
+      res.status(500).json({ message: `e: ${e}` });
     }
   }
 
@@ -95,7 +95,26 @@ export default async function handleConsumption(
       return res.status(400).json({ message: "missing data" });
     } catch (e) {
       console.error(e);
-      res.status(500).json({ message: "error" });
+      res.status(500).json({ message: `e: ${e}` });
+    }
+  }
+
+  if (req.method === "DELETE") {
+    try {
+      const { consumptionId }: { consumptionId: string } = req.body;
+
+      if (consumptionId) {
+        const deleteConsumption = await prisma.consumption.delete({
+          where: { id: consumptionId },
+        });
+
+        return res.status(200).json({ message: "success" });
+      }
+
+      return res.status(400).json({ message: "missing id" });
+    } catch (e) {
+      console.error(e);
+      res.status(500).json({ message: `e: ${e}` });
     }
   }
 }

@@ -1,5 +1,6 @@
 import axios from "axios";
 import { useForm, SubmitHandler } from "react-hook-form";
+import { fetchMemberships } from "../../../utils/fetching";
 
 import { Membership } from "../../../types/model";
 
@@ -25,13 +26,6 @@ export default function CreateMembership({
     watch,
     formState: { errors },
   } = useForm<MembershipData>();
-
-  const fetchMemberships = async () => {
-    const { data }: { data: Membership[] } = await axios(
-      "http://localhost:3000/api/membership"
-    );
-    return data;
-  };
 
   const onSubmitMembership: SubmitHandler<MembershipData> = async (data) => {
     const postMembership = await axios.post(

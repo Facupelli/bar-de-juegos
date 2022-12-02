@@ -1,6 +1,7 @@
 import { ConsumptionType } from "@prisma/client";
 import axios from "axios";
 import { useForm, SubmitHandler } from "react-hook-form";
+import { fetchConsumptions } from "../../../utils/fetching";
 
 import { Consumption } from "../../../types/model";
 
@@ -32,18 +33,6 @@ export default function CreateConsumption({
     watch,
     formState: { errors },
   } = useForm<FormData>();
-
-  const fetchConsumptions = async () => {
-    const {
-      data,
-    }: {
-      data: {
-        drinks: Consumption[];
-        games: Consumption[];
-      };
-    } = await axios("http://localhost:3000/api/consumption");
-    return data;
-  };
 
   const onSubmitConsumption: SubmitHandler<FormData> = async (data) => {
     const postConsumption = await axios.post(

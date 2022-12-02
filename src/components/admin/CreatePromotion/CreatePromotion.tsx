@@ -1,5 +1,6 @@
 import axios from "axios";
 import { useForm, SubmitHandler } from "react-hook-form";
+import { fetchPromotions } from "../../../utils/fetching";
 
 import { Consumption, Membership, Promotion } from "../../../types/model";
 
@@ -35,13 +36,6 @@ export default function CreatePromotion({
     watch,
     formState: { errors },
   } = useForm<PromotionData>();
-
-  const fetchPromotions = async () => {
-    const { data }: { data: Promotion[] } = await axios(
-      "http://localhost:3000/api/promotion"
-    );
-    return data;
-  };
 
   const onSubmitPromotion: SubmitHandler<PromotionData> = async (data) => {
     const postMembership = await axios.post(

@@ -4,6 +4,7 @@ import { GetServerSideProps } from "next";
 import { unstable_getServerSession } from "next-auth";
 import { authOptions } from "../../api/auth/[...nextauth]";
 import { useState } from "react";
+import { fetchConsumptions } from "../../../src/utils/fetching";
 
 //COMPONENTS
 import Nav from "../../../src/components/Nav/Nav";
@@ -11,12 +12,12 @@ import AdminLayout from "../../../src/components/admin/AdminLayout/AdminLayout";
 import Table from "../../../src/components/Ranking/Table/Table";
 import ConsumptionRow from "../../../src/components/admin/ConsumptionRow/ConsumptionRow";
 import CreateButton from "../../../src/components/admin/CreateButton/CreateButton";
+import Modal from "../../../src/components/Modal/Modal";
+import CreateConsumption from "../../../src/components/admin/CreateConsumption/CreateConsumption";
 
 import { Consumption } from "../../../src/types/model";
 
 import s from "./ConsumptionPage.module.scss";
-import Modal from "../../../src/components/Modal/Modal";
-import CreateConsumption from "../../../src/components/admin/CreateConsumption/CreateConsumption";
 
 type Props = {
   consumptions: {
@@ -27,13 +28,29 @@ type Props = {
 
 const trTitles = ["Nombre", "Puntos"];
 
-export default function PromotionPage({ consumptions }: Props) {
+export default function ConsumptionPage({ consumptions }: Props) {
   const [openCreateModal, setOpenCreateModal] = useState<boolean>(false);
+
+  const [openDeleteModal, setOpenDeleteModal] = useState<boolean>(false);
+  const [deleteId, setDeleteId] = useState<string>("");
 
   const [consumptionsList, setConsumptionsList] = useState<{
     drinks: Consumption[];
     games: Consumption[];
   }>(consumptions);
+
+  const handleDeleteConsumption = async (consumptionId: string) => {
+    const { data } = await axios.delete(
+      "http://localhost:3000/api/consumption",
+      { data: { consumptionId } }
+    );
+
+    if (data.message === "success") {
+      console.log("success");
+      setConsumptionsList(await fetchConsumptions());
+      setOpenDeleteModal(false);
+    }
+  };
 
   return (
     <div className={s.container}>
@@ -53,6 +70,16 @@ export default function PromotionPage({ consumptions }: Props) {
         />
       </Modal>
 
+      <Modal
+        isOpen={openDeleteModal}
+        handleCloseModal={() => setOpenDeleteModal(false)}
+      >
+        <h4>Seguro que quieres eliminar?</h4>
+        <button type="button" onClick={() => handleDeleteConsumption(deleteId)}>
+          ELIMINAR
+        </button>
+      </Modal>
+
       <Nav />
 
       <main className={s.main}>
@@ -68,6 +95,8 @@ export default function PromotionPage({ consumptions }: Props) {
                 <ConsumptionRow
                   key={consumption.id}
                   consumption={consumption}
+                  setOpenDeleteModal={setOpenDeleteModal}
+                  setDeleteId={setDeleteId}
                 />
               ))}
             </Table>
@@ -80,6 +109,8 @@ export default function PromotionPage({ consumptions }: Props) {
                 <ConsumptionRow
                   key={consumption.id}
                   consumption={consumption}
+                  setOpenDeleteModal={setOpenDeleteModal}
+                  setDeleteId={setDeleteId}
                 />
               ))}
             </Table>
