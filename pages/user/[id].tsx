@@ -11,9 +11,9 @@ import PostPointsCard from "../../src/components/UserDetail/PostPointsCard/PostP
 import MembershipCard from "../../src/components/UserDetail/MembershipCard/MembershipCard";
 import AddPromotion from "../../src/components/UserDetail/AddPromotion/AddPromotion";
 import Table from "../../src/components/Ranking/Table/Table";
+import PromotionTale from "../../src/components/admin/PromotionTable/PromotionTable";
 
 import s from "./UserDetail.module.scss";
-import PromotionTale from "../../src/components/admin/PromotionTable/PromotionTable";
 
 type Props = {
   user: User;

@@ -1,7 +1,11 @@
 import axios from "axios";
+import { io, Socket } from "socket.io-client";
 import { GetServerSideProps } from "next";
+import { useEffect } from "react";
+
 import RankingTable from "../../src/components/Ranking/Table/Table";
 import RankingRow from "../../src/components/Ranking/RankingRow/RankingRow";
+
 import {
   Consumption,
   SortedConsumption,
@@ -9,6 +13,10 @@ import {
   SortedPromotion,
   User,
 } from "../../src/types/model";
+import {
+  ClientToServerEvents,
+  ServerToClientEvents,
+} from "../../src/types/socketio";
 
 import s from "./Ranking.module.scss";
 
@@ -22,9 +30,24 @@ type Props = {
 const trDrinkTitle = ["Bebida", "Total"];
 const trGameTitle = ["Juego", "Total"];
 const trPromotionTitle = ["Promocion", "Total"];
-const trUsersTitle = ["Nombre", "Puntos Canjeados"];
 
 export default function Ranking({ drinks, games, promotions, users }: Props) {
+  useEffect((): any => {
+    const socket: Socket<ServerToClientEvents, ClientToServerEvents> = io(
+      "http://localhost:3000",
+      {
+        path: "/api/socketio",
+      }
+    );
+
+    socket.on("connect", () => {
+      console.log("SOCKET CONNECTED!", socket.id);
+      // setConnected(true);
+    });
+
+    if (socket) return () => socket.disconnect();
+  }, []);
+
   return (
     <section>
       <h2>RANKING</h2>

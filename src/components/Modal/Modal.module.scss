@@ -8,4 +8,8 @@
   border-radius: 0.2rem;
   padding: 2rem;
   min-width: 500px;
+
+  &::backdrop {
+    background-color: #673ab752;
+  }
 }
