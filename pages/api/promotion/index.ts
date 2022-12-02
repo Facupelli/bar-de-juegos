@@ -105,4 +105,23 @@ export default async function handlerPromotion(
       res.status(500).json({ message: "error" });
     }
   }
+
+  if (req.method === "DELETE") {
+    try {
+      const { promotionId }: { promotionId: string } = req.body;
+
+      if (promotionId) {
+        const deletePromotion = await prisma.membership.delete({
+          where: { id: promotionId },
+        });
+
+        return res.status(200).json({ message: "success" });
+      }
+
+      return res.status(400).json({ message: "missing id" });
+    } catch (e) {
+      console.error(e);
+      res.status(500).json({ message: `e: ${e}` });
+    }
+  }
 }

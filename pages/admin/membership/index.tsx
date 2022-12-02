@@ -18,6 +18,7 @@ import CreateMembership from "../../../src/components/admin/CreateMembership/Cre
 import { Membership } from "../../../src/types/model";
 
 import s from "./MembershipPage.module.scss";
+import { fetchMemberships } from "../../../src/utils/fetching";
 
 type Props = {
   memberships: Membership[];
@@ -28,8 +29,24 @@ const trTitles = ["Nombre", "Puntos"];
 export default function MembershipPage({ memberships }: Props) {
   const [openCreateModal, setOpenCreateModal] = useState<boolean>(false);
 
+  const [openDeleteModal, setOpenDeleteModal] = useState<boolean>(false);
+  const [deleteId, setDeleteId] = useState<string>("");
+
   const [membershipsList, setMembershipsList] =
     useState<Membership[]>(memberships);
+
+  const handleDeleteMembership = async (membershipId: string) => {
+    const { data } = await axios.delete(
+      "http://localhost:3000/api/membership",
+      { data: { membershipId } }
+    );
+
+    if (data.message === "success") {
+      console.log("success");
+      setMembershipsList(await fetchMemberships());
+      setOpenDeleteModal(false);
+    }
+  };
 
   return (
     <div className={s.container}>
@@ -49,6 +66,16 @@ export default function MembershipPage({ memberships }: Props) {
         />
       </Modal>
 
+      <Modal
+        isOpen={openDeleteModal}
+        handleCloseModal={() => setOpenDeleteModal(false)}
+      >
+        <h4>Seguro que quieres eliminar?</h4>
+        <button type="button" onClick={() => handleDeleteMembership(deleteId)}>
+          ELIMINAR
+        </button>
+      </Modal>
+
       <Nav />
 
       <main className={s.main}>
@@ -61,7 +88,12 @@ export default function MembershipPage({ memberships }: Props) {
             <h4>Membresías</h4>
             <Table trTitles={trTitles}>
               {membershipsList.map((membership) => (
-                <MembershipRow key={membership.id} membership={membership} />
+                <MembershipRow
+                  key={membership.id}
+                  membership={membership}
+                  setDeleteId={setDeleteId}
+                  setOpenDeleteModal={setOpenDeleteModal}
+                />
               ))}
             </Table>
           </div>
