@@ -36,8 +36,8 @@ export type SortedConsumption = {
   type: typeof ConsumptionType;
   points: number;
   users: ConsumptionOnUser[];
-  promotions: Promotion[];
-  total: string;
+  promotions: ConsumptionOnPromotion[];
+  total: number;
 };
 
 export type ConsumptionOnUser = {
@@ -74,7 +74,7 @@ export type SortedPromotion = {
   consumptions: ConsumptionOnPromotion[];
   users: PromotionOnUser[];
   points: number;
-  total: string;
+  total: number;
 };
 
 export type ConsumptionOnPromotion = {

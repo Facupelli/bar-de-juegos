@@ -1,19 +1,26 @@
 import axios from "axios";
 import { io, Socket } from "socket.io-client";
 import { GetServerSideProps } from "next";
-import { useEffect } from "react";
+import React, { useEffect, useState } from "react";
+
+import { fetchConsumptions } from "../../src/utils/fetching";
+import {
+  getConsumptionsReducedQuantity,
+  updateDrinksState,
+  updateGamesState,
+} from "../../src/utils/consumption";
 
 import RankingTable from "../../src/components/Ranking/Table/Table";
 import RankingRow from "../../src/components/Ranking/RankingRow/RankingRow";
 
 import {
-  Consumption,
   SortedConsumption,
   Promotion,
   SortedPromotion,
   User,
 } from "../../src/types/model";
 import {
+  addConsumption,
   ClientToServerEvents,
   ServerToClientEvents,
 } from "../../src/types/socketio";
@@ -21,8 +28,8 @@ import {
 import s from "./Ranking.module.scss";
 
 type Props = {
-  drinks: SortedConsumption[];
-  games: SortedConsumption[];
+  drinksList: SortedConsumption[];
+  gamesList: SortedConsumption[];
   promotions: SortedPromotion[];
   users: User[];
 };
@@ -31,7 +38,15 @@ const trDrinkTitle = ["Bebida", "Total"];
 const trGameTitle = ["Juego", "Total"];
 const trPromotionTitle = ["Promocion", "Total"];
 
-export default function Ranking({ drinks, games, promotions, users }: Props) {
+export default function Ranking({
+  drinksList,
+  gamesList,
+  promotions,
+  users,
+}: Props) {
+  const [drinks, setDrinks] = useState<SortedConsumption[]>(drinksList);
+  const [games, setGames] = useState<SortedConsumption[]>(gamesList);
+
   useEffect((): any => {
     const socket: Socket<ServerToClientEvents, ClientToServerEvents> = io(
       "http://localhost:3000",
@@ -45,8 +60,13 @@ export default function Ranking({ drinks, games, promotions, users }: Props) {
       // setConnected(true);
     });
 
-    socket.on("addConsumption", () => {
-      console.log("ACTUALIZAR RANKING DE CONSUMICIONES");
+    socket.on("addConsumption", async (data: addConsumption) => {
+      if (data.consumptionType === "GAME") {
+        await updateGamesState(setGames);
+      }
+      if (data.consumptionType === "DRINK") {
+        await updateDrinksState(setDrinks);
+      }
     });
 
     if (socket) return () => socket.disconnect();
@@ -99,7 +119,7 @@ export default function Ranking({ drinks, games, promotions, users }: Props) {
               <RankingRow
                 key={user.id}
                 name={user.fullName}
-                total={String(user.totalPointsSpent)}
+                total={user.totalPointsSpent}
               />
             ))}
           </RankingTable>
@@ -110,29 +130,19 @@ export default function Ranking({ drinks, games, promotions, users }: Props) {
 }
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  const consumptionResponse = await axios(
-    "http://localhost:3000/api/consumption"
-  );
-  const consumptions: { drinks: Consumption[]; games: Consumption[] } =
-    consumptionResponse.data;
+  const consumptions = await fetchConsumptions();
 
-  const drinksReducedQuantity = consumptions.drinks.map((drink) => ({
-    ...drink,
-    total: drink.users.reduce((acc, curr) => {
-      return acc + curr.quantity;
-    }, 0),
-  }));
+  const drinksReducedQuantity = getConsumptionsReducedQuantity(
+    consumptions.drinks
+  );
 
   const sortedDrinks = drinksReducedQuantity.sort((a, b) =>
     a.total > b.total ? -1 : 1
   );
 
-  const gamesReducedQuantity = consumptions.games.map((game) => ({
-    ...game,
-    total: game.users.reduce((acc, curr) => {
-      return acc + curr.quantity;
-    }, 0),
-  }));
+  const gamesReducedQuantity = getConsumptionsReducedQuantity(
+    consumptions.games
+  );
 
   const sortedGames = gamesReducedQuantity.sort((a, b) =>
     a.total > b.total ? -1 : 1
@@ -161,8 +171,8 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
   return {
     props: {
-      drinks: sortedDrinks,
-      games: sortedGames,
+      drinksList: sortedDrinks,
+      gamesList: sortedGames,
       promotions: sortedPromotions,
       users,
     },

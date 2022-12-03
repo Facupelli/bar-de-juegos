@@ -3,7 +3,7 @@ import s from "./RankingRow.module.scss";
 
 type Props = {
   name: string;
-  total: string;
+  total: number;
 };
 
 export default function RankingRow({ name, total }: Props) {

@@ -39,7 +39,9 @@ export default function AddConsumption({ consumptions, name, userId }: Props) {
       }
     );
 
-    await axios.post(`http://localhost:3000/api/socket/postConsumption`);
+    await axios.post(`http://localhost:3000/api/socket/postConsumption`, {
+      consumptionType: name === "Juego" ? "GAME" : "DRINK",
+    });
 
     if (postConsumption.data.message === "success") {
       console.log("success");

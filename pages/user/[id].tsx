@@ -153,7 +153,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     const consumptions: Consumption[] = consumptionsResponse.data;
 
     const userConsumptionsResponse = await axios(
-      `http://localhost:3000/api/consumption?userId=${user.id}`
+      `http://localhost:3000/api/consumption?userId=${user?.id}`
     );
     const userConsumptions: Consumption[] = userConsumptionsResponse.data;
 
