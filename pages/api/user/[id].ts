@@ -1,6 +1,16 @@
 import { prisma } from "../../../db";
 import type { NextApiRequest, NextApiResponse } from "next";
 
+type PutBody = {
+  userId: string;
+  operation: string;
+  consumptionId: string;
+  points: number;
+  consumptionType: string;
+  quantity: number;
+  promotionId: string;
+};
+
 export default async function handlerUser(
   req: NextApiRequest,
   res: NextApiResponse
@@ -46,15 +56,7 @@ export default async function handlerUser(
         consumptionType,
         quantity,
         promotionId,
-      }: {
-        userId: string;
-        operation: string;
-        consumptionId: string;
-        points: number;
-        consumptionType: string;
-        quantity: number;
-        promotionId: string;
-      } = req.body;
+      }: PutBody = req.body;
 
       if (promotionId) {
         const promotionOnUser = await prisma.promotionOnUser.create({
@@ -75,7 +77,33 @@ export default async function handlerUser(
               increment: Number(points),
             },
           },
+          include: { membership: true },
         });
+
+        console.log("USER", user);
+
+        if (
+          user.membership &&
+          user.totalPointsSpent > user.membership?.maxPoints
+        ) {
+          const membership = await prisma.membership.findFirst({
+            where: {
+              AND: [
+                { minPoints: { lte: user.totalPointsSpent } },
+                { maxPoints: { gt: user.totalPointsSpent } },
+              ],
+            },
+          });
+
+          if (membership) {
+            await prisma.user.update({
+              where: { id: userId },
+              data: {
+                membership: { connect: { id: membership.id } },
+              },
+            });
+          }
+        }
 
         return res.status(200).json({ message: "success" });
       }

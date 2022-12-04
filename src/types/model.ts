@@ -54,6 +54,7 @@ export type Membership = {
   id: string;
   name: string;
   minPoints: number;
+  maxPoints: number;
   users: User[];
   promotions: Promotion[];
 };
