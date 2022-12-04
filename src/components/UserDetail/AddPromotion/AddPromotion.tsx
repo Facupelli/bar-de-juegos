@@ -45,6 +45,8 @@ export default function AddPromotion({
       }
     );
 
+    await axios.post(`http://localhost:3000/api/socket/exchangePromotion`);
+
     if (postConsumption.data.message === "success") {
       console.log("success");
     }

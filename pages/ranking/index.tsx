@@ -3,7 +3,11 @@ import { io, Socket } from "socket.io-client";
 import { GetServerSideProps } from "next";
 import React, { useEffect, useState } from "react";
 
-import { fetchConsumptions } from "../../src/utils/fetching";
+import {
+  fetchConsumptions,
+  fetchPromotionsRanking,
+  fetchUsersByExchange,
+} from "../../src/utils/fetching";
 import {
   getConsumptionsReducedQuantity,
   updateDrinksState,
@@ -26,12 +30,16 @@ import {
 } from "../../src/types/socketio";
 
 import s from "./Ranking.module.scss";
+import {
+  getPromotionsReducedQuantity,
+  updatePromtoionsState,
+} from "../../src/utils/promotion";
 
 type Props = {
   drinksList: SortedConsumption[];
   gamesList: SortedConsumption[];
-  promotions: SortedPromotion[];
-  users: User[];
+  promotionsList: SortedPromotion[];
+  usersList: User[];
 };
 
 const trDrinkTitle = ["Bebida", "Total"];
@@ -41,11 +49,14 @@ const trPromotionTitle = ["Promocion", "Total"];
 export default function Ranking({
   drinksList,
   gamesList,
-  promotions,
-  users,
+  promotionsList,
+  usersList,
 }: Props) {
   const [drinks, setDrinks] = useState<SortedConsumption[]>(drinksList);
   const [games, setGames] = useState<SortedConsumption[]>(gamesList);
+  const [promotions, setPromotions] =
+    useState<SortedPromotion[]>(promotionsList);
+  const [users, setUsers] = useState<User[]>(usersList);
 
   useEffect((): any => {
     const socket: Socket<ServerToClientEvents, ClientToServerEvents> = io(
@@ -67,6 +78,13 @@ export default function Ranking({
       if (data.consumptionType === "DRINK") {
         await updateDrinksState(setDrinks);
       }
+    });
+
+    socket.on("exchangePromotion", async () => {
+      await updatePromtoionsState(setPromotions);
+
+      const updatedUsers = await fetchUsersByExchange();
+      setUsers(updatedUsers);
     });
 
     if (socket) return () => socket.disconnect();
@@ -148,17 +166,9 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     a.total > b.total ? -1 : 1
   );
 
-  const promotionsResponse = await axios(
-    "http://localhost:3000/api/promotion?ranking=true"
-  );
-  const promotions: Promotion[] = promotionsResponse.data;
+  const promotions = await fetchPromotionsRanking();
 
-  const promotionsReducedQuantity = promotions.map((promotion) => ({
-    ...promotion,
-    total: promotion.users.reduce((acc, curr) => {
-      return acc + curr.quantity;
-    }, 0),
-  }));
+  const promotionsReducedQuantity = getPromotionsReducedQuantity(promotions);
 
   const sortedPromotions = promotionsReducedQuantity.sort((a, b) =>
     a.total > b.total ? -1 : 1
@@ -173,8 +183,8 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     props: {
       drinksList: sortedDrinks,
       gamesList: sortedGames,
-      promotions: sortedPromotions,
-      users,
+      promotionsList: sortedPromotions,
+      usersList: users,
     },
   };
 };

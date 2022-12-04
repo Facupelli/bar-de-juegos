@@ -8,6 +8,8 @@ export default async function handleConsumption(
 ) {
   if (req.method === "GET") {
     const userId = req.query.userId as string;
+    const ranking = req.query.ranking as string;
+
     if (userId) {
       try {
         const drinkConsumptions = await prisma.consumption.findMany({
@@ -21,6 +23,25 @@ export default async function handleConsumption(
         });
 
         return res.json({ drinks: drinkConsumptions, games: gameConsumptions });
+      } catch (e) {
+        console.error(e);
+        res.status(500).json({ message: `e: ${e}` });
+      }
+    }
+
+    if (ranking) {
+      try {
+        const consumptions = await prisma.consumption.findMany({
+          include: { _count: { select: { users: true } } },
+          where: { type: "DRINK" },
+          orderBy: {
+            users: {
+              _count: "desc",
+            },
+          },
+        });
+
+        return res.json({ consumptions });
       } catch (e) {
         console.error(e);
         res.status(500).json({ message: `e: ${e}` });

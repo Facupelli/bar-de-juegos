@@ -7,6 +7,7 @@ export interface ServerToClientEvents {
   basicEmit: (a: number, b: string, c: Buffer) => void;
   withAck: (d: string, callback: (e: number) => void) => void;
   addConsumption: (data: addConsumption) => void;
+  exchangePromotion: () => void;
 }
 
 export interface ClientToServerEvents {

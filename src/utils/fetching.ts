@@ -1,5 +1,5 @@
 import axios from "axios";
-import { Consumption, Membership, Promotion } from "../types/model";
+import { Consumption, Membership, Promotion, User } from "../types/model";
 
 export const fetchConsumptions = async () => {
   const {
@@ -23,6 +23,20 @@ export const fetchMemberships = async () => {
 export const fetchPromotions = async () => {
   const { data }: { data: Promotion[] } = await axios(
     "http://localhost:3000/api/promotion"
+  );
+  return data;
+};
+
+export const fetchPromotionsRanking = async () => {
+  const { data }: { data: Promotion[] } = await axios(
+    "http://localhost:3000/api/promotion?ranking=true"
+  );
+  return data;
+};
+
+export const fetchUsersByExchange = async () => {
+  const { data }: { data: User[] } = await axios(
+    "http://localhost:3000/api/user?userRanking=true"
   );
   return data;
 };
