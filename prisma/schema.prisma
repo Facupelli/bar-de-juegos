@@ -76,6 +76,7 @@ model Promotion {
   id                      String                     @default(cuid()) @id
   name                    String 
   points                  Int
+  discount                Int  
   active                  Boolean                    @default(true)
   memberships             Membership[]
   users                   PromotionOnUser[]

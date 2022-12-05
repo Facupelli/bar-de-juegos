@@ -44,6 +44,7 @@ export default async function handlerPromotion(
     consumptionsIds,
     membershipsIds,
     quantity = 1,
+    discount,
     points,
   }: {
     id: string;
@@ -51,6 +52,7 @@ export default async function handlerPromotion(
     consumptionsIds: string[];
     membershipsIds: string[];
     quantity: number;
+    discount: number;
     points: number;
   } = req.body;
 
@@ -62,6 +64,7 @@ export default async function handlerPromotion(
             name,
             memberships: { connect: membershipsIds.map((id) => ({ id })) },
             points: Number(points),
+            discount: Number(discount),
           },
         });
 

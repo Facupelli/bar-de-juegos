@@ -15,6 +15,7 @@ const trPromotionTitles = [
   "Membresias",
   "Bebidas",
   "Juegos",
+  "Descuento",
   "Puntos",
 ];
 

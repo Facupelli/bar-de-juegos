@@ -66,6 +66,7 @@ export type Promotion = {
   consumptions: ConsumptionOnPromotion[];
   users: PromotionOnUser[];
   points: number;
+  discount: number;
 };
 
 export type SortedPromotion = {

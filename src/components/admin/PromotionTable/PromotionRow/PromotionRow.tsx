@@ -30,6 +30,7 @@ export default function PromotionRow({
           .map((consumption) => consumption.consumption.name)
           .join(", ")}
       </td>
+      <td>{promotion.discount}%</td>
       <td>{promotion.points}</td>
       {setDeleteId && setOpenDeleteModal && (
         <td
