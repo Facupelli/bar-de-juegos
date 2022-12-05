@@ -11,6 +11,7 @@ type Props = {
   consumptions: {
     drinks: Consumption[];
     games: Consumption[];
+    foods: Consumption[];
   };
   setPromotionsList: React.Dispatch<React.SetStateAction<Promotion[]>>;
   setOpenCreateModal: React.Dispatch<React.SetStateAction<boolean>>;
@@ -22,6 +23,7 @@ type PromotionData = {
   gamesIds: string[];
   drinksIds: string[];
   points: number;
+  discount: number;
 };
 
 export default function CreatePromotion({
@@ -45,6 +47,7 @@ export default function CreatePromotion({
         membershipsIds: data.membershipsIds,
         consumptionsIds: [...data.drinksIds, ...data.gamesIds],
         points: data.points,
+        discount: data.discount,
       }
     );
 
@@ -98,6 +101,11 @@ export default function CreatePromotion({
             </option>
           ))}
         </select>
+      </div>
+
+      <div className={s.flex_column}>
+        <label>Descuento (%):</label>
+        <input type="text" {...register("discount")} />
       </div>
 
       <div className={s.flex_column}>
