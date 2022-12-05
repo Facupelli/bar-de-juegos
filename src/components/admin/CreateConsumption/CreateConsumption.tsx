@@ -12,6 +12,7 @@ type Props = {
     React.SetStateAction<{
       drinks: Consumption[];
       games: Consumption[];
+      foods: Consumption[];
     }>
   >;
   setOpenCreateModal: React.Dispatch<React.SetStateAction<boolean>>;
@@ -58,6 +59,7 @@ export default function CreateConsumption({
         <label>Tipo:</label>
         <select {...register("type")}>
           <option value="DRINK">Bebida</option>
+          <option value="FOOD">Comida</option>
           <option value="GAME">Juego</option>
         </select>
       </div>

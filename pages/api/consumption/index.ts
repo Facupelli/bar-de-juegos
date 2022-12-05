@@ -22,7 +22,16 @@ export default async function handleConsumption(
           where: { type: "GAME" },
         });
 
-        return res.json({ drinks: drinkConsumptions, games: gameConsumptions });
+        const foodConsumptions = await prisma.consumption.findMany({
+          include: { users: { where: { userId: userId } } },
+          where: { type: "FOOD" },
+        });
+
+        return res.json({
+          drinks: drinkConsumptions,
+          games: gameConsumptions,
+          foods: foodConsumptions,
+        });
       } catch (e) {
         console.error(e);
         res.status(500).json({ message: `e: ${e}` });
@@ -59,7 +68,16 @@ export default async function handleConsumption(
         include: { users: true },
       });
 
-      return res.json({ drinks: drinkConsumptions, games: gamesConsumptions });
+      const foodConsumptions = await prisma.consumption.findMany({
+        where: { type: "FOOD" },
+        include: { users: true },
+      });
+
+      return res.json({
+        drinks: drinkConsumptions,
+        games: gamesConsumptions,
+        foods: foodConsumptions,
+      });
     } catch (e) {
       console.error(e);
       res.status(500).json({ message: `e: ${e}` });

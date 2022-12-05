@@ -8,6 +8,7 @@ export const fetchConsumptions = async () => {
     data: {
       drinks: Consumption[];
       games: Consumption[];
+      foods: Consumption[];
     };
   } = await axios("http://localhost:3000/api/consumption");
   return data;

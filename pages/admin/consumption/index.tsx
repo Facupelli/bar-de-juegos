@@ -23,6 +23,7 @@ type Props = {
   consumptions: {
     drinks: Consumption[];
     games: Consumption[];
+    foods: Consumption[];
   };
 };
 
@@ -37,6 +38,7 @@ export default function ConsumptionPage({ consumptions }: Props) {
   const [consumptionsList, setConsumptionsList] = useState<{
     drinks: Consumption[];
     games: Consumption[];
+    foods: Consumption[];
   }>(consumptions);
 
   const handleDeleteConsumption = async (consumptionId: string) => {
@@ -92,6 +94,20 @@ export default function ConsumptionPage({ consumptions }: Props) {
             <h4>Bebidas</h4>
             <Table trTitles={trTitles}>
               {consumptionsList.drinks.map((consumption) => (
+                <ConsumptionRow
+                  key={consumption.id}
+                  consumption={consumption}
+                  setOpenDeleteModal={setOpenDeleteModal}
+                  setDeleteId={setDeleteId}
+                />
+              ))}
+            </Table>
+          </div>
+
+          <div>
+            <h4>Comidas</h4>
+            <Table trTitles={trTitles}>
+              {consumptionsList.foods.map((consumption) => (
                 <ConsumptionRow
                   key={consumption.id}
                   consumption={consumption}
