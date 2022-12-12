@@ -68,11 +68,16 @@ export default function Home({
       <main className={s.main}>
         <section className={` ${s.input_section}`}>
           <div>
-            <AddConsumptionList consumptions={consumptions} userId={userId} setUser={setUser} />
+            <AddConsumptionList
+              consumptions={consumptions}
+              userId={userId}
+              setUser={setUser}
+            />
             <AddPromotion
               promotions={user.membership.promotions}
               userId={userId}
               userPoints={user.totalPoints}
+              setUser={setUser}
             />
           </div>
           <MembershipCard user={user} />

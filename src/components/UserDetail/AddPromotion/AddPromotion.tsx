@@ -1,16 +1,19 @@
 import axios from "axios";
-import { useEffect } from "react";
+import { SetStateAction, useEffect } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
-import { Promotion } from "../../../types/model";
 
 import Button from "../../UI/Button/Button";
 
+import { Promotion, User } from "../../../types/model";
+
 import s from "./AddPromotion.module.scss";
+import { updateUserState } from "../../../utils/userID";
 
 type Props = {
   promotions: Promotion[];
   userId: string;
   userPoints: number;
+  setUser: React.Dispatch<SetStateAction<User>>;
 };
 
 type FormData = {
@@ -21,6 +24,7 @@ export default function AddPromotion({
   promotions,
   userPoints,
   userId,
+  setUser,
 }: Props) {
   const {
     register,
@@ -52,6 +56,7 @@ export default function AddPromotion({
 
     if (postConsumption.data.message === "success") {
       console.log("success");
+      updateUserState(userId, setUser);
     }
   };
 
