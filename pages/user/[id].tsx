@@ -6,7 +6,7 @@ import { Consumption, Promotion, User } from "../../src/types/model";
 import { authOptions } from "../api/auth/[...nextauth]";
 import { unstable_getServerSession } from "next-auth";
 import { useRouter } from "next/router";
-import { useEffect } from "react";
+import { useState } from "react";
 
 //COMPONENTS
 import MembershipCard from "../../src/components/UserDetail/MembershipCard/MembershipCard";
@@ -14,18 +14,20 @@ import AddPromotion from "../../src/components/UserDetail/AddPromotion/AddPromot
 import Table from "../../src/components/Ranking/Table/Table";
 import PromotionTale from "../../src/components/admin/PromotionTable/PromotionTable";
 
+import AddConsumptionList from "../../src/components/UserDetail/AddConsumptionList/AddConsumptionList";
+import ButtonOnClick from "../../src/components/UI/ButtonOnClick/ButtonOnClick";
+import Nav from "../../src/components/Nav/Nav";
+
 import {
   ClientToServerEvents,
   ServerToClientEvents,
 } from "../../src/types/socketio";
 
 import s from "./UserDetail.module.scss";
-import AddConsumptionList from "../../src/components/UserDetail/AddConsumptionList/AddConsumptionList";
-import ButtonOnClick from "../../src/components/UI/ButtonOnClick/ButtonOnClick";
-import Nav from "../../src/components/Nav/Nav";
+import { fetchUserById } from "../../src/utils/fetching";
 
 type Props = {
-  user: User;
+  userData: User;
   consumptions: {
     drinks: Consumption[];
     games: Consumption[];
@@ -43,13 +45,15 @@ type Props = {
 const trLastConsumptionsTitles = ["consumicion", "cantidad", "fecha"];
 
 export default function Home({
-  user,
+  userData,
   consumptions,
   userConsumptions,
   promotions,
   userId,
 }: Props) {
   const router = useRouter();
+
+  const [user, setUser] = useState(userData);
 
   return (
     <div className={s.container}>
@@ -64,7 +68,7 @@ export default function Home({
       <main className={s.main}>
         <section className={` ${s.input_section}`}>
           <div>
-            <AddConsumptionList consumptions={consumptions} userId={userId} />
+            <AddConsumptionList consumptions={consumptions} userId={userId} setUser={setUser} />
             <AddPromotion
               promotions={user.membership.promotions}
               userId={userId}
@@ -146,10 +150,9 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   );
 
   if (session?.user.role === "ADMIN" || session?.user.role === "EMPLOYEE") {
-    const id = context.query.id as String;
+    const id = context.query.id as string;
 
-    const userResponse = await axios(`http://localhost:3000/api/user/${id}`);
-    const user: User = userResponse.data;
+    const user: User = await fetchUserById(id);
 
     const consumptionsResponse = await axios(
       "http://localhost:3000/api/consumption"
@@ -168,7 +171,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
     return {
       props: {
-        user,
+        userData: user,
         consumptions,
         userConsumptions,
         userId: id,
@@ -182,6 +185,6 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       destination: "/",
       permanent: false,
     },
-    porps: {},
+    props: {},
   };
 };

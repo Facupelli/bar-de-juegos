@@ -41,3 +41,10 @@ export const fetchUsersByExchange = async () => {
   );
   return data;
 };
+
+export const fetchUserById = async (id: string) => {
+  const { data }: { data: User } = await axios(
+    `http://localhost:3000/api/user/${id}`
+  );
+  return data;
+};

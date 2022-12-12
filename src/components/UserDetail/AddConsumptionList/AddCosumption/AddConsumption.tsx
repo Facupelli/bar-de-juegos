@@ -1,21 +1,31 @@
 import axios from "axios";
+import { SetStateAction } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
-import { Consumption } from "../../../../types/model";
+
 import Button from "../../../UI/Button/Button";
 
+import { Consumption, User } from "../../../../types/model";
+
 import s from "./AddConsumption.module.scss";
+import { updateUserState } from "../../../../utils/userID";
 
 type Props = {
   consumptions: Consumption[];
   name: string;
   userId: string;
+  setUser: React.Dispatch<SetStateAction<User>>;
 };
 
 type FormData = {
   id: string;
 };
 
-export default function AddConsumption({ consumptions, name, userId }: Props) {
+export default function AddConsumption({
+  consumptions,
+  name,
+  userId,
+  setUser,
+}: Props) {
   const {
     register,
     handleSubmit,
@@ -46,6 +56,7 @@ export default function AddConsumption({ consumptions, name, userId }: Props) {
 
     if (postConsumption.data.message === "success") {
       console.log("success");
+      updateUserState(userId, setUser);
     }
   };
 
