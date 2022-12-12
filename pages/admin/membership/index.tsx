@@ -12,9 +12,9 @@ import Nav from "../../../src/components/Nav/Nav";
 import Table from "../../../src/components/Ranking/Table/Table";
 import AdminLayout from "../../../src/components/admin/AdminLayout/AdminLayout";
 import Modal from "../../../src/components/Modal/Modal";
-import CreateMembership from "../../../src/components/Admin/CreateMembership/CreateMembership";
-import MembershipRow from "../../../src/components/Admin/MembershipRow/MembershipRow";
 import ButtonOnClick from "../../../src/components/UI/ButtonOnClick/ButtonOnClick";
+import CreateMembership from "../../../src/components/admin/CreateMembership/CreateMembership";
+import MembershipRow from "../../../src/components/admin/MembershipRow/MembershipRow";
 
 import { Membership } from "../../../src/types/model";
 
@@ -83,14 +83,17 @@ export default function MembershipPage({ memberships }: Props) {
 
       <main className={s.main}>
         <AdminLayout>
-          <ButtonOnClick
-            type="primary"
-            handleClick={() => setOpenCreateModal(true)}
-          >
-            CREAR MEMBRESÍA
-          </ButtonOnClick>
-          <div>
-            <h4>Membresías</h4>
+          <div className={s.btn_wrapper}>
+            <ButtonOnClick
+              type="primary"
+              handleClick={() => setOpenCreateModal(true)}
+            >
+              CREAR MEMBRESÍA
+            </ButtonOnClick>
+          </div>
+
+          <div className={s.table_Wrapper}>
+            <h4 className={s.mb_2}>Membresías</h4>
             <Table trTitles={trTitles}>
               {membershipsList.map((membership) => (
                 <MembershipRow

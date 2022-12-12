@@ -89,15 +89,17 @@ export default function ConsumptionPage({ consumptions }: Props) {
 
       <main className={s.main}>
         <AdminLayout>
-          <ButtonOnClick
-            type="primary"
-            handleClick={() => setOpenCreateModal(true)}
-          >
-            CREAR CONSUMICIÓN
-          </ButtonOnClick>
+          <div className={s.btn_wrapper}>
+            <ButtonOnClick
+              type="primary"
+              handleClick={() => setOpenCreateModal(true)}
+            >
+              CREAR CONSUMICIÓN
+            </ButtonOnClick>
+          </div>
 
-          <div>
-            <h4>Bebidas</h4>
+          <div className={s.table_wrapper}>
+            <h4 className={s.mb_2}>Bebidas</h4>
             <Table trTitles={trTitles}>
               {consumptionsList.drinks.map((consumption) => (
                 <ConsumptionRow
@@ -110,8 +112,8 @@ export default function ConsumptionPage({ consumptions }: Props) {
             </Table>
           </div>
 
-          <div>
-            <h4>Comidas</h4>
+          <div className={s.table_wrapper}>
+            <h4 className={s.mb_2}>Comidas</h4>
             <Table trTitles={trTitles}>
               {consumptionsList.foods.map((consumption) => (
                 <ConsumptionRow
@@ -124,8 +126,8 @@ export default function ConsumptionPage({ consumptions }: Props) {
             </Table>
           </div>
 
-          <div>
-            <h4>Juegos</h4>
+          <div className={s.table_wrapper}>
+            <h4 className={s.mb_2}>Juegos</h4>
             <Table trTitles={trTitles}>
               {consumptionsList.games.map((consumption) => (
                 <ConsumptionRow

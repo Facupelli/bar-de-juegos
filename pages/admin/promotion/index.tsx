@@ -11,12 +11,12 @@ import Nav from "../../../src/components/Nav/Nav";
 import AdminLayout from "../../../src/components/admin/AdminLayout/AdminLayout";
 import Modal from "../../../src/components/Modal/Modal";
 import ButtonOnClick from "../../../src/components/UI/ButtonOnClick/ButtonOnClick";
-import CreatePromotion from "../../../src/components/Admin/CreatePromotion/CreatePromotion";
 import PromotionTable from "../../../src/components/admin/PromotionTable/PromotionTable";
 
 import { Consumption, Membership, Promotion } from "../../../src/types/model";
 
 import s from "./PromotionPage.module.scss";
+import CreatePromotion from "../../../src/components/admin/CreatePromotion/CreatePromotion";
 
 type Props = {
   promotions: Promotion[];
@@ -89,14 +89,17 @@ export default function PromotionPage({
 
       <main className={s.main}>
         <AdminLayout>
-          <ButtonOnClick
-            type="primary"
-            handleClick={() => setOpenCreateModal(true)}
-          >
-            CREAR PROMOCIÓN
-          </ButtonOnClick>
-          <div>
-            <h4>Promociones</h4>
+          <div className={s.btn_wrapper}>
+            <ButtonOnClick
+              type="primary"
+              handleClick={() => setOpenCreateModal(true)}
+            >
+              CREAR PROMOCIÓN
+            </ButtonOnClick>
+          </div>
+
+          <div className={s.table_wrapper}>
+            <h4 className={s.mb_2}>Promociones</h4>
             <PromotionTable
               promotions={promotionsList}
               setOpenDeleteModal={setOpenDeleteModal}

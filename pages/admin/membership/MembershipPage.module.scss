@@ -2,4 +2,18 @@
   position: relative;
   width: 100%;
   min-height: 100vh;
+
+  .btn_wrapper {
+    margin-bottom: 1em;
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  .table_wrapper {
+    margin-bottom: 1em;
+  }
+
+  .mb_2 {
+    margin-bottom: 0.5em;
+  }
 }
