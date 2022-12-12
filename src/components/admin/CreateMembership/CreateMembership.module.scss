@@ -1,6 +1,12 @@
+@import "../../../../styles/app.scss";
+
 .flex_column {
   display: flex;
   flex-direction: column;
+
+  input {
+    @include input;
+  }
 }
 
 .gap {

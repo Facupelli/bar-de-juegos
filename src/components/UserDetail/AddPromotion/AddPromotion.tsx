@@ -4,10 +4,11 @@ import { useForm, SubmitHandler } from "react-hook-form";
 
 import Button from "../../UI/Button/Button";
 
+import { updateUserState } from "../../../utils/userID";
+
 import { Promotion, User } from "../../../types/model";
 
 import s from "./AddPromotion.module.scss";
-import { updateUserState } from "../../../utils/userID";
 
 type Props = {
   promotions: Promotion[];

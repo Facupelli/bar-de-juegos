@@ -55,7 +55,7 @@ export default function CreateConsumption({
       onSubmit={handleSubmit(onSubmitConsumption)}
       className={`${s.flex_column} ${s.gap}`}
     >
-      <h4>CREAR CONSUMICION</h4>
+      <h3>CREAR CONSUMICIÓN</h3>
 
       <div className={s.flex_column}>
         <label>Tipo:</label>

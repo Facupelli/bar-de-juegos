@@ -13,9 +13,21 @@ $white: #d6c8c6;
   color: white;
   font-weight: 600;
   font-size: 0.8rem;
+
+  &:hover {
+    opacity: 0.75;
+  }
 }
 
 @mixin select {
   padding: 0.2em 0.5em;
   border-radius: 0.2em;
+  border: 1px solid $gray;
+}
+
+@mixin input {
+  margin-top: 0.5em;
+  padding: 0.2em 0.5em;
+  border-radius: 0.2em;
+  border: 1px solid $gray;
 }

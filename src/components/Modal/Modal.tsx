@@ -9,9 +9,11 @@ type Props = {
 export default function Modal({ children, isOpen, handleCloseModal }: Props) {
   return (
     <dialog open={isOpen} className={s.modal}>
-      <button type="button" onClick={handleCloseModal}>
-        X
-      </button>
+      <div className={s.btn_wrapper}>
+        <button type="button" onClick={handleCloseModal}>
+          X
+        </button>
+      </div>
       {children}
     </dialog>
   );

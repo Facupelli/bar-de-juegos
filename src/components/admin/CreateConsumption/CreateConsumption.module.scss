@@ -1,6 +1,21 @@
+@import "../../../../styles/app.scss";
+
 .flex_column {
   display: flex;
   flex-direction: column;
+
+  h3 {
+    text-align: center;
+    font-weight: 600;
+  }
+
+  select {
+    @include select;
+  }
+
+  input {
+    @include input;
+  }
 }
 
 .gap {
