@@ -23,7 +23,7 @@ export default async function handlerUser(
       return res.status(400).json({ message: "missing query" });
     } catch (e) {
       console.error(e);
-      res.status(500).json({ message: "error" });
+      res.status(500).json({ message: `error ${e}` });
     }
   }
 
@@ -46,7 +46,7 @@ export default async function handlerUser(
       return res.status(400).json({ message: "missing data" });
     } catch (e) {
       console.error(e);
-      res.status(500).json({ message: "error" });
+      res.status(500).json({ message: `error ${e}` });
     }
   }
 
@@ -85,7 +85,7 @@ export default async function handlerUser(
       return res.status(400).json({ message: "missing data" });
     } catch (e) {
       console.error(e);
-      res.status(500).json({ message: "error" });
+      res.status(500).json({ message: `error ${e}` });
     }
   }
 }

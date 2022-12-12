@@ -42,7 +42,7 @@ export default async function handlerUser(
       return res.status(200).json(user);
     } catch (e) {
       console.error(e);
-      res.status(500).json({ message: "error" });
+      res.status(500).json({ message: `error ${e}` });
     }
   }
 
@@ -79,8 +79,6 @@ export default async function handlerUser(
           },
           include: { membership: true },
         });
-
-        console.log("USER", user);
 
         if (
           user.membership &&
@@ -132,7 +130,7 @@ export default async function handlerUser(
       return res.status(400).json({ message: "missing operation" });
     } catch (e) {
       console.error(e);
-      res.status(500).json({ message: "error" });
+      res.status(500).json({ message: `error ${e}` });
     }
   }
 }

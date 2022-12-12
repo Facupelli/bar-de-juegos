@@ -24,7 +24,7 @@ export default async function handleConsumption(
       return res.status(400).json({ message: "User Not Found" });
     } catch (e) {
       console.error(e);
-      res.status(500).json({ message: "error" });
+      res.status(500).json({ message: `error ${e}` });
     }
   }
 }
