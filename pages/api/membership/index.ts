@@ -23,11 +23,13 @@ export default async function handlerMembership(
     id,
     name,
     minPoints,
+    maxPoints,
     promotionsIds,
   }: {
     id: string;
     name: string;
     minPoints: number;
+    maxPoints: number;
     promotionsIds: string[];
   } = req.body;
 
@@ -38,6 +40,7 @@ export default async function handlerMembership(
           data: {
             name,
             minPoints: Number(minPoints),
+            maxPoints: Number(maxPoints),
             // promotions: { connect: promotionsIds.map((id) => ({ id })) },
           },
         });

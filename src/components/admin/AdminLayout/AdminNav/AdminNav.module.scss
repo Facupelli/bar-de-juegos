@@ -1,3 +1,5 @@
+@import "../../../../../styles/app.scss";
+
 .nav {
   width: 180px;
   height: 100vh;
@@ -14,7 +16,7 @@
       text-decoration: none;
 
       &:hover {
-        color: gray;
+        color: $gray;
       }
     }
   }

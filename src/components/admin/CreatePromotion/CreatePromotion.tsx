@@ -2,6 +2,8 @@ import axios from "axios";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { fetchPromotions } from "../../../utils/fetching";
 
+import Button from "../../UI/Button/Button";
+
 import { Consumption, Membership, Promotion } from "../../../types/model";
 
 import s from "./CreatePromotion.module.scss";
@@ -113,7 +115,9 @@ export default function CreatePromotion({
         <input type="text" {...register("points")} />
       </div>
 
-      <button type="submit">CREAR</button>
+      <Button type="primary" operation="submit">
+        CREAR
+      </Button>
     </form>
   );
 }

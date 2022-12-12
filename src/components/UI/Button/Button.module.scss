@@ -1,0 +1,14 @@
+@import "../../../../styles/app.scss";
+
+.button {
+  padding: 0.5em 1em;
+  border: none;
+  border-radius: 0.2em;
+  cursor: pointer;
+  color: white;
+  font-weight: 600;
+}
+
+.primary {
+  background-color: $green;
+}

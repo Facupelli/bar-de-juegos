@@ -11,9 +11,9 @@ import Nav from "../../../src/components/Nav/Nav";
 import AdminLayout from "../../../src/components/admin/AdminLayout/AdminLayout";
 import Table from "../../../src/components/Ranking/Table/Table";
 import ConsumptionRow from "../../../src/components/admin/ConsumptionRow/ConsumptionRow";
-import CreateButton from "../../../src/components/admin/CreateButton/CreateButton";
 import Modal from "../../../src/components/Modal/Modal";
 import CreateConsumption from "../../../src/components/admin/CreateConsumption/CreateConsumption";
+import ButtonOnClick from "../../../src/components/UI/ButtonOnClick/ButtonOnClick";
 
 import { Consumption } from "../../../src/types/model";
 
@@ -77,19 +77,25 @@ export default function ConsumptionPage({ consumptions }: Props) {
         handleCloseModal={() => setOpenDeleteModal(false)}
       >
         <h4>Seguro que quieres eliminar para siempre?</h4>
-        <button type="button" onClick={() => handleDeleteConsumption(deleteId)}>
+        <ButtonOnClick
+          type="danger"
+          handleClick={() => handleDeleteConsumption(deleteId)}
+        >
           ELIMINAR
-        </button>
+        </ButtonOnClick>
       </Modal>
 
       <Nav />
 
       <main className={s.main}>
         <AdminLayout>
-          <CreateButton
-            title="CONSUMICIÓN"
-            onClick={() => setOpenCreateModal(true)}
-          />
+          <ButtonOnClick
+            type="primary"
+            handleClick={() => setOpenCreateModal(true)}
+          >
+            CREAR CONSUMICIÓN
+          </ButtonOnClick>
+
           <div>
             <h4>Bebidas</h4>
             <Table trTitles={trTitles}>

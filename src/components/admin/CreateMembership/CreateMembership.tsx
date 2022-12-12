@@ -5,6 +5,7 @@ import { fetchMemberships } from "../../../utils/fetching";
 import { Membership } from "../../../types/model";
 
 import s from "./CreateMembership.module.scss";
+import Button from "../../UI/Button/Button";
 
 type Props = {
   setMembershipsList: React.Dispatch<React.SetStateAction<Membership[]>>;
@@ -14,6 +15,7 @@ type Props = {
 type MembershipData = {
   name: string;
   minPoints: number;
+  maxPoints: number;
 };
 
 export default function CreateMembership({
@@ -57,7 +59,14 @@ export default function CreateMembership({
         <input type="text" {...register("minPoints")} />
       </div>
 
-      <button>CREAR</button>
+      <div className={s.flex_column}>
+        <label>Puntos Máximos:</label>
+        <input type="text" {...register("maxPoints")} />
+      </div>
+
+      <Button type="primary" operation="submit">
+        CREAR
+      </Button>
     </form>
   );
 }

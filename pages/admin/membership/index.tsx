@@ -4,21 +4,21 @@ import { GetServerSideProps } from "next";
 import { unstable_getServerSession } from "next-auth";
 import { authOptions } from "../../api/auth/[...nextauth]";
 import { useState } from "react";
-import { useQuery } from "react-query";
+
+import { fetchMemberships } from "../../../src/utils/fetching";
 
 //COMPONENTS
 import Nav from "../../../src/components/Nav/Nav";
 import Table from "../../../src/components/Ranking/Table/Table";
-import MembershipRow from "../../../src/components/admin/MembershipRow/MembershipRow";
 import AdminLayout from "../../../src/components/admin/AdminLayout/AdminLayout";
-import CreateButton from "../../../src/components/admin/CreateButton/CreateButton";
 import Modal from "../../../src/components/Modal/Modal";
-import CreateMembership from "../../../src/components/admin/CreateMembership/CreateMembership";
+import CreateMembership from "../../../src/components/Admin/CreateMembership/CreateMembership";
+import MembershipRow from "../../../src/components/Admin/MembershipRow/MembershipRow";
+import ButtonOnClick from "../../../src/components/UI/ButtonOnClick/ButtonOnClick";
 
 import { Membership } from "../../../src/types/model";
 
 import s from "./MembershipPage.module.scss";
-import { fetchMemberships } from "../../../src/utils/fetching";
 
 type Props = {
   memberships: Membership[];
@@ -71,19 +71,24 @@ export default function MembershipPage({ memberships }: Props) {
         handleCloseModal={() => setOpenDeleteModal(false)}
       >
         <h4>Seguro que quieres eliminar para siempre?</h4>
-        <button type="button" onClick={() => handleDeleteMembership(deleteId)}>
+        <ButtonOnClick
+          type="danger"
+          handleClick={() => handleDeleteMembership(deleteId)}
+        >
           ELIMINAR
-        </button>
+        </ButtonOnClick>
       </Modal>
 
       <Nav />
 
       <main className={s.main}>
         <AdminLayout>
-          <CreateButton
-            title="MEMBRESÍA"
-            onClick={() => setOpenCreateModal(true)}
-          />
+          <ButtonOnClick
+            type="primary"
+            handleClick={() => setOpenCreateModal(true)}
+          >
+            CREAR MEMBRESÍA
+          </ButtonOnClick>
           <div>
             <h4>Membresías</h4>
             <Table trTitles={trTitles}>

@@ -9,10 +9,10 @@ import { fetchPromotions } from "../../../src/utils/fetching";
 //COMPONENTS
 import Nav from "../../../src/components/Nav/Nav";
 import AdminLayout from "../../../src/components/admin/AdminLayout/AdminLayout";
-import PromotionTable from "../../../src/components/admin/PromotionTable/PromotionTable";
-import CreateButton from "../../../src/components/admin/CreateButton/CreateButton";
 import Modal from "../../../src/components/Modal/Modal";
-import CreatePromotion from "../../../src/components/admin/CreatePromotion/CreatePromotion";
+import ButtonOnClick from "../../../src/components/UI/ButtonOnClick/ButtonOnClick";
+import CreatePromotion from "../../../src/components/Admin/CreatePromotion/CreatePromotion";
+import PromotionTable from "../../../src/components/admin/PromotionTable/PromotionTable";
 
 import { Consumption, Membership, Promotion } from "../../../src/types/model";
 
@@ -24,6 +24,7 @@ type Props = {
   consumptions: {
     drinks: Consumption[];
     games: Consumption[];
+    foods: Consumption[];
   };
 };
 
@@ -76,19 +77,24 @@ export default function PromotionPage({
         handleCloseModal={() => setOpenDeleteModal(false)}
       >
         <h4>Seguro que quieres eliminar para siempre?</h4>
-        <button type="button" onClick={() => handleDeletePromotion(deleteId)}>
+        <ButtonOnClick
+          type="danger"
+          handleClick={() => handleDeletePromotion(deleteId)}
+        >
           ELIMINAR
-        </button>
+        </ButtonOnClick>
       </Modal>
 
       <Nav />
 
       <main className={s.main}>
         <AdminLayout>
-          <CreateButton
-            title="PROMOCIÓN"
-            onClick={() => setOpenCreateModal(true)}
-          />
+          <ButtonOnClick
+            type="primary"
+            handleClick={() => setOpenCreateModal(true)}
+          >
+            CREAR PROMOCIÓN
+          </ButtonOnClick>
           <div>
             <h4>Promociones</h4>
             <PromotionTable

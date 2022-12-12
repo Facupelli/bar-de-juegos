@@ -3,6 +3,8 @@ import axios from "axios";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { fetchConsumptions } from "../../../utils/fetching";
 
+import Button from "../../UI/Button/Button";
+
 import { Consumption } from "../../../types/model";
 
 import s from "./CreateConsumption.module.scss";
@@ -73,7 +75,10 @@ export default function CreateConsumption({
         <label>Puntos:</label>
         <input type="text" {...register("points")} />
       </div>
-      <button type="submit">CREAR</button>
+
+      <Button type="primary" operation="submit">
+        CREAR
+      </Button>
     </form>
   );
 }
