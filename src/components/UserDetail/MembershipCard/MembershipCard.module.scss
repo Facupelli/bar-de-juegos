@@ -1,11 +1,15 @@
+@import "../../../../styles/app.scss";
+
 .wrapper {
   perspective: 1000px;
   transition: transform 0.5s ease-in-out;
-  width: 400px;
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
 }
 
 .bg {
-  background: rgba(204, 204, 204, 0.3);
+  // background: rgba(204, 204, 204, 0.3);
   position: absolute;
   top: 0;
   left: 0;
@@ -18,9 +22,10 @@
 
 .ticket {
   // box-shadow: 0 0 10px 5px rgba(0, 0, 0, 0.4);
+  background-color: white;
   padding: 1.5rem;
   border-radius: 0.5rem;
-  border: 2px solid wheat;
+  border: 1px solid $black;
   position: relative;
   aspect-ratio: 18/9;
   width: 400px;

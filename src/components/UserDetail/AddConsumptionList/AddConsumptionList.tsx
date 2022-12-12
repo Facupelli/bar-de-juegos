@@ -2,19 +2,20 @@ import { Consumption } from "../../../types/model";
 
 import AddConsumption from "./AddCosumption/AddConsumption";
 
-import s from "./PostPointsCard.module.scss";
+import s from "./AddConsumptionList.module.scss";
 
 type Props = {
   consumptions: {
     drinks: Consumption[];
     games: Consumption[];
+    foods: Consumption[];
   };
   userId: string;
 };
 
 export default function AddConsumptionList({ consumptions, userId }: Props) {
   return (
-    <article>
+    <article className={s.article}>
       <AddConsumption
         consumptions={consumptions.drinks}
         name="Bebida"
@@ -23,6 +24,11 @@ export default function AddConsumptionList({ consumptions, userId }: Props) {
       <AddConsumption
         consumptions={consumptions.games}
         name="Juego"
+        userId={userId}
+      />
+      <AddConsumption
+        consumptions={consumptions.foods}
+        name="Comida"
         userId={userId}
       />
     </article>

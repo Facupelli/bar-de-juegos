@@ -57,8 +57,8 @@ export default function AddPromotion({
 
   return (
     <article className={s.container}>
-      <p>Promociones Validas:</p>
-      <form className={s.flex} onSubmit={handleSubmit(onSubmitPromotion)}>
+      <form className={s.form} onSubmit={handleSubmit(onSubmitPromotion)}>
+        <label>Promoción</label>
         <select {...register("promotion")}>
           <option>seleccionar</option>
           {promotions.map((promotion) => (

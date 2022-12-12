@@ -3,7 +3,7 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import { Consumption } from "../../../../types/model";
 import Button from "../../../UI/Button/Button";
 
-import s from ".AddConsumption.module.scss";
+import s from "./AddConsumption.module.scss";
 
 type Props = {
   consumptions: Consumption[];
@@ -50,7 +50,7 @@ export default function AddConsumption({ consumptions, name, userId }: Props) {
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmitConsumption)}>
+    <form onSubmit={handleSubmit(onSubmitConsumption)} className={s.form}>
       <label>{name}:</label>
       <select {...register("id")}>
         {consumptions?.length > 0 &&

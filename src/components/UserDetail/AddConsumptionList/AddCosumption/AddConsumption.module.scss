@@ -1,0 +1,17 @@
+@import "../../../../../styles/app.scss";
+
+.form {
+  display: grid;
+  grid-template-columns: 20% 50% 30%;
+  align-items: center;
+  gap: 1em;
+
+  label {
+    font-weight: 600;
+    font-size: 0.9rem;
+  }
+
+  select {
+    @include select;
+  }
+}

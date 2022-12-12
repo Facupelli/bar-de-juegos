@@ -22,16 +22,19 @@ import {
 import s from "./UserDetail.module.scss";
 import AddConsumptionList from "../../src/components/UserDetail/AddConsumptionList/AddConsumptionList";
 import ButtonOnClick from "../../src/components/UI/ButtonOnClick/ButtonOnClick";
+import Nav from "../../src/components/Nav/Nav";
 
 type Props = {
   user: User;
   consumptions: {
     drinks: Consumption[];
     games: Consumption[];
+    foods: Consumption[];
   };
   userConsumptions: {
     drinks: Consumption[];
     games: Consumption[];
+    foods: Consumption[];
   };
   promotions: Promotion[];
   userId: string;
@@ -56,29 +59,30 @@ export default function Home({
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <main className={s.main}>
-        <h2>USER DETAIL</h2>
+      <Nav />
 
-        <section className={`${s.grid} ${s.j_between}`}>
-          <AddConsumptionList consumptions={consumptions} userId={userId} />
-          <AddPromotion
-            promotions={user.membership.promotions}
-            userId={userId}
-            userPoints={user.totalPoints}
-          />
+      <main className={s.main}>
+        <section className={` ${s.input_section}`}>
+          <div>
+            <AddConsumptionList consumptions={consumptions} userId={userId} />
+            <AddPromotion
+              promotions={user.membership.promotions}
+              userId={userId}
+              userPoints={user.totalPoints}
+            />
+          </div>
           <MembershipCard user={user} />
         </section>
 
-        <section>
-          <h5>Promociones para membresia {user.membership.name}</h5>
+        <section className={s.margin_t}>
+          <h4>Promociones para membresia {user.membership.name}:</h4>
           <PromotionTale promotions={user.membership.promotions} />
         </section>
 
-        <section>
-          <h5>Consumiciones totales</h5>
-          <div className={`${s.grid} ${s.margin}`}>
+        <section className={s.margin_t}>
+          <h4>Consumiciones totales:</h4>
+          <div className={`${s.grid} ${s.user_consumptions_section}`}>
             <article>
-              <h4>Bebidas</h4>
               {userConsumptions.drinks?.map((consumption) => (
                 <div key={consumption.id}>
                   <p>
@@ -89,11 +93,10 @@ export default function Home({
             </article>
 
             <article>
-              <h4>Juegos</h4>
               {userConsumptions.games?.map((consumption) => (
                 <div key={consumption.id}>
                   <p>
-                    {consumption.name} {consumption.users.length}
+                    {consumption.name} x{consumption.users.length}
                   </p>
                 </div>
               ))}
@@ -101,8 +104,8 @@ export default function Home({
           </div>
         </section>
 
-        <section className={s.margin}>
-          <h4>Ultimas consumiciones</h4>
+        <section className={s.margin_t}>
+          <h4>Ultimas consumiciones:</h4>
           <Table trTitles={trLastConsumptionsTitles}>
             {user.consumptions.slice(0, 10).map((consumption) => (
               <tr key={consumption.id}>

@@ -1,6 +1,20 @@
+@import "../../../../styles/app.scss";
+
 .container {
-  .flex {
-    display: flex;
+  .form {
+    margin-top: 2em;
+    display: grid;
+    grid-template-columns: 20% 50% 30%;
     align-items: center;
+    gap: 1em;
+
+    label {
+      font-weight: 600;
+      font-size: 0.9rem;
+    }
+
+    select {
+      @include select;
+    }
   }
 }
