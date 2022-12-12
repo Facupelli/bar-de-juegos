@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { Consumption } from "../../../../types/model";
+import Button from "../../../UI/Button/Button";
 
 import s from ".AddConsumption.module.scss";
 
@@ -63,7 +64,9 @@ export default function AddConsumption({ consumptions, name, userId }: Props) {
           ))}
       </select>
 
-      <button type="submit">CARGAR</button>
+      <Button type="primary" operation="submit">
+        CARGAR
+      </Button>
     </form>
   );
 }

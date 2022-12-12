@@ -21,6 +21,7 @@ import {
 
 import s from "./UserDetail.module.scss";
 import AddConsumptionList from "../../src/components/UserDetail/AddConsumptionList/AddConsumptionList";
+import ButtonOnClick from "../../src/components/UI/ButtonOnClick/ButtonOnClick";
 
 type Props = {
   user: User;
@@ -125,9 +126,9 @@ export default function Home({
         </section>
 
         <div className={s.btn_wrrapper}>
-          <button type="button" onClick={() => router.push("/")}>
+          <ButtonOnClick type="secondary" handleClick={() => router.push("/")}>
             LISTO
-          </button>
+          </ButtonOnClick>
         </div>
       </main>
     </div>

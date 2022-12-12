@@ -2,6 +2,9 @@ import axios from "axios";
 import { useEffect } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { Promotion } from "../../../types/model";
+
+import Button from "../../UI/Button/Button";
+
 import s from "./AddPromotion.module.scss";
 
 type Props = {
@@ -67,9 +70,13 @@ export default function AddPromotion({
             </option>
           ))}
         </select>
-        <button disabled={!(userPoints - promotionSelectedPoints >= 0)}>
+        <Button
+          type="primary"
+          operation="submit"
+          disabled={!(userPoints - promotionSelectedPoints >= 0)}
+        >
           CARGAR
-        </button>
+        </Button>
       </form>
     </article>
   );

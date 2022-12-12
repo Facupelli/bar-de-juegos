@@ -1,16 +1,16 @@
 @import "../../../../styles/app.scss";
 
 .button {
-  padding: 0.5em 1em;
-  font-weight: 600;
-  border: none;
-  cursor: pointer;
-  border-radius: 0.2em;
+  @include main-btn;
 }
 
 .primary {
   background-color: $green;
   color: white;
+}
+
+.secondary {
+  background-color: $black;
 }
 
 .danger {

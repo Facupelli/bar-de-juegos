@@ -1,5 +1,6 @@
-import s from "./AdminLayout.module.scss";
 import AdminNav from "./AdminNav/AdminNav";
+
+import s from "./AdminLayout.module.scss";
 
 type Props = {
   children: React.ReactNode;

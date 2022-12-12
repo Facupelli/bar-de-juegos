@@ -1,14 +1,14 @@
 @import "../../../../styles/app.scss";
 
 .button {
-  padding: 0.5em 1em;
-  border: none;
-  border-radius: 0.2em;
-  cursor: pointer;
-  color: white;
-  font-weight: 600;
+  @include main-btn;
 }
 
 .primary {
   background-color: $green;
+}
+
+.disabled {
+  background-color: $gray;
+  cursor: auto;
 }

@@ -3,3 +3,13 @@ $red: #ac2020;
 $black: #2b2c2b;
 $gray: #94949c;
 $white: #d6c8c6;
+
+@mixin main-btn {
+  padding: 0.5em 1em;
+  border: none;
+  border-radius: 0.2em;
+  cursor: pointer;
+  color: white;
+  font-weight: 600;
+  font-size: 0.8rem;
+}
