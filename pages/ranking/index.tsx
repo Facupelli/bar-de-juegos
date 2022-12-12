@@ -109,63 +109,67 @@ export default function Ranking({
 
       <Nav />
 
-      <section>
-        <h2>RANKING</h2>
+      <main>
+        <section>
+          <div className={s.grid} ref={divRef}>
+            <article>
+              <h5>Bebida más bebida</h5>
+              <RankingTable trTitles={trDrinkTitle}>
+                {drinks?.map((drink) => (
+                  <RankingRow
+                    key={drink.id}
+                    name={drink.name}
+                    total={drink.total}
+                  />
+                ))}
+              </RankingTable>
+            </article>
 
-        <div className={s.grid} ref={divRef}>
-          <article>
-            <h5>Bebida más bebida</h5>
-            <RankingTable trTitles={trDrinkTitle}>
-              {drinks?.map((drink) => (
-                <RankingRow
-                  key={drink.id}
-                  name={drink.name}
-                  total={drink.total}
-                />
-              ))}
-            </RankingTable>
-          </article>
+            <article>
+              <h5>Juego más jugado</h5>
+              <RankingTable trTitles={trGameTitle}>
+                {games?.map((game) => (
+                  <RankingRow
+                    key={game.id}
+                    name={game.name}
+                    total={game.total}
+                  />
+                ))}
+              </RankingTable>
+            </article>
 
-          <article>
-            <h5>Juego más jugado</h5>
-            <RankingTable trTitles={trGameTitle}>
-              {games?.map((game) => (
-                <RankingRow key={game.id} name={game.name} total={game.total} />
-              ))}
-            </RankingTable>
-          </article>
+            <article>
+              <h5>Promo más canjeada</h5>
+              <RankingTable trTitles={trPromotionTitle}>
+                {promotions?.map((promotion) => (
+                  <RankingRow
+                    key={promotion.id}
+                    name={promotion.name}
+                    total={promotion.total}
+                  />
+                ))}
+              </RankingTable>
+            </article>
 
-          <article>
-            <h5>Promo más canjeada</h5>
-            <RankingTable trTitles={trPromotionTitle}>
-              {promotions?.map((promotion) => (
-                <RankingRow
-                  key={promotion.id}
-                  name={promotion.name}
-                  total={promotion.total}
-                />
-              ))}
-            </RankingTable>
-          </article>
+            <article>
+              <h5>Jugadores con más puntos canjeados</h5>
+              <RankingTable trTitles={trPromotionTitle}>
+                {users?.map((user) => (
+                  <RankingRow
+                    key={user.id}
+                    name={user.fullName}
+                    total={user.totalPointsSpent}
+                  />
+                ))}
+              </RankingTable>
+            </article>
+          </div>
 
-          <article>
-            <h5>Jugadores con más puntos canjeados</h5>
-            <RankingTable trTitles={trPromotionTitle}>
-              {users?.map((user) => (
-                <RankingRow
-                  key={user.id}
-                  name={user.fullName}
-                  total={user.totalPointsSpent}
-                />
-              ))}
-            </RankingTable>
-          </article>
-        </div>
-
-        <button type="submit" onClick={toggleFullScreen}>
-          FULL SCREEN MODE
-        </button>
-      </section>
+          <button type="submit" onClick={toggleFullScreen}>
+            FULL SCREEN MODE
+          </button>
+        </section>
+      </main>
     </div>
   );
 }
