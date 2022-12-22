@@ -1,6 +1,8 @@
+import axios from "axios";
 import { useRouter } from "next/router";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
+import Modal from "../Modal/Modal";
 
 import s from "./LoginInput.module.scss";
 
@@ -15,13 +17,24 @@ export default function LoginInput() {
     watch,
     formState: { errors },
     setFocus,
+    reset,
   } = useForm();
   const router = useRouter();
+  const [error, setError] = useState<string>("");
 
   const id = watch("id");
 
   const onSubmit = async (id: string) => {
-    router.push(`/user/${id}`);
+    try {
+      const user = await axios(`http://localhost:3000/api/user/${id}`);
+      if (user) {
+        return router.push(`/user/${id}`);
+      }
+    } catch (e: any) {
+      console.log("catch", e.response);
+      setError(e?.response?.data?.message);
+      reset();
+    }
   };
 
   if (id?.length === 25) {
@@ -30,11 +43,20 @@ export default function LoginInput() {
 
   useEffect(() => {
     setFocus("id");
-  }, [setFocus]);
+  }, [setFocus, error]);
 
   return (
-    <section className={s.section}>
-      <input type="password" {...register("id")} autoFocus />
-    </section>
+    <>
+      {error && (
+        <Modal isOpen={!!error} handleCloseModal={() => setError("")}>
+          <p>{error}</p>
+        </Modal>
+      )}
+      <form>
+        <section className={s.section}>
+          <input type="password" {...register("id")} autoFocus />
+        </section>
+      </form>
+    </>
   );
 }

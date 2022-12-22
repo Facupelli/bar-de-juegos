@@ -39,7 +39,11 @@ export default async function handlerUser(
         },
       });
 
-      return res.status(200).json(user);
+      if (user) {
+        return res.status(200).json(user);
+      }
+
+      return res.status(404).json({ message: "User not found" });
     } catch (e) {
       console.error(e);
       res.status(500).json({ message: `error ${e}` });
