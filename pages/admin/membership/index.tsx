@@ -56,28 +56,32 @@ export default function MembershipPage({ memberships }: Props) {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <Modal
-        isOpen={openCreateModal}
-        handleCloseModal={() => setOpenCreateModal(false)}
-      >
-        <CreateMembership
-          setMembershipsList={setMembershipsList}
-          setOpenCreateModal={setOpenCreateModal}
-        />
-      </Modal>
-
-      <Modal
-        isOpen={openDeleteModal}
-        handleCloseModal={() => setOpenDeleteModal(false)}
-      >
-        <h4>Seguro que quieres eliminar para siempre?</h4>
-        <ButtonOnClick
-          type="danger"
-          handleClick={() => handleDeleteMembership(deleteId)}
+      {openCreateModal && (
+        <Modal
+          isOpen={openCreateModal}
+          handleCloseModal={() => setOpenCreateModal(false)}
         >
-          ELIMINAR
-        </ButtonOnClick>
-      </Modal>
+          <CreateMembership
+            setMembershipsList={setMembershipsList}
+            setOpenCreateModal={setOpenCreateModal}
+          />
+        </Modal>
+      )}
+
+      {openDeleteModal && (
+        <Modal
+          isOpen={openDeleteModal}
+          handleCloseModal={() => setOpenDeleteModal(false)}
+        >
+          <h4>Seguro que quieres eliminar para siempre?</h4>
+          <ButtonOnClick
+            type="danger"
+            handleClick={() => handleDeleteMembership(deleteId)}
+          >
+            ELIMINAR
+          </ButtonOnClick>
+        </Modal>
+      )}
 
       <Nav />
 

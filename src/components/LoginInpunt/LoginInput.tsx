@@ -47,7 +47,7 @@ export default function LoginInput() {
 
   return (
     <>
-      {error && (
+      {error && !!error && (
         <Modal isOpen={!!error} handleCloseModal={() => setError("")}>
           <p>{error}</p>
         </Modal>

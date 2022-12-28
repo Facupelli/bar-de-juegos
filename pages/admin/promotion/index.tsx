@@ -60,30 +60,34 @@ export default function PromotionPage({
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <Modal
-        isOpen={openCreateModal}
-        handleCloseModal={() => setOpenCreateModal(false)}
-      >
-        <CreatePromotion
-          memberships={memberships}
-          consumptions={consumptions}
-          setOpenCreateModal={setOpenCreateModal}
-          setPromotionsList={setPromotionsList}
-        />
-      </Modal>
-
-      <Modal
-        isOpen={openDeleteModal}
-        handleCloseModal={() => setOpenDeleteModal(false)}
-      >
-        <h4>Seguro que quieres eliminar para siempre?</h4>
-        <ButtonOnClick
-          type="danger"
-          handleClick={() => handleDeletePromotion(deleteId)}
+      {openCreateModal && (
+        <Modal
+          isOpen={openCreateModal}
+          handleCloseModal={() => setOpenCreateModal(false)}
         >
-          ELIMINAR
-        </ButtonOnClick>
-      </Modal>
+          <CreatePromotion
+            memberships={memberships}
+            consumptions={consumptions}
+            setOpenCreateModal={setOpenCreateModal}
+            setPromotionsList={setPromotionsList}
+          />
+        </Modal>
+      )}
+
+      {openDeleteModal && (
+        <Modal
+          isOpen={openDeleteModal}
+          handleCloseModal={() => setOpenDeleteModal(false)}
+        >
+          <h4>Seguro que quieres eliminar para siempre?</h4>
+          <ButtonOnClick
+            type="danger"
+            handleClick={() => handleDeletePromotion(deleteId)}
+          >
+            ELIMINAR
+          </ButtonOnClick>
+        </Modal>
+      )}
 
       <Nav />
 

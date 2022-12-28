@@ -62,28 +62,32 @@ export default function ConsumptionPage({ consumptions }: Props) {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <Modal
-        isOpen={openCreateModal}
-        handleCloseModal={() => setOpenCreateModal(false)}
-      >
-        <CreateConsumption
-          setConsumptionsList={setConsumptionsList}
-          setOpenCreateModal={setOpenCreateModal}
-        />
-      </Modal>
-
-      <Modal
-        isOpen={openDeleteModal}
-        handleCloseModal={() => setOpenDeleteModal(false)}
-      >
-        <h4>Seguro que quieres eliminar para siempre?</h4>
-        <ButtonOnClick
-          type="danger"
-          handleClick={() => handleDeleteConsumption(deleteId)}
+      {openCreateModal && (
+        <Modal
+          isOpen={openCreateModal}
+          handleCloseModal={() => setOpenCreateModal(false)}
         >
-          ELIMINAR
-        </ButtonOnClick>
-      </Modal>
+          <CreateConsumption
+            setConsumptionsList={setConsumptionsList}
+            setOpenCreateModal={setOpenCreateModal}
+          />
+        </Modal>
+      )}
+
+      {openDeleteModal && (
+        <Modal
+          isOpen={openDeleteModal}
+          handleCloseModal={() => setOpenDeleteModal(false)}
+        >
+          <h4>Seguro que quieres eliminar para siempre?</h4>
+          <ButtonOnClick
+            type="danger"
+            handleClick={() => handleDeleteConsumption(deleteId)}
+          >
+            ELIMINAR
+          </ButtonOnClick>
+        </Modal>
+      )}
 
       <Nav />
 
