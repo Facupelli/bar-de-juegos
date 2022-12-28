@@ -1,3 +1,4 @@
+import XMark from "../../icons/XMark";
 import s from "./Modal.module.scss";
 
 type Props = {
@@ -12,7 +13,7 @@ export default function Modal({ children, isOpen, handleCloseModal }: Props) {
       <dialog open={isOpen} className={s.modal}>
         <div className={s.btn_wrapper}>
           <button type="button" onClick={handleCloseModal}>
-            X
+            <XMark size={22} white />
           </button>
         </div>
         {children}
