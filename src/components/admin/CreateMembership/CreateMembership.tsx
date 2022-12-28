@@ -26,6 +26,7 @@ export default function CreateMembership({
     register,
     handleSubmit,
     watch,
+    reset,
     formState: { errors },
   } = useForm<MembershipData>();
 
@@ -39,6 +40,7 @@ export default function CreateMembership({
       console.log(postMembership.data.message);
       setMembershipsList(await fetchMemberships());
       setOpenCreateModal(false);
+      reset();
     }
   };
 

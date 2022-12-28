@@ -24,7 +24,7 @@ type Props = {
   memberships: Membership[];
 };
 
-const trTitles = ["Nombre", "Puntos"];
+const trTitles = ["Nombre", "Puntos Mínimos", "Puntos Máximos"];
 
 export default function MembershipPage({ memberships }: Props) {
   const [openCreateModal, setOpenCreateModal] = useState<boolean>(false);

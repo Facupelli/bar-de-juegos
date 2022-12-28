@@ -34,6 +34,7 @@ export default function CreateConsumption({
     register,
     handleSubmit,
     watch,
+    reset,
     formState: { errors },
   } = useForm<FormData>();
 
@@ -47,6 +48,7 @@ export default function CreateConsumption({
       console.log(postConsumption.data.message);
       setConsumptionsList(await fetchConsumptions());
       setOpenCreateModal(false);
+      reset();
     }
   };
 

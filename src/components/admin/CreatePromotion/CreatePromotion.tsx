@@ -37,7 +37,7 @@ export default function CreatePromotion({
   const {
     register,
     handleSubmit,
-    watch,
+    reset,
     formState: { errors },
   } = useForm<PromotionData>();
 
@@ -57,6 +57,7 @@ export default function CreatePromotion({
       console.log(postMembership.data.message);
       setPromotionsList(await fetchPromotions());
       setOpenCreateModal(false);
+      reset();
     }
   };
 

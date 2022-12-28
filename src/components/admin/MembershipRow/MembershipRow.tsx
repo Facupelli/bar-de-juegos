@@ -15,6 +15,7 @@ export default function MembershipRow({
     <tr>
       <td>{membership.name}</td>
       <td>{membership.minPoints}</td>
+      <td>{membership.maxPoints}</td>
       <td
         onClick={() => {
           setDeleteId(membership.id);
