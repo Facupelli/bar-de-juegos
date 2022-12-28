@@ -11,20 +11,12 @@ export type User = {
   updatedAt: Date;
 };
 
-export const ConsumptionType: {
-  DRINK: "DRINK";
-  GAME: "GAME";
-  FOOD: "FOOD";
-} = {
-  DRINK: "DRINK",
-  GAME: "GAME",
-  FOOD: "FOOD",
-};
+export type ConsumptionType = "GAME" | "FOOD" | "DRINK";
 
 export type Consumption = {
   id: string;
   name: string;
-  type: typeof ConsumptionType;
+  type: ConsumptionType;
   points: number;
   users: ConsumptionOnUser[];
   promotions: ConsumptionOnPromotion[];
@@ -33,7 +25,7 @@ export type Consumption = {
 export type SortedConsumption = {
   id: string;
   name: string;
-  type: typeof ConsumptionType;
+  type: ConsumptionType;
   points: number;
   users: ConsumptionOnUser[];
   promotions: ConsumptionOnPromotion[];
@@ -47,6 +39,7 @@ export type ConsumptionOnUser = {
   consumption: Consumption;
   consumptionId: string;
   quantity: number;
+  winner: boolean | null;
   createdAt: Date;
 };
 

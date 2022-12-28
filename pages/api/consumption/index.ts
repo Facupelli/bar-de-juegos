@@ -91,7 +91,7 @@ export default async function handleConsumption(
     points,
   }: {
     id: string;
-    type: typeof ConsumptionType[keyof typeof ConsumptionType];
+    type: ConsumptionType;
     name: string;
     points: number;
   } = req.body;

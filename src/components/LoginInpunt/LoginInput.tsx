@@ -18,7 +18,7 @@ export default function LoginInput() {
     formState: { errors },
     setFocus,
     reset,
-  } = useForm();
+  } = useForm<SubmitData>();
   const router = useRouter();
   const [error, setError] = useState<string>("");
 
@@ -27,13 +27,13 @@ export default function LoginInput() {
   const onSubmit = async (id: string) => {
     try {
       const user = await axios(`http://localhost:3000/api/user/${id}`);
+      reset({ id: "" });
       if (user) {
-        return router.push(`/user/${id}`);
+        router.push(`/user/${id}`);
       }
     } catch (e: any) {
       console.log("catch", e.response);
       setError(e?.response?.data?.message);
-      reset();
     }
   };
 

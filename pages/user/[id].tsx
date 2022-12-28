@@ -7,24 +7,19 @@ import { authOptions } from "../api/auth/[...nextauth]";
 import { unstable_getServerSession } from "next-auth";
 import { useRouter } from "next/router";
 import { useState } from "react";
+import { fetchUserById } from "../../src/utils/fetching";
 
 //COMPONENTS
 import MembershipCard from "../../src/components/UserDetail/MembershipCard/MembershipCard";
 import AddPromotion from "../../src/components/UserDetail/AddPromotion/AddPromotion";
 import Table from "../../src/components/Ranking/Table/Table";
 import PromotionTale from "../../src/components/admin/PromotionTable/PromotionTable";
-
 import AddConsumptionList from "../../src/components/UserDetail/AddConsumptionList/AddConsumptionList";
 import ButtonOnClick from "../../src/components/UI/ButtonOnClick/ButtonOnClick";
 import Nav from "../../src/components/Nav/Nav";
 
-import {
-  ClientToServerEvents,
-  ServerToClientEvents,
-} from "../../src/types/socketio";
-
 import s from "./UserDetail.module.scss";
-import { fetchUserById } from "../../src/utils/fetching";
+import { updateUserState } from "../../src/utils/userID";
 
 type Props = {
   userData: User;
@@ -42,7 +37,7 @@ type Props = {
   userId: string;
 };
 
-const trLastConsumptionsTitles = ["consumicion", "cantidad", "fecha"];
+const trLastConsumptionsTitles = ["consumicion", "ganó?", "cantidad", "fecha"];
 
 export default function Home({
   userData,
@@ -54,6 +49,22 @@ export default function Home({
   const router = useRouter();
 
   const [user, setUser] = useState(userData);
+
+  const updateGameWinner = async (id: string, status: boolean) => {
+    const updateConsumption = await axios.put(
+      `http://localhost:3000/api/consumptionOnUser`,
+      {
+        id,
+        status,
+      }
+    );
+
+    console.log("ASDASDAS", updateConsumption);
+
+    if (updateConsumption.data.message === "success") {
+      updateUserState(userId, setUser);
+    }
+  };
 
   return (
     <div className={s.container}>
@@ -119,6 +130,25 @@ export default function Home({
             {user.consumptions.slice(0, 10).map((consumption) => (
               <tr key={consumption.id}>
                 <td>{consumption.consumption.name}</td>
+                <td>
+                  {consumption.consumption.type === "GAME" &&
+                  consumption.winner === null ? (
+                    <div>
+                      <button
+                        onClick={() => updateGameWinner(consumption.id, true)}
+                      >
+                        GANÓ
+                      </button>
+                      <button
+                        onClick={() => updateGameWinner(consumption.id, false)}
+                      >
+                        PERDIÓ
+                      </button>
+                    </div>
+                  ) : (
+                    <div>{consumption.winner ? "SI" : "NO"}</div>
+                  )}
+                </td>
                 <td>{consumption.quantity}</td>
                 <td>
                   {new Date(consumption.createdAt).toLocaleDateString("es-AR", {

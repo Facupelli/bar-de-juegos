@@ -68,6 +68,7 @@ model ConsumptionOnUser {
   userId                  String
   consumption             Consumption       @relation(fields: [consumptionId], references: [id], onDelete: Cascade)
   consumptionId           String
+  winner                  Boolean?
   quantity                Int
   createdAt               DateTime          @default(now()) @map(name: "created_at")
 }
