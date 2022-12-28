@@ -132,22 +132,24 @@ export default function Home({
                 <td>{consumption.consumption.name}</td>
                 <td>
                   {consumption.consumption.type === "GAME" &&
-                  consumption.winner === null ? (
-                    <div>
-                      <button
-                        onClick={() => updateGameWinner(consumption.id, true)}
-                      >
-                        GANÓ
-                      </button>
-                      <button
-                        onClick={() => updateGameWinner(consumption.id, false)}
-                      >
-                        PERDIÓ
-                      </button>
-                    </div>
-                  ) : (
-                    <div>{consumption.winner ? "SI" : "NO"}</div>
-                  )}
+                    (consumption.winner === null ? (
+                      <div>
+                        <button
+                          onClick={() => updateGameWinner(consumption.id, true)}
+                        >
+                          GANÓ
+                        </button>
+                        <button
+                          onClick={() =>
+                            updateGameWinner(consumption.id, false)
+                          }
+                        >
+                          PERDIÓ
+                        </button>
+                      </div>
+                    ) : (
+                      <div>{consumption.winner ? "SI" : "NO"}</div>
+                    ))}
                 </td>
                 <td>{consumption.quantity}</td>
                 <td>
