@@ -88,7 +88,7 @@ export default function ConsumptionPage({ consumptions }: Props) {
       <Nav />
 
       <main className={s.main}>
-        <AdminLayout>
+        <AdminLayout route="consumptions">
           <div className={s.btn_wrapper}>
             <ButtonOnClick
               type="primary"

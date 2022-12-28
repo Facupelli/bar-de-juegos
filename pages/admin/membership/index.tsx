@@ -82,7 +82,7 @@ export default function MembershipPage({ memberships }: Props) {
       <Nav />
 
       <main className={s.main}>
-        <AdminLayout>
+        <AdminLayout route="memberships">
           <div className={s.btn_wrapper}>
             <ButtonOnClick
               type="primary"

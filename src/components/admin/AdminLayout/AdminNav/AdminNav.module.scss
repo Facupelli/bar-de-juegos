@@ -1,25 +1,43 @@
 @import "../../../../../styles/app.scss";
 
 .nav {
-  width: 180px;
+  width: 200px;
   height: 100vh;
   position: fixed;
   overflow-y: auto;
-  background-color: rgb(236, 236, 236);
+  background-color: $black-900;
+  color: $white;
 
   ul {
+    padding: 1em 1em;
     display: flex;
-    row-gap: 0.5rem;
+    row-gap: 1em;
     flex-direction: column;
-    padding: 1em 1em 0 1em;
 
     li {
       list-style: none;
       text-decoration: none;
 
-      &:hover {
-        color: $gray;
+      .link {
+        display: flex;
+        gap: 1em;
+        align-items: center;
+        padding: 0.6em;
+
+        > p {
+          text-align: left;
+        }
+
+        // &:hover {
+        //   color: $gray;
+        // }
       }
     }
   }
+}
+
+.active {
+  background-color: $green;
+  color: $black;
+  font-weight: 600;
 }

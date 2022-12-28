@@ -88,7 +88,7 @@ export default function PromotionPage({
       <Nav />
 
       <main className={s.main}>
-        <AdminLayout>
+        <AdminLayout route="promotions">
           <div className={s.btn_wrapper}>
             <ButtonOnClick
               type="primary"
