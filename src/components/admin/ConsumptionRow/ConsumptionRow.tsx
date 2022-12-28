@@ -1,3 +1,4 @@
+import XMark from "../../../icons/XMark";
 import { Consumption } from "../../../types/model";
 
 import s from "./ConsumptionRow.module.scss";
@@ -22,8 +23,9 @@ export default function ConsumptionRow({
           setDeleteId(consumption.id);
           setOpenDeleteModal(true);
         }}
+        className={s.delete_btn}
       >
-        X
+        <XMark size={18} />
       </td>
     </tr>
   );

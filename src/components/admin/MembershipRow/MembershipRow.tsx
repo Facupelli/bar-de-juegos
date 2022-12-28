@@ -1,3 +1,4 @@
+import XMark from "../../../icons/XMark";
 import { Membership } from "../../../types/model";
 
 import s from "./MembershipRow.module.scss";
@@ -23,8 +24,9 @@ export default function MembershipRow({
           setDeleteId(membership.id);
           setOpenDeleteModal(true);
         }}
+        className={s.delete_btn}
       >
-        X
+        <XMark size={18} />
       </td>
     </tr>
   );

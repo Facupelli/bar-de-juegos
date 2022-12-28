@@ -1,3 +1,4 @@
+import XMark from "../../../../icons/XMark";
 import { Promotion } from "../../../../types/model";
 import s from "./PromotionRow.module.scss";
 
@@ -38,8 +39,9 @@ export default function PromotionRow({
             setDeleteId(promotion.id);
             setOpenDeleteModal(true);
           }}
+          className={s.delete_btn}
         >
-          X
+          <XMark size={18} />
         </td>
       )}
     </tr>
