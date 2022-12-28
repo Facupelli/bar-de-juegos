@@ -41,6 +41,15 @@
         tr {
           td {
             padding-top: 0.5em;
+
+            .btns_wrapper {
+              display: flex;
+              gap: 1em;
+
+              button {
+                @include main-btn;
+              }
+            }
           }
         }
       }
