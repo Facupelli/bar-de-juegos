@@ -1,5 +1,7 @@
 import { Membership } from "../../../types/model";
 
+import s from "./MembershipRow.module.scss";
+
 type Props = {
   membership: Membership;
   setOpenDeleteModal: React.Dispatch<React.SetStateAction<boolean>>;
@@ -12,7 +14,7 @@ export default function MembershipRow({
   setDeleteId,
 }: Props) {
   return (
-    <tr>
+    <tr className={s.tr}>
       <td>{membership.name}</td>
       <td>{membership.minPoints}</td>
       <td>{membership.maxPoints}</td>

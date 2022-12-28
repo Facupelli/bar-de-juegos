@@ -13,7 +13,7 @@ export default function PromotionRow({
   setDeleteId,
 }: Props) {
   return (
-    <tr className={s.row}>
+    <tr className={s.tr}>
       <td>{promotion.name}</td>
       <td>
         {promotion.memberships?.map((membership) => membership.name).join(", ")}
