@@ -18,6 +18,7 @@ import ButtonOnClick from "../../../src/components/UI/ButtonOnClick/ButtonOnClic
 import { Consumption } from "../../../src/types/model";
 
 import s from "./ConsumptionPage.module.scss";
+import DeleteModalChild from "../../../src/components/admin/DeleteModalChild/DeleteModalChild";
 
 type Props = {
   consumptions: {
@@ -79,13 +80,10 @@ export default function ConsumptionPage({ consumptions }: Props) {
           isOpen={openDeleteModal}
           handleCloseModal={() => setOpenDeleteModal(false)}
         >
-          <h4>Seguro que quieres eliminar para siempre?</h4>
-          <ButtonOnClick
-            type="danger"
-            handleClick={() => handleDeleteConsumption(deleteId)}
-          >
-            ELIMINAR
-          </ButtonOnClick>
+          <DeleteModalChild
+            deleteFunc={handleDeleteConsumption}
+            deleteId={deleteId}
+          />
         </Modal>
       )}
 

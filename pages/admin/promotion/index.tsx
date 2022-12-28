@@ -17,6 +17,7 @@ import { Consumption, Membership, Promotion } from "../../../src/types/model";
 
 import s from "./PromotionPage.module.scss";
 import CreatePromotion from "../../../src/components/admin/CreatePromotion/CreatePromotion";
+import DeleteModalChild from "../../../src/components/admin/DeleteModalChild/DeleteModalChild";
 
 type Props = {
   promotions: Promotion[];
@@ -79,13 +80,10 @@ export default function PromotionPage({
           isOpen={openDeleteModal}
           handleCloseModal={() => setOpenDeleteModal(false)}
         >
-          <h4>Seguro que quieres eliminar para siempre?</h4>
-          <ButtonOnClick
-            type="danger"
-            handleClick={() => handleDeletePromotion(deleteId)}
-          >
-            ELIMINAR
-          </ButtonOnClick>
+          <DeleteModalChild
+            deleteFunc={handleDeletePromotion}
+            deleteId={deleteId}
+          />
         </Modal>
       )}
 

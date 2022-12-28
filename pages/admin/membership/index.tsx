@@ -19,6 +19,7 @@ import MembershipRow from "../../../src/components/admin/MembershipRow/Membershi
 import { Membership } from "../../../src/types/model";
 
 import s from "./MembershipPage.module.scss";
+import DeleteModalChild from "../../../src/components/admin/DeleteModalChild/DeleteModalChild";
 
 type Props = {
   memberships: Membership[];
@@ -73,13 +74,10 @@ export default function MembershipPage({ memberships }: Props) {
           isOpen={openDeleteModal}
           handleCloseModal={() => setOpenDeleteModal(false)}
         >
-          <h4>Seguro que quieres eliminar para siempre?</h4>
-          <ButtonOnClick
-            type="danger"
-            handleClick={() => handleDeleteMembership(deleteId)}
-          >
-            ELIMINAR
-          </ButtonOnClick>
+          <DeleteModalChild
+            deleteFunc={handleDeleteMembership}
+            deleteId={deleteId}
+          />
         </Modal>
       )}
 

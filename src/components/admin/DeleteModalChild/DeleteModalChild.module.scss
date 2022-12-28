@@ -1,0 +1,15 @@
+.delete_modal_wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 2em;
+
+  > h4 {
+    font-weight: 600;
+    font-size: 1.1rem;
+  }
+
+  > button {
+    width: 100%;
+    // width: 100%;
+  }
+}
