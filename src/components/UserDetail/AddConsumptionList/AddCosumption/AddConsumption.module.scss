@@ -1,8 +1,11 @@
 @import "../../../../../styles/app.scss";
 
 .form {
+  padding: 1em 0 2em 0;
+  margin-left: auto;
+  width: 50%;
   display: grid;
-  grid-template-columns: 20% 50% 30%;
+  grid-template-columns: 1fr 20%;
   align-items: center;
   gap: 1em;
 

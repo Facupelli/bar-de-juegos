@@ -26,6 +26,7 @@ import PercentageIcon from "../../src/icons/PercentageIcon";
 import BeerIcon from "../../src/icons/BeerIcon";
 import PoolIcon from "../../src/icons/PoolIcon";
 import ConsumptionCard from "../../src/components/UserDetail/ConsumptionCard/ConsumptionCard";
+import AddConsumption from "../../src/components/UserDetail/AddConsumptionList/AddCosumption/AddConsumption";
 
 type Props = {
   userData: User;
@@ -90,70 +91,71 @@ export default function Home({
       <Nav />
 
       <main className={s.main}>
-        <section className={` ${s.input_section}`}>
-          <div className={s.btns_wrapper}>
-            <AddConsumptionBtn
-              text="BEBIDAS"
-              handleClick={() =>
-                setConsumptionActive((prev) => ({
-                  ...prev,
-                  drinks: !consumptionActive.drinks,
-                  foods: false,
-                  games: false,
-                  promos: false,
-                }))
-              }
-              active={consumptionActive.drinks}
-            >
-              <BeerIcon size={26} active={consumptionActive.drinks} />
-            </AddConsumptionBtn>
-            <AddConsumptionBtn
-              text="COMIDAS"
-              handleClick={() =>
-                setConsumptionActive((prev) => ({
-                  ...prev,
-                  foods: !consumptionActive.foods,
-                  games: false,
-                  promos: false,
-                  drinks: false,
-                }))
-              }
-              active={consumptionActive.foods}
-            >
-              <KitchenTools size={26} active={consumptionActive.foods} />
-            </AddConsumptionBtn>
-            <AddConsumptionBtn
-              text="JUEGOS"
-              handleClick={() =>
-                setConsumptionActive((prev) => ({
-                  ...prev,
-                  games: !consumptionActive.games,
-                  promos: false,
-                  drinks: false,
-                  foods: false,
-                }))
-              }
-              active={consumptionActive.games}
-            >
-              <PoolIcon size={26} active={consumptionActive.games} />
-            </AddConsumptionBtn>
-            <AddConsumptionBtn
-              text="PROMOCIONES"
-              handleClick={() =>
-                setConsumptionActive((prev) => ({
-                  ...prev,
-                  promos: !consumptionActive.promos,
-                  games: false,
-                  drinks: false,
-                  foods: false,
-                }))
-              }
-              active={consumptionActive.promos}
-            >
-              <PercentageIcon size={26} active={consumptionActive.promos} />
-            </AddConsumptionBtn>
+        <div>
+          <section className={` ${s.input_section}`}>
+            <div className={s.btns_wrapper}>
+              <AddConsumptionBtn
+                text="BEBIDAS"
+                handleClick={() =>
+                  setConsumptionActive((prev) => ({
+                    ...prev,
+                    drinks: !consumptionActive.drinks,
+                    foods: false,
+                    games: false,
+                    promos: false,
+                  }))
+                }
+                active={consumptionActive.drinks}
+              >
+                <BeerIcon size={26} active={consumptionActive.drinks} />
+              </AddConsumptionBtn>
+              <AddConsumptionBtn
+                text="COMIDAS"
+                handleClick={() =>
+                  setConsumptionActive((prev) => ({
+                    ...prev,
+                    foods: !consumptionActive.foods,
+                    games: false,
+                    promos: false,
+                    drinks: false,
+                  }))
+                }
+                active={consumptionActive.foods}
+              >
+                <KitchenTools size={26} active={consumptionActive.foods} />
+              </AddConsumptionBtn>
+              <AddConsumptionBtn
+                text="JUEGOS"
+                handleClick={() =>
+                  setConsumptionActive((prev) => ({
+                    ...prev,
+                    games: !consumptionActive.games,
+                    promos: false,
+                    drinks: false,
+                    foods: false,
+                  }))
+                }
+                active={consumptionActive.games}
+              >
+                <PoolIcon size={26} active={consumptionActive.games} />
+              </AddConsumptionBtn>
+              <AddConsumptionBtn
+                text="PROMOCIONES"
+                handleClick={() =>
+                  setConsumptionActive((prev) => ({
+                    ...prev,
+                    promos: !consumptionActive.promos,
+                    games: false,
+                    drinks: false,
+                    foods: false,
+                  }))
+                }
+                active={consumptionActive.promos}
+              >
+                <PercentageIcon size={26} active={consumptionActive.promos} />
+              </AddConsumptionBtn>
 
-            {/* <AddConsumptionList
+              {/* <AddConsumptionList
               consumptions={consumptions}
               userId={userId}
               setUser={setUser}
@@ -164,119 +166,153 @@ export default function Home({
               userPoints={user.totalPoints}
               setUser={setUser}
             /> */}
-          </div>
-          <MembershipCard user={user} />
-        </section>
-
-        <section className={s.margin_t}>
-          {consumptionActive.drinks && (
-            <div className={s.consumptions_wrapper}>
-              {consumptions.drinks.map((drink) => (
-                <ConsumptionCard consumption={drink} key={drink.id} />
-              ))}
             </div>
-          )}
+            <MembershipCard user={user} />
+          </section>
 
-          {consumptionActive.foods && (
-            <div className={s.consumptions_wrapper}>
-              {consumptions.foods.map((food) => (
-                <ConsumptionCard consumption={food} key={food.id} />
-              ))}
-            </div>
-          )}
-
-          {consumptionActive.games && (
-            <div className={s.consumptions_wrapper}>
-              {consumptions.games.map((game) => (
-                <ConsumptionCard consumption={game} key={game.id} />
-              ))}
-            </div>
-          )}
-        </section>
-
-        <section className={s.margin_t}>
-          <h4>Promociones para membresia {user.membership.name}:</h4>
-          <PromotionTale promotions={user.membership.promotions} />
-        </section>
-
-        <section className={s.margin_t}>
-          <h4>Consumiciones totales:</h4>
-          <div className={`${s.grid} ${s.user_consumptions_section}`}>
-            <article>
-              {userConsumptions.drinks?.map((consumption) => (
-                <div key={consumption.id}>
-                  <p>
-                    {consumption.name} x{consumption.users.length}
-                  </p>
+          <section>
+            {consumptionActive.drinks && (
+              <>
+                <AddConsumption
+                  consumptions={consumptions.drinks}
+                  name="Bebida"
+                  userId={userId}
+                  setUser={setUser}
+                />
+                <div className={s.consumptions_wrapper}>
+                  {consumptions.drinks.map((drink) => (
+                    <ConsumptionCard consumption={drink} key={drink.id} />
+                  ))}
                 </div>
-              ))}
-            </article>
+              </>
+            )}
 
-            <article>
-              {userConsumptions.games?.map((consumption) => (
-                <div key={consumption.id}>
-                  <p>
-                    {consumption.name} x{consumption.users.length}
-                  </p>
+            {consumptionActive.foods && (
+              <>
+                <AddConsumption
+                  consumptions={consumptions.foods}
+                  name="Comida"
+                  userId={userId}
+                  setUser={setUser}
+                />
+                <div className={s.consumptions_wrapper}>
+                  {consumptions.foods.map((food) => (
+                    <ConsumptionCard consumption={food} key={food.id} />
+                  ))}
                 </div>
+              </>
+            )}
+
+            {consumptionActive.games && (
+              <>
+                <AddConsumption
+                  consumptions={consumptions.games}
+                  name="Juegos"
+                  userId={userId}
+                  setUser={setUser}
+                />
+                <div className={s.consumptions_wrapper}>
+                  {consumptions.games.map((game) => (
+                    <ConsumptionCard consumption={game} key={game.id} />
+                  ))}
+                </div>
+              </>
+            )}
+          </section>
+
+          <section className={s.margin_t}>
+            <h4>Promociones para membresia {user.membership.name}:</h4>
+            <PromotionTale promotions={user.membership.promotions} />
+          </section>
+
+          <section className={s.margin_t}>
+            <h4>Consumiciones totales:</h4>
+            <div className={`${s.grid} ${s.user_consumptions_section}`}>
+              <article>
+                {userConsumptions.drinks?.map((consumption) => (
+                  <div key={consumption.id}>
+                    <p>
+                      {consumption.name} x{consumption.users.length}
+                    </p>
+                  </div>
+                ))}
+              </article>
+
+              <article>
+                {userConsumptions.games?.map((consumption) => (
+                  <div key={consumption.id}>
+                    <p>
+                      {consumption.name} x{consumption.users.length}
+                    </p>
+                  </div>
+                ))}
+              </article>
+            </div>
+          </section>
+
+          <section className={s.margin_t}>
+            <h4>Ultimas consumiciones:</h4>
+            <Table trTitles={trLastConsumptionsTitles}>
+              {user.consumptions.slice(0, 10).map((consumption) => (
+                <tr key={consumption.id}>
+                  <td>{consumption.consumption.name}</td>
+                  <td>
+                    {consumption.consumption.type === "GAME" &&
+                      (consumption.winner === null ? (
+                        <div className={s.btns_wrapper}>
+                          <ButtonOnClick
+                            handleClick={() =>
+                              updateGameWinner(consumption.id, true)
+                            }
+                            type="primary"
+                          >
+                            GANÓ
+                          </ButtonOnClick>
+                          <ButtonOnClick
+                            handleClick={() =>
+                              updateGameWinner(consumption.id, false)
+                            }
+                            type="danger"
+                          >
+                            PERDIÓ
+                          </ButtonOnClick>
+                        </div>
+                      ) : (
+                        <div>{consumption.winner ? "SI" : "NO"}</div>
+                      ))}
+                  </td>
+                  <td>{consumption.quantity}</td>
+                  <td>
+                    {new Date(consumption.createdAt).toLocaleDateString(
+                      "es-AR",
+                      {
+                        year: "numeric",
+                        day: "numeric",
+                        month: "short",
+                      }
+                    )}
+                    {" - "}
+                    {new Date(consumption.createdAt).toLocaleTimeString(
+                      "es-AR",
+                      {
+                        hour: "2-digit",
+                        minute: "2-digit",
+                      }
+                    )}
+                  </td>
+                </tr>
               ))}
-            </article>
+            </Table>
+          </section>
+
+          <div className={s.btn_wrrapper}>
+            <ButtonOnClick
+              type="secondary"
+              handleClick={() => router.push("/")}
+            >
+              LISTO
+            </ButtonOnClick>
           </div>
-        </section>
-
-        <section className={s.margin_t}>
-          <h4>Ultimas consumiciones:</h4>
-          <Table trTitles={trLastConsumptionsTitles}>
-            {user.consumptions.slice(0, 10).map((consumption) => (
-              <tr key={consumption.id}>
-                <td>{consumption.consumption.name}</td>
-                <td>
-                  {consumption.consumption.type === "GAME" &&
-                    (consumption.winner === null ? (
-                      <div className={s.btns_wrapper}>
-                        <ButtonOnClick
-                          handleClick={() =>
-                            updateGameWinner(consumption.id, true)
-                          }
-                          type="primary"
-                        >
-                          GANÓ
-                        </ButtonOnClick>
-                        <ButtonOnClick
-                          handleClick={() =>
-                            updateGameWinner(consumption.id, false)
-                          }
-                          type="danger"
-                        >
-                          PERDIÓ
-                        </ButtonOnClick>
-                      </div>
-                    ) : (
-                      <div>{consumption.winner ? "SI" : "NO"}</div>
-                    ))}
-                </td>
-                <td>{consumption.quantity}</td>
-                <td>
-                  {new Date(consumption.createdAt).toLocaleDateString("es-AR", {
-                    year: "numeric",
-                    day: "numeric",
-                    month: "short",
-                  })}
-                  {" - "}
-                  {new Date(consumption.createdAt).toLocaleTimeString("es-AR", {
-                    hour: "2-digit",
-                    minute: "2-digit",
-                  })}
-                </td>
-              </tr>
-            ))}
-          </Table>
-        </section>
-
-        <div className={s.btn_wrrapper}>
-          <ButtonOnClick type="secondary" handleClick={() => router.push("/")}>
-            LISTO
-          </ButtonOnClick>
         </div>
       </main>
     </div>

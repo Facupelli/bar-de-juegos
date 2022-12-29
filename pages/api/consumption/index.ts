@@ -15,16 +15,21 @@ export default async function handleConsumption(
         const drinkConsumptions = await prisma.consumption.findMany({
           include: { users: { where: { userId: userId } } },
           where: { type: "DRINK" },
+          orderBy: { points: "asc" },
         });
+
+        console.log("ACAAA", drinkConsumptions);
 
         const gameConsumptions = await prisma.consumption.findMany({
           include: { users: { where: { userId: userId } } },
           where: { type: "GAME" },
+          orderBy: { points: "asc" },
         });
 
         const foodConsumptions = await prisma.consumption.findMany({
           include: { users: { where: { userId: userId } } },
           where: { type: "FOOD" },
+          orderBy: { points: "asc" },
         });
 
         return res.json({
@@ -61,16 +66,21 @@ export default async function handleConsumption(
       const drinkConsumptions = await prisma.consumption.findMany({
         where: { type: "DRINK" },
         include: { users: true },
+        orderBy: { points: "asc" },
       });
+
+      console.log("ACAAA", drinkConsumptions);
 
       const gamesConsumptions = await prisma.consumption.findMany({
         where: { type: "GAME" },
         include: { users: true },
+        orderBy: { points: "asc" },
       });
 
       const foodConsumptions = await prisma.consumption.findMany({
         where: { type: "FOOD" },
         include: { users: true },
+        orderBy: { points: "asc" },
       });
 
       return res.json({

@@ -1,19 +1,35 @@
 @import "../../../../styles/app.scss";
 
 .card_container {
-  padding: 0.2em;
-  text-align: center;
-  border: 1px solid $black-900;
-  border-radius: 1.5rem;
+  padding: 0.4em;
+  text-align: left;
+  border-radius: 0.5rem;
   font-size: 0.9rem;
+  background-color: white;
+  display: flex;
+  gap: 1em;
 
-  > p {
-    &:first-child {
-      font-weight: 600;
-    }
+  div {
+    > p {
+      &:first-child {
+        font-weight: 600;
+      }
 
-    &:last-child {
-      font-size: 0.8rem;
+      &:last-child {
+        font-size: 0.8rem;
+      }
     }
+  }
+
+  > button {
+    margin-left: auto;
+    border: none;
+    margin-top: 0.5em;
+    padding: 0.5em;
+    border-radius: 0.5rem;
+    background-color: $black;
+    color: $white;
+    font-size: 0.7rem;
+    cursor: pointer;
   }
 }

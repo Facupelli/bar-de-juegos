@@ -62,7 +62,7 @@ export default function AddConsumption({
 
   return (
     <form onSubmit={handleSubmit(onSubmitConsumption)} className={s.form}>
-      <label>{name}:</label>
+      {/* <label>{name}:</label> */}
       <select {...register("id")}>
         {consumptions?.length > 0 &&
           consumptions.map((consumption) => (

@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Consumption } from "../../../types/model";
 
 import s from "./ConsumptionCard.module.scss";
@@ -9,8 +10,11 @@ export default function ConsumptionCard({
 }) {
   return (
     <div className={s.card_container}>
-      <p>{consumption.name}</p>
-      <p>{consumption.points} pts</p>
+      <div>
+        <p>{consumption.name}</p>
+        <p>{consumption.points} pts</p>
+      </div>
+      <button>CARGAR</button>
     </div>
   );
 }
