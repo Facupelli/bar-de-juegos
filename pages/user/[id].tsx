@@ -170,18 +170,24 @@ export default function Home({
             <MembershipCard user={user} />
           </section>
 
-          <section>
+          <section className={s.add_consumptions_wrapper}>
             {consumptionActive.drinks && (
               <>
                 <AddConsumption
                   consumptions={consumptions.drinks}
-                  name="Bebida"
+                  name="DRINK"
                   userId={userId}
                   setUser={setUser}
                 />
                 <div className={s.consumptions_wrapper}>
                   {consumptions.drinks.map((drink) => (
-                    <ConsumptionCard consumption={drink} key={drink.id} />
+                    <ConsumptionCard
+                      name="DRINK"
+                      setUser={setUser}
+                      userId={user.id}
+                      consumption={drink}
+                      key={drink.id}
+                    />
                   ))}
                 </div>
               </>
@@ -197,7 +203,13 @@ export default function Home({
                 />
                 <div className={s.consumptions_wrapper}>
                   {consumptions.foods.map((food) => (
-                    <ConsumptionCard consumption={food} key={food.id} />
+                    <ConsumptionCard
+                      name="FOOD"
+                      setUser={setUser}
+                      userId={user.id}
+                      consumption={food}
+                      key={food.id}
+                    />
                   ))}
                 </div>
               </>
@@ -213,17 +225,23 @@ export default function Home({
                 />
                 <div className={s.consumptions_wrapper}>
                   {consumptions.games.map((game) => (
-                    <ConsumptionCard consumption={game} key={game.id} />
+                    <ConsumptionCard
+                      name="GAME"
+                      setUser={setUser}
+                      userId={user.id}
+                      consumption={game}
+                      key={game.id}
+                    />
                   ))}
                 </div>
               </>
             )}
           </section>
 
-          <section className={s.margin_t}>
+          {/* <section className={s.margin_t}>
             <h4>Promociones para membresia {user.membership.name}:</h4>
             <PromotionTale promotions={user.membership.promotions} />
-          </section>
+          </section> */}
 
           <section className={s.margin_t}>
             <h4>Consumiciones totales:</h4>

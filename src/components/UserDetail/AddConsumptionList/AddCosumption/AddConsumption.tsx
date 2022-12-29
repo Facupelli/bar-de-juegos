@@ -45,17 +45,16 @@ export default function AddConsumption({
         consumptionId,
         points: consumptionPoints,
         operation: "addPoints",
-        consumptionType: name === "Juego" ? "GAME" : "DRINK",
+        consumptionType: name,
         quantity: 1,
       }
     );
 
     await axios.post(`http://localhost:3000/api/socket/postConsumption`, {
-      consumptionType: name === "Juego" ? "GAME" : "DRINK",
+      consumptionType: name,
     });
 
     if (postConsumption.data.message === "success") {
-      console.log("success");
       updateUserState(userId, setUser);
     }
   };

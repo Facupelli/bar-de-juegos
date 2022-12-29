@@ -21,14 +21,14 @@
 }
 
 .ticket {
-  // box-shadow: 0 0 10px 5px rgba(0, 0, 0, 0.4);
+  box-shadow: 0 0 10px 5px rgba(0, 0, 0, 0.1);
   background-color: white;
   padding: 1.5rem;
   border-radius: 0.5rem;
-  border: 1px solid $black;
+  // border: 1px solid $black;
   position: relative;
-  aspect-ratio: 18/9;
-  width: 400px;
+  // aspect-ratio: 18/9;
+  width: 100%;
 
   .membership_name {
     strong {

@@ -1,9 +1,9 @@
 @import "../../../../styles/app.scss";
 
 .card_container {
-  padding: 0.4em;
+  padding: 0.5em;
   text-align: left;
-  border-radius: 0.5rem;
+  border-radius: 0.2rem;
   font-size: 0.9rem;
   background-color: white;
   display: flex;
@@ -26,7 +26,7 @@
     border: none;
     margin-top: 0.5em;
     padding: 0.5em;
-    border-radius: 0.5rem;
+    border-radius: 1rem;
     background-color: $black;
     color: $white;
     font-size: 0.7rem;
