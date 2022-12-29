@@ -20,6 +20,8 @@ export default function LoginInput() {
     reset,
   } = useForm<SubmitData>();
   const router = useRouter();
+
+  const [calledPush, setCalledPush] = useState(false);
   const [error, setError] = useState<string>("");
 
   const id = watch("id");
@@ -29,6 +31,7 @@ export default function LoginInput() {
       const user = await axios(`http://localhost:3000/api/user/${id}`);
       reset({ id: "" });
       if (user) {
+        setCalledPush(true);
         router.push(`/user/${id}`);
       }
     } catch (e: any) {
@@ -37,9 +40,11 @@ export default function LoginInput() {
     }
   };
 
-  if (id?.length === 25) {
-    onSubmit(id);
-  }
+  useEffect(() => {
+    if (id?.length === 25 && !calledPush) {
+      onSubmit(id);
+    }
+  }, [id?.length, calledPush]);
 
   useEffect(() => {
     setFocus("id");
