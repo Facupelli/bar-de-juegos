@@ -1,0 +1,19 @@
+@import "../../../../styles/app.scss";
+
+.card_container {
+  padding: 0.2em;
+  text-align: center;
+  border: 1px solid $black-900;
+  border-radius: 1.5rem;
+  font-size: 0.9rem;
+
+  > p {
+    &:first-child {
+      font-weight: 600;
+    }
+
+    &:last-child {
+      font-size: 0.8rem;
+    }
+  }
+}
