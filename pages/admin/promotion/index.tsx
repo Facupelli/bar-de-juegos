@@ -12,12 +12,13 @@ import AdminLayout from "../../../src/components/admin/AdminLayout/AdminLayout";
 import Modal from "../../../src/components/Modal/Modal";
 import ButtonOnClick from "../../../src/components/UI/ButtonOnClick/ButtonOnClick";
 import PromotionTable from "../../../src/components/admin/PromotionTable/PromotionTable";
+import CreatePromotion from "../../../src/components/admin/CreatePromotion/CreatePromotion";
+import DeleteModalChild from "../../../src/components/admin/DeleteModalChild/DeleteModalChild";
 
 import { Consumption, Membership, Promotion } from "../../../src/types/model";
 
 import s from "./PromotionPage.module.scss";
-import CreatePromotion from "../../../src/components/admin/CreatePromotion/CreatePromotion";
-import DeleteModalChild from "../../../src/components/admin/DeleteModalChild/DeleteModalChild";
+import PlusIcon from "../../../src/icons/PlusIcon";
 
 type Props = {
   promotions: Promotion[];
@@ -96,7 +97,10 @@ export default function PromotionPage({
               type="primary"
               handleClick={() => setOpenCreateModal(true)}
             >
-              CREAR PROMOCIÓN
+              <p>CREAR PROMOCIÓN</p>
+              <div>
+                <PlusIcon size={22} />
+              </div>
             </ButtonOnClick>
           </div>
 

@@ -14,11 +14,11 @@ import ConsumptionRow from "../../../src/components/admin/ConsumptionRow/Consump
 import Modal from "../../../src/components/Modal/Modal";
 import CreateConsumption from "../../../src/components/admin/CreateConsumption/CreateConsumption";
 import ButtonOnClick from "../../../src/components/UI/ButtonOnClick/ButtonOnClick";
+import DeleteModalChild from "../../../src/components/admin/DeleteModalChild/DeleteModalChild";
 
 import { Consumption } from "../../../src/types/model";
 
 import s from "./ConsumptionPage.module.scss";
-import DeleteModalChild from "../../../src/components/admin/DeleteModalChild/DeleteModalChild";
 
 type Props = {
   consumptions: {

@@ -15,11 +15,11 @@ import Modal from "../../../src/components/Modal/Modal";
 import ButtonOnClick from "../../../src/components/UI/ButtonOnClick/ButtonOnClick";
 import CreateMembership from "../../../src/components/admin/CreateMembership/CreateMembership";
 import MembershipRow from "../../../src/components/admin/MembershipRow/MembershipRow";
+import DeleteModalChild from "../../../src/components/admin/DeleteModalChild/DeleteModalChild";
 
 import { Membership } from "../../../src/types/model";
 
 import s from "./MembershipPage.module.scss";
-import DeleteModalChild from "../../../src/components/admin/DeleteModalChild/DeleteModalChild";
 
 type Props = {
   memberships: Membership[];
