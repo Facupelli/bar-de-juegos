@@ -10,7 +10,6 @@ type Props = {
 };
 
 export default function AdminNav({ route }: Props) {
-  console.log(route);
   return (
     <nav className={s.nav}>
       <ul>

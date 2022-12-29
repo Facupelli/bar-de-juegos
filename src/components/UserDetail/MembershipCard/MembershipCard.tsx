@@ -24,7 +24,7 @@ export default function MembershipCard({ user }: Props) {
         <div className={s.margin_t}>
           <p>{user.fullName}</p>
           <p>
-            <strong>Puntos:</strong> {user.totalPoints}
+            <strong>Puntos Actuales:</strong> {user.totalPoints}
           </p>
           <p>
             <strong>Puntos Gastados:</strong> {user.totalPointsSpent}
