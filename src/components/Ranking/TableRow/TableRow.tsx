@@ -1,29 +1,34 @@
+import { ReactNode } from "react";
+import EditIcon from "../../../icons/EditIcon";
 import XMark from "../../../icons/XMark";
-import { Consumption } from "../../../types/model";
 
-import s from "./ConsumptionRow.module.scss";
+import s from "./TableRow.module.scss";
 
 type Props = {
-  consumption: Consumption;
+  children: ReactNode;
   setOpenDeleteModal: React.Dispatch<React.SetStateAction<boolean>>;
   setDeleteId: React.Dispatch<React.SetStateAction<string>>;
+  id: string;
 };
 
-export default function ConsumptionRow({
-  consumption,
+export default function TableRow({
+  children,
   setOpenDeleteModal,
   setDeleteId,
+  id,
 }: Props) {
   return (
-    <tr className={s.row}>
-      <td>{consumption.name}</td>
-      <td>{consumption.points}</td>
+    <tr>
+      {children}
+      <td className={s.btn}>
+        <EditIcon size={18} />
+      </td>
       <td
         onClick={() => {
-          setDeleteId(consumption.id);
+          setDeleteId(id);
           setOpenDeleteModal(true);
         }}
-        className={s.delete_btn}
+        className={s.btn}
       >
         <XMark size={18} />
       </td>

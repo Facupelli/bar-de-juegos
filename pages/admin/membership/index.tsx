@@ -14,8 +14,8 @@ import AdminLayout from "../../../src/components/admin/AdminLayout/AdminLayout";
 import Modal from "../../../src/components/Modal/Modal";
 import ButtonOnClick from "../../../src/components/UI/ButtonOnClick/ButtonOnClick";
 import CreateMembership from "../../../src/components/admin/CreateMembership/CreateMembership";
-import MembershipRow from "../../../src/components/admin/MembershipRow/MembershipRow";
 import DeleteModalChild from "../../../src/components/admin/DeleteModalChild/DeleteModalChild";
+import TableRow from "../../../src/components/Ranking/TableRow/TableRow";
 
 import { Membership } from "../../../src/types/model";
 
@@ -94,16 +94,20 @@ export default function MembershipPage({ memberships }: Props) {
             </ButtonOnClick>
           </div>
 
-          <div className={s.table_Wrapper}>
+          <div className={s.table_wrapper}>
             <h4 className={s.mb_2}>Membresías</h4>
             <Table trTitles={trTitles}>
               {membershipsList.map((membership) => (
-                <MembershipRow
+                <TableRow
                   key={membership.id}
-                  membership={membership}
+                  id={membership.id}
                   setDeleteId={setDeleteId}
                   setOpenDeleteModal={setOpenDeleteModal}
-                />
+                >
+                  <td>{membership.name}</td>
+                  <td>{membership.minPoints}</td>
+                  <td>{membership.maxPoints}</td>
+                </TableRow>
               ))}
             </Table>
           </div>

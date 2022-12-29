@@ -14,11 +14,11 @@ import ButtonOnClick from "../../../src/components/UI/ButtonOnClick/ButtonOnClic
 import PromotionTable from "../../../src/components/admin/PromotionTable/PromotionTable";
 import CreatePromotion from "../../../src/components/admin/CreatePromotion/CreatePromotion";
 import DeleteModalChild from "../../../src/components/admin/DeleteModalChild/DeleteModalChild";
+import PlusIcon from "../../../src/icons/PlusIcon";
 
 import { Consumption, Membership, Promotion } from "../../../src/types/model";
 
 import s from "./PromotionPage.module.scss";
-import PlusIcon from "../../../src/icons/PlusIcon";
 
 type Props = {
   promotions: Promotion[];

@@ -1,13 +1,11 @@
 import { Promotion } from "../../../types/model";
 import Table from "../../Ranking/Table/Table";
-import PromotionRow from "./PromotionRow/PromotionRow";
+import TableRow from "../../Ranking/TableRow/TableRow";
 
 type Props = {
   promotions: Promotion[];
-  setOpenDeleteModal?:
-    | React.Dispatch<React.SetStateAction<boolean>>
-    | undefined;
-  setDeleteId?: React.Dispatch<React.SetStateAction<string>> | undefined;
+  setOpenDeleteModal: React.Dispatch<React.SetStateAction<boolean>>;
+  setDeleteId: React.Dispatch<React.SetStateAction<string>>;
 };
 
 const trPromotionTitles = [
@@ -27,12 +25,37 @@ export default function PromotionTable({
   return (
     <Table trTitles={trPromotionTitles}>
       {promotions?.map((promotion) => (
-        <PromotionRow
+        <TableRow
           key={promotion.id}
-          promotion={promotion}
+          id={promotion.id}
           setDeleteId={setDeleteId}
           setOpenDeleteModal={setOpenDeleteModal}
-        />
+        >
+          <td>{promotion.name}</td>
+          <td>
+            {promotion.memberships
+              ?.map((membership) => membership.name)
+              .join(", ")}
+          </td>
+          <td>
+            {promotion.consumptions
+              ?.filter(
+                (consumption) => consumption.consumption?.type === "DRINK"
+              )
+              .map((consumption) => consumption.consumption.name)
+              .join(", ")}
+          </td>
+          <td>
+            {promotion.consumptions
+              ?.filter(
+                (consumption) => consumption.consumption?.type === "GAME"
+              )
+              .map((consumption) => consumption.consumption.name)
+              .join(", ")}
+          </td>
+          <td>{promotion.discount}%</td>
+          <td>{promotion.points}</td>
+        </TableRow>
       ))}
     </Table>
   );

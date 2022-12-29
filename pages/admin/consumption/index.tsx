@@ -10,11 +10,11 @@ import { fetchConsumptions } from "../../../src/utils/fetching";
 import Nav from "../../../src/components/Nav/Nav";
 import AdminLayout from "../../../src/components/admin/AdminLayout/AdminLayout";
 import Table from "../../../src/components/Ranking/Table/Table";
-import ConsumptionRow from "../../../src/components/admin/ConsumptionRow/ConsumptionRow";
 import Modal from "../../../src/components/Modal/Modal";
 import CreateConsumption from "../../../src/components/admin/CreateConsumption/CreateConsumption";
 import ButtonOnClick from "../../../src/components/UI/ButtonOnClick/ButtonOnClick";
 import DeleteModalChild from "../../../src/components/admin/DeleteModalChild/DeleteModalChild";
+import TableRow from "../../../src/components/Ranking/TableRow/TableRow";
 
 import { Consumption } from "../../../src/types/model";
 
@@ -104,12 +104,15 @@ export default function ConsumptionPage({ consumptions }: Props) {
             <h4 className={s.mb_2}>Bebidas</h4>
             <Table trTitles={trTitles}>
               {consumptionsList.drinks.map((consumption) => (
-                <ConsumptionRow
+                <TableRow
                   key={consumption.id}
-                  consumption={consumption}
-                  setOpenDeleteModal={setOpenDeleteModal}
+                  id={consumption.id}
                   setDeleteId={setDeleteId}
-                />
+                  setOpenDeleteModal={setOpenDeleteModal}
+                >
+                  <td className={s.info}>{consumption.name}</td>
+                  <td className={s.info}>{consumption.points}</td>
+                </TableRow>
               ))}
             </Table>
           </div>
@@ -118,12 +121,15 @@ export default function ConsumptionPage({ consumptions }: Props) {
             <h4 className={s.mb_2}>Comidas</h4>
             <Table trTitles={trTitles}>
               {consumptionsList.foods.map((consumption) => (
-                <ConsumptionRow
+                <TableRow
                   key={consumption.id}
-                  consumption={consumption}
-                  setOpenDeleteModal={setOpenDeleteModal}
+                  id={consumption.id}
                   setDeleteId={setDeleteId}
-                />
+                  setOpenDeleteModal={setOpenDeleteModal}
+                >
+                  <td className={s.info}>{consumption.name}</td>
+                  <td className={s.info}>{consumption.points}</td>
+                </TableRow>
               ))}
             </Table>
           </div>
@@ -132,12 +138,15 @@ export default function ConsumptionPage({ consumptions }: Props) {
             <h4 className={s.mb_2}>Juegos</h4>
             <Table trTitles={trTitles}>
               {consumptionsList.games.map((consumption) => (
-                <ConsumptionRow
+                <TableRow
                   key={consumption.id}
-                  consumption={consumption}
-                  setOpenDeleteModal={setOpenDeleteModal}
+                  id={consumption.id}
                   setDeleteId={setDeleteId}
-                />
+                  setOpenDeleteModal={setOpenDeleteModal}
+                >
+                  <td className={s.info}>{consumption.name}</td>
+                  <td className={s.info}>{consumption.points}</td>
+                </TableRow>
               ))}
             </Table>
           </div>
