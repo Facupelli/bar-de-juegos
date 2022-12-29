@@ -3,17 +3,26 @@
 .main {
   max-width: 1200px;
   margin: 0 auto;
+  padding: 0 1em;
 
   .input_section {
     padding: 3em 1em;
     border-bottom: 1px solid $black;
     display: grid;
-    grid-template-columns: 50% 50%;
+    grid-template-columns: 1fr 1fr;
+    gap: 1em;
     justify-items: center;
 
-    > div {
+    .btns_wrapper {
       width: 100%;
+
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1em;
     }
+    // > div {
+    //   width: 100%;
+    // }
   }
 
   .user_consumptions_section {
@@ -53,6 +62,16 @@
           }
         }
       }
+    }
+  }
+
+  .consumptions_wrapper {
+    display: grid;
+    gap: 1em;
+    grid-template-columns: repeat(8, minmax(1rem, 1fr));
+
+    > * {
+      flex-basis: 100%;
     }
   }
 

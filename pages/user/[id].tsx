@@ -20,6 +20,12 @@ import Nav from "../../src/components/Nav/Nav";
 
 import s from "./UserDetail.module.scss";
 import { updateUserState } from "../../src/utils/userID";
+import AddConsumptionBtn from "../../src/components/UI/AddConsumptionBtn/AddConsumptionBtn";
+import KitchenTools from "../../src/icons/KitchenTools";
+import PercentageIcon from "../../src/icons/PercentageIcon";
+import BeerIcon from "../../src/icons/BeerIcon";
+import PoolIcon from "../../src/icons/PoolIcon";
+import ConsumptionCard from "../../src/components/UserDetail/ConsumptionCard/ConsumptionCard";
 
 type Props = {
   userData: User;
@@ -50,6 +56,13 @@ export default function Home({
 
   const [user, setUser] = useState(userData);
 
+  const [consumptionActive, setConsumptionActive] = useState({
+    drinks: false,
+    foods: false,
+    games: false,
+    promos: false,
+  });
+
   const updateGameWinner = async (id: string, status: boolean) => {
     const updateConsumption = await axios.put(
       `http://localhost:3000/api/consumptionOnUser`,
@@ -78,8 +91,69 @@ export default function Home({
 
       <main className={s.main}>
         <section className={` ${s.input_section}`}>
-          <div>
-            <AddConsumptionList
+          <div className={s.btns_wrapper}>
+            <AddConsumptionBtn
+              text="BEBIDAS"
+              handleClick={() =>
+                setConsumptionActive((prev) => ({
+                  ...prev,
+                  drinks: !consumptionActive.drinks,
+                  foods: false,
+                  games: false,
+                  promos: false,
+                }))
+              }
+              active={consumptionActive.drinks}
+            >
+              <BeerIcon size={26} active={consumptionActive.drinks} />
+            </AddConsumptionBtn>
+            <AddConsumptionBtn
+              text="COMIDAS"
+              handleClick={() =>
+                setConsumptionActive((prev) => ({
+                  ...prev,
+                  foods: !consumptionActive.foods,
+                  games: false,
+                  promos: false,
+                  drinks: false,
+                }))
+              }
+              active={consumptionActive.foods}
+            >
+              <KitchenTools size={26} active={consumptionActive.foods} />
+            </AddConsumptionBtn>
+            <AddConsumptionBtn
+              text="JUEGOS"
+              handleClick={() =>
+                setConsumptionActive((prev) => ({
+                  ...prev,
+                  games: !consumptionActive.games,
+                  promos: false,
+                  drinks: false,
+                  foods: false,
+                }))
+              }
+              active={consumptionActive.games}
+            >
+              <PoolIcon size={26} active={consumptionActive.games} />
+            </AddConsumptionBtn>
+            <AddConsumptionBtn
+              text="PROMOCIONES"
+              handleClick={() =>
+                setConsumptionActive((prev) => ({
+                  ...prev,
+                  promos: !consumptionActive.promos,
+                  games: false,
+                  drinks: false,
+                  foods: false,
+                }))
+              }
+              active={consumptionActive.promos}
+            >
+              <PercentageIcon size={26} active={consumptionActive.promos} />
+            </AddConsumptionBtn>
+
+            {/* <AddConsumptionList
               consumptions={consumptions}
               userId={userId}
               setUser={setUser}
@@ -89,9 +163,35 @@ export default function Home({
               userId={userId}
               userPoints={user.totalPoints}
               setUser={setUser}
-            />
+            /> */}
           </div>
           <MembershipCard user={user} />
+        </section>
+
+        <section className={s.margin_t}>
+          {consumptionActive.drinks && (
+            <div className={s.consumptions_wrapper}>
+              {consumptions.drinks.map((drink) => (
+                <ConsumptionCard consumption={drink} key={drink.id} />
+              ))}
+            </div>
+          )}
+
+          {consumptionActive.foods && (
+            <div className={s.consumptions_wrapper}>
+              {consumptions.foods.map((food) => (
+                <ConsumptionCard consumption={food} key={food.id} />
+              ))}
+            </div>
+          )}
+
+          {consumptionActive.games && (
+            <div className={s.consumptions_wrapper}>
+              {consumptions.games.map((game) => (
+                <ConsumptionCard consumption={game} key={game.id} />
+              ))}
+            </div>
+          )}
         </section>
 
         <section className={s.margin_t}>
