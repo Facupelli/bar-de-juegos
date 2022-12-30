@@ -1,6 +1,7 @@
 import { ReactNode } from "react";
 import EditIcon from "../../../icons/EditIcon";
 import XMark from "../../../icons/XMark";
+import { Consumption, Membership, Promotion } from "../../../types/model";
 
 import s from "./TableRow.module.scss";
 
@@ -20,9 +21,6 @@ export default function TableRow({
   return (
     <tr>
       {children}
-      <td className={s.btn}>
-        <EditIcon size={18} />
-      </td>
       <td
         onClick={() => {
           setDeleteId(id);

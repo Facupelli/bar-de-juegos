@@ -4,7 +4,9 @@ import { GetServerSideProps } from "next";
 import { unstable_getServerSession } from "next-auth";
 import { authOptions } from "../../api/auth/[...nextauth]";
 import { useState } from "react";
+
 import { fetchPromotions } from "../../../src/utils/fetching";
+import { useHandleDelete } from "../../../src/hooks/useHandleDelete";
 
 //COMPONENTS
 import Nav from "../../../src/components/Nav/Nav";
@@ -37,8 +39,8 @@ export default function PromotionPage({
 }: Props) {
   const [openCreateModal, setOpenCreateModal] = useState<boolean>(false);
 
-  const [openDeleteModal, setOpenDeleteModal] = useState<boolean>(false);
-  const [deleteId, setDeleteId] = useState<string>("");
+  const { deleteId, setDeleteId, openDeleteModal, setOpenDeleteModal } =
+    useHandleDelete();
 
   const [promotionsList, setPromotionsList] = useState<Promotion[]>(promotions);
 

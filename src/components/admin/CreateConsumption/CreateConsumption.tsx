@@ -18,6 +18,7 @@ type Props = {
     }>
   >;
   setOpenCreateModal: React.Dispatch<React.SetStateAction<boolean>>;
+  consumption?: Consumption;
 };
 
 type FormData = {
@@ -29,6 +30,7 @@ type FormData = {
 export default function CreateConsumption({
   setConsumptionsList,
   setOpenCreateModal,
+  consumption,
 }: Props) {
   const {
     register,
@@ -36,13 +38,27 @@ export default function CreateConsumption({
     watch,
     reset,
     formState: { errors },
-  } = useForm<FormData>();
+  } = useForm<FormData>({
+    defaultValues: {
+      type: consumption?.type,
+      name: consumption?.name,
+      points: consumption?.points,
+    },
+  });
 
   const onSubmitConsumption: SubmitHandler<FormData> = async (data) => {
-    const postConsumption = await axios.post(
-      `http://localhost:3000/api/consumption`,
-      data
-    );
+    let postConsumption;
+    if (consumption) {
+      postConsumption = await axios.put(
+        `http://localhost:3000/api/consumption`,
+        data
+      );
+    } else {
+      postConsumption = await axios.post(
+        `http://localhost:3000/api/consumption`,
+        data
+      );
+    }
 
     if (postConsumption.data.message) {
       console.log(postConsumption.data.message);
@@ -79,7 +95,7 @@ export default function CreateConsumption({
       </div>
 
       <Button type="primary" operation="submit">
-        CREAR
+        {consumption ? "CREAR" : "MODIFICAR"}
       </Button>
     </form>
   );

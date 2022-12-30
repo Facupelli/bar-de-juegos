@@ -10,6 +10,7 @@ import Button from "../../UI/Button/Button";
 type Props = {
   setMembershipsList: React.Dispatch<React.SetStateAction<Membership[]>>;
   setOpenCreateModal: React.Dispatch<React.SetStateAction<boolean>>;
+  membership?: Membership;
 };
 
 type MembershipData = {
@@ -21,6 +22,7 @@ type MembershipData = {
 export default function CreateMembership({
   setMembershipsList,
   setOpenCreateModal,
+  membership,
 }: Props) {
   const {
     register,
@@ -28,13 +30,27 @@ export default function CreateMembership({
     watch,
     reset,
     formState: { errors },
-  } = useForm<MembershipData>();
+  } = useForm<MembershipData>({
+    defaultValues: {
+      name: membership?.name,
+      minPoints: membership?.minPoints,
+      maxPoints: membership?.maxPoints,
+    },
+  });
 
   const onSubmitMembership: SubmitHandler<MembershipData> = async (data) => {
-    const postMembership = await axios.post(
-      "http://localhost:3000/api/membership",
-      data
-    );
+    let postMembership;
+    if (membership) {
+      postMembership = await axios.put(
+        "http://localhost:3000/api/membership",
+        data
+      );
+    } else {
+      postMembership = await axios.post(
+        "http://localhost:3000/api/membership",
+        data
+      );
+    }
 
     if (postMembership.data.message) {
       console.log(postMembership.data.message);

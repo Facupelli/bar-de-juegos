@@ -23,40 +23,42 @@ export default function PromotionTable({
   setDeleteId,
 }: Props) {
   return (
-    <Table trTitles={trPromotionTitles}>
-      {promotions?.map((promotion) => (
-        <TableRow
-          key={promotion.id}
-          id={promotion.id}
-          setDeleteId={setDeleteId}
-          setOpenDeleteModal={setOpenDeleteModal}
-        >
-          <td>{promotion.name}</td>
-          <td>
-            {promotion.memberships
-              ?.map((membership) => membership.name)
-              .join(", ")}
-          </td>
-          <td>
-            {promotion.consumptions
-              ?.filter(
-                (consumption) => consumption.consumption?.type === "DRINK"
-              )
-              .map((consumption) => consumption.consumption.name)
-              .join(", ")}
-          </td>
-          <td>
-            {promotion.consumptions
-              ?.filter(
-                (consumption) => consumption.consumption?.type === "GAME"
-              )
-              .map((consumption) => consumption.consumption.name)
-              .join(", ")}
-          </td>
-          <td>{promotion.discount}%</td>
-          <td>{promotion.points}</td>
-        </TableRow>
-      ))}
-    </Table>
+    <>
+      <Table trTitles={trPromotionTitles}>
+        {promotions?.map((promotion) => (
+          <TableRow
+            key={promotion.id}
+            id={promotion.id}
+            setDeleteId={setDeleteId}
+            setOpenDeleteModal={setOpenDeleteModal}
+          >
+            <td>{promotion.name}</td>
+            <td>
+              {promotion.memberships
+                ?.map((membership) => membership.name)
+                .join(", ")}
+            </td>
+            <td>
+              {promotion.consumptions
+                ?.filter(
+                  (consumption) => consumption.consumption?.type === "DRINK"
+                )
+                .map((consumption) => consumption.consumption.name)
+                .join(", ")}
+            </td>
+            <td>
+              {promotion.consumptions
+                ?.filter(
+                  (consumption) => consumption.consumption?.type === "GAME"
+                )
+                .map((consumption) => consumption.consumption.name)
+                .join(", ")}
+            </td>
+            <td>{promotion.discount}%</td>
+            <td>{promotion.points}</td>
+          </TableRow>
+        ))}
+      </Table>
+    </>
   );
 }

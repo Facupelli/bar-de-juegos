@@ -6,6 +6,7 @@ import { authOptions } from "../../api/auth/[...nextauth]";
 import { useState } from "react";
 
 import { fetchMemberships } from "../../../src/utils/fetching";
+import { useHandleDelete } from "../../../src/hooks/useHandleDelete";
 
 //COMPONENTS
 import Nav from "../../../src/components/Nav/Nav";
@@ -20,6 +21,7 @@ import TableRow from "../../../src/components/Ranking/TableRow/TableRow";
 import { Membership } from "../../../src/types/model";
 
 import s from "./MembershipPage.module.scss";
+import EditIcon from "../../../src/icons/EditIcon";
 
 type Props = {
   memberships: Membership[];
@@ -30,8 +32,11 @@ const trTitles = ["Nombre", "Puntos Mínimos", "Puntos Máximos"];
 export default function MembershipPage({ memberships }: Props) {
   const [openCreateModal, setOpenCreateModal] = useState<boolean>(false);
 
-  const [openDeleteModal, setOpenDeleteModal] = useState<boolean>(false);
-  const [deleteId, setDeleteId] = useState<string>("");
+  const { deleteId, setDeleteId, openDeleteModal, setOpenDeleteModal } =
+    useHandleDelete();
+
+  const [openEditModal, setOpenEditModal] = useState<boolean>(false);
+  const [membership, setMembership] = useState<Membership>();
 
   const [membershipsList, setMembershipsList] =
     useState<Membership[]>(memberships);
@@ -81,6 +86,19 @@ export default function MembershipPage({ memberships }: Props) {
         </Modal>
       )}
 
+      {openEditModal && (
+        <Modal
+          isOpen={openEditModal}
+          handleCloseModal={() => setOpenEditModal(false)}
+        >
+          <CreateMembership
+            setMembershipsList={setMembershipsList}
+            setOpenCreateModal={setOpenCreateModal}
+            membership={membership}
+          />
+        </Modal>
+      )}
+
       <Nav />
 
       <main className={s.main}>
@@ -107,6 +125,15 @@ export default function MembershipPage({ memberships }: Props) {
                   <td>{membership.name}</td>
                   <td>{membership.minPoints}</td>
                   <td>{membership.maxPoints}</td>
+                  <td
+                    onClick={() => {
+                      setMembership(membership);
+                      setOpenEditModal(true);
+                    }}
+                    className={s.btn}
+                  >
+                    <EditIcon size={18} />
+                  </td>
                 </TableRow>
               ))}
             </Table>

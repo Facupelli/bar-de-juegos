@@ -4,7 +4,9 @@ import { GetServerSideProps } from "next";
 import { unstable_getServerSession } from "next-auth";
 import { authOptions } from "../../api/auth/[...nextauth]";
 import { useState } from "react";
+
 import { fetchConsumptions } from "../../../src/utils/fetching";
+import { useHandleDelete } from "../../../src/hooks/useHandleDelete";
 
 //COMPONENTS
 import Nav from "../../../src/components/Nav/Nav";
@@ -19,6 +21,7 @@ import TableRow from "../../../src/components/Ranking/TableRow/TableRow";
 import { Consumption } from "../../../src/types/model";
 
 import s from "./ConsumptionPage.module.scss";
+import EditIcon from "../../../src/icons/EditIcon";
 
 type Props = {
   consumptions: {
@@ -33,8 +36,11 @@ const trTitles = ["Nombre", "Puntos"];
 export default function ConsumptionPage({ consumptions }: Props) {
   const [openCreateModal, setOpenCreateModal] = useState<boolean>(false);
 
-  const [openDeleteModal, setOpenDeleteModal] = useState<boolean>(false);
-  const [deleteId, setDeleteId] = useState<string>("");
+  const { deleteId, setDeleteId, openDeleteModal, setOpenDeleteModal } =
+    useHandleDelete();
+
+  const [openEditModal, setOpenEditModal] = useState<boolean>(false);
+  const [consumption, setConsumption] = useState<Consumption>();
 
   const [consumptionsList, setConsumptionsList] = useState<{
     drinks: Consumption[];
@@ -87,6 +93,19 @@ export default function ConsumptionPage({ consumptions }: Props) {
         </Modal>
       )}
 
+      {openEditModal && (
+        <Modal
+          isOpen={openEditModal}
+          handleCloseModal={() => setOpenEditModal(false)}
+        >
+          <CreateConsumption
+            setConsumptionsList={setConsumptionsList}
+            setOpenCreateModal={setOpenEditModal}
+            consumption={consumption}
+          />
+        </Modal>
+      )}
+
       <Nav />
 
       <main className={s.main}>
@@ -112,6 +131,15 @@ export default function ConsumptionPage({ consumptions }: Props) {
                 >
                   <td className={s.info}>{consumption.name}</td>
                   <td className={s.info}>{consumption.points}</td>
+                  <td
+                    onClick={() => {
+                      setConsumption(consumption);
+                      setOpenEditModal(true);
+                    }}
+                    className={s.btn}
+                  >
+                    <EditIcon size={18} />
+                  </td>
                 </TableRow>
               ))}
             </Table>
@@ -129,6 +157,15 @@ export default function ConsumptionPage({ consumptions }: Props) {
                 >
                   <td className={s.info}>{consumption.name}</td>
                   <td className={s.info}>{consumption.points}</td>
+                  <td
+                    onClick={() => {
+                      setConsumption(consumption);
+                      setOpenEditModal(true);
+                    }}
+                    className={s.btn}
+                  >
+                    <EditIcon size={18} />
+                  </td>
                 </TableRow>
               ))}
             </Table>
@@ -146,6 +183,15 @@ export default function ConsumptionPage({ consumptions }: Props) {
                 >
                   <td className={s.info}>{consumption.name}</td>
                   <td className={s.info}>{consumption.points}</td>
+                  <td
+                    onClick={() => {
+                      setConsumption(consumption);
+                      setOpenEditModal(true);
+                    }}
+                    className={s.btn}
+                  >
+                    <EditIcon size={18} />
+                  </td>
                 </TableRow>
               ))}
             </Table>
