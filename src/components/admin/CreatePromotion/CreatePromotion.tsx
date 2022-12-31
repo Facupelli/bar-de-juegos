@@ -66,7 +66,7 @@ export default function CreatePromotion({
       onSubmit={handleSubmit(onSubmitPromotion)}
       className={`${s.flex_column} ${s.gap}`}
     >
-      <h4>CREAR PROMOCION</h4>
+      <h4>CREAR PROMOCIÓN</h4>
 
       <div className={s.flex_column}>
         <label>Nombre:</label>
@@ -101,6 +101,17 @@ export default function CreatePromotion({
           {consumptions.drinks?.map((drink) => (
             <option key={drink.id} value={drink.id}>
               {drink.name}
+            </option>
+          ))}
+        </select>
+      </div>
+
+      <div className={s.flex_column}>
+        <label>Comidas:</label>
+        <select multiple {...register("drinksIds")}>
+          {consumptions.games?.map((game) => (
+            <option key={game.id} value={game.id}>
+              {game.name}
             </option>
           ))}
         </select>
