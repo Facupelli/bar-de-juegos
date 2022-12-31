@@ -27,6 +27,7 @@ import BeerIcon from "../../src/icons/BeerIcon";
 import PoolIcon from "../../src/icons/PoolIcon";
 import ConsumptionCard from "../../src/components/UserDetail/ConsumptionCard/ConsumptionCard";
 import AddConsumption from "../../src/components/UserDetail/AddConsumptionList/AddCosumption/AddConsumption";
+import PromotionCard from "../../src/components/UserDetail/PromotionCard/PromotionCard";
 
 type Props = {
   userData: User;
@@ -231,6 +232,27 @@ export default function Home({
                       userId={user.id}
                       consumption={game}
                       key={game.id}
+                    />
+                  ))}
+                </div>
+              </>
+            )}
+
+            {consumptionActive.promos && (
+              <>
+                <AddPromotion
+                  promotions={user.membership.promotions}
+                  userId={userId}
+                  userPoints={user.totalPoints}
+                  setUser={setUser}
+                />
+                <div className={s.promotions_wrapper}>
+                  {user.membership.promotions?.map((promotion) => (
+                    <PromotionCard
+                      key={promotion.id}
+                      promotion={promotion}
+                      setUser={setUser}
+                      userId={user.id}
                     />
                   ))}
                 </div>

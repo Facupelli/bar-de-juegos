@@ -26,6 +26,26 @@
 
   .add_consumptions_wrapper {
     padding: 2em 0em 4em 0em;
+
+    .consumptions_wrapper {
+      display: grid;
+      gap: 1em;
+      grid-template-columns: repeat(auto-fill, minmax(10rem, 1fr));
+
+      > * {
+        flex-basis: 100%;
+      }
+    }
+
+    .promotions_wrapper {
+      display: grid;
+      gap: 1em;
+      grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr));
+
+      > * {
+        flex-basis: 100%;
+      }
+    }
   }
 
   .last_consumptions_wrapper {
@@ -122,16 +142,6 @@
           }
         }
       }
-    }
-  }
-
-  .consumptions_wrapper {
-    display: grid;
-    gap: 1em;
-    grid-template-columns: repeat(auto-fill, minmax(10rem, 1fr));
-
-    > * {
-      flex-basis: 100%;
     }
   }
 

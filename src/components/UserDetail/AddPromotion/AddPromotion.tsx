@@ -62,28 +62,25 @@ export default function AddPromotion({
   };
 
   return (
-    <article className={s.container}>
-      <form className={s.form} onSubmit={handleSubmit(onSubmitPromotion)}>
-        <label>Promoción</label>
-        <select {...register("promotion")}>
-          <option>seleccionar</option>
-          {promotions.map((promotion) => (
-            <option
-              key={promotion.id}
-              value={`${promotion.id}-${promotion.points}`}
-            >
-              {promotion.name}
-            </option>
-          ))}
-        </select>
-        <Button
-          type="primary"
-          operation="submit"
-          disabled={!(userPoints - promotionSelectedPoints >= 0)}
-        >
-          CARGAR
-        </Button>
-      </form>
-    </article>
+    <form className={s.form} onSubmit={handleSubmit(onSubmitPromotion)}>
+      <select {...register("promotion")}>
+        <option>seleccionar</option>
+        {promotions.map((promotion) => (
+          <option
+            key={promotion.id}
+            value={`${promotion.id}-${promotion.points}`}
+          >
+            {promotion.name}
+          </option>
+        ))}
+      </select>
+      <Button
+        type="primary"
+        operation="submit"
+        disabled={!(userPoints - promotionSelectedPoints >= 0)}
+      >
+        CARGAR
+      </Button>
+    </form>
   );
 }
