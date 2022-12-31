@@ -21,7 +21,9 @@ export default function MembershipCard({ user }: Props) {
         <p className={s.membership_name}>
           <strong>{user.membership.name}</strong>
         </p>
-        <p className={s.text_align_right}>{user.membership.minPoints}pts</p>
+        <p className={s.text_align_right}>
+          {user.membership.minPoints}pts - {user.membership.maxPoints}pts
+        </p>
         <div className={s.margin_t}>
           <p>{user.fullName}</p>
           <p>
