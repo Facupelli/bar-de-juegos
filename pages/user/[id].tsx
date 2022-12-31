@@ -44,7 +44,7 @@ type Props = {
   userId: string;
 };
 
-const trLastConsumptionsTitles = ["consumicion", "ganó?", "cantidad", "fecha"];
+const trLastConsumptionsTitles = ["consumición", "ganó?", "cantidad", "fecha"];
 
 export default function Home({
   userData,
@@ -58,7 +58,7 @@ export default function Home({
   const [user, setUser] = useState(userData);
 
   const [consumptionActive, setConsumptionActive] = useState({
-    drinks: false,
+    drinks: true,
     foods: false,
     games: false,
     promos: false,
@@ -238,37 +238,7 @@ export default function Home({
             )}
           </section>
 
-          {/* <section className={s.margin_t}>
-            <h4>Promociones para membresia {user.membership.name}:</h4>
-            <PromotionTale promotions={user.membership.promotions} />
-          </section> */}
-
-          <section className={s.margin_t}>
-            <h4>Consumiciones totales:</h4>
-            <div className={`${s.grid} ${s.user_consumptions_section}`}>
-              <article>
-                {userConsumptions.drinks?.map((consumption) => (
-                  <div key={consumption.id}>
-                    <p>
-                      {consumption.name} x{consumption.users.length}
-                    </p>
-                  </div>
-                ))}
-              </article>
-
-              <article>
-                {userConsumptions.games?.map((consumption) => (
-                  <div key={consumption.id}>
-                    <p>
-                      {consumption.name} x{consumption.users.length}
-                    </p>
-                  </div>
-                ))}
-              </article>
-            </div>
-          </section>
-
-          <section className={s.margin_t}>
+          <section className={`${s.margin_t} ${s.last_consumptions_wrapper}`}>
             <h4>Ultimas consumiciones:</h4>
             <Table trTitles={trLastConsumptionsTitles}>
               {user.consumptions.slice(0, 10).map((consumption) => (
@@ -321,6 +291,43 @@ export default function Home({
                 </tr>
               ))}
             </Table>
+          </section>
+
+          {/* <section className={s.margin_t}>
+            <h4>Promociones para membresia {user.membership.name}:</h4>
+            <PromotionTale promotions={user.membership.promotions} />
+          </section> */}
+
+          <section className={`${s.margin_t} ${s.total_consumptions_wrapper}`}>
+            <h4>Consumiciones totales:</h4>
+            <div className={`${s.user_consumptions_section}`}>
+              <Table trTitles={["Nombre", "Cantidad"]}>
+                {userConsumptions.drinks?.map((consumption) => (
+                  <tr key={consumption.id}>
+                    <td>{consumption.name}</td>
+                    <td>{consumption.users.length}</td>
+                  </tr>
+                ))}
+              </Table>
+
+              <Table trTitles={["Nombre", "Cantidad"]}>
+                {userConsumptions.games?.map((consumption) => (
+                  <tr key={consumption.id}>
+                    <td>{consumption.name}</td>
+                    <td>{consumption.users.length}</td>
+                  </tr>
+                ))}
+              </Table>
+
+              <Table trTitles={["Nombre", "Cantidad"]}>
+                {userConsumptions.foods?.map((consumption) => (
+                  <tr key={consumption.id}>
+                    <td>{consumption.name}</td>
+                    <td>{consumption.users.length}</td>
+                  </tr>
+                ))}
+              </Table>
+            </div>
           </section>
 
           <div className={s.btn_wrrapper}>

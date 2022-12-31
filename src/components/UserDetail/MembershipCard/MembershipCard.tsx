@@ -1,6 +1,7 @@
 import { useEffect, createRef } from "react";
 import { use3dcard } from "../../../hooks/3dcard";
 import { User } from "../../../types/model";
+import { formatPoints } from "../../../utils/pointsFormatter";
 import s from "./MembershipCard.module.scss";
 
 type Props = {
@@ -24,10 +25,11 @@ export default function MembershipCard({ user }: Props) {
         <div className={s.margin_t}>
           <p>{user.fullName}</p>
           <p>
-            <strong>Puntos Actuales:</strong> {user.totalPoints}
+            <strong>Puntos Actuales:</strong> {formatPoints(user.totalPoints)}
           </p>
           <p>
-            <strong>Puntos Gastados:</strong> {user.totalPointsSpent}
+            <strong>Puntos Gastados:</strong>{" "}
+            {formatPoints(user.totalPointsSpent)}
           </p>
         </div>
       </div>
