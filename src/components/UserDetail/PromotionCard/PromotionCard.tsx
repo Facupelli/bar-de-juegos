@@ -1,5 +1,5 @@
-import axios from "axios";
-import { SetStateAction } from "react";
+import axios, { AxiosError } from "axios";
+import { Dispatch, SetStateAction } from "react";
 import { Promotion, User } from "../../../types/model";
 import { updateUserState } from "../../../utils/userID";
 import s from "./PromotionCard.module.scss";
@@ -7,25 +7,37 @@ import s from "./PromotionCard.module.scss";
 type Props = {
   promotion: Promotion;
   userId: string;
-  setUser: React.Dispatch<SetStateAction<User>>;
+  setUser: Dispatch<SetStateAction<User>>;
+  setError: Dispatch<SetStateAction<string>>;
 };
 
-export default function PromotionCard({ promotion, userId, setUser }: Props) {
+export default function PromotionCard({
+  promotion,
+  userId,
+  setUser,
+  setError,
+}: Props) {
   const onSubmitPromotion = async () => {
-    const postConsumption = await axios.put(
-      `http://localhost:3000/api/user/${userId}`,
-      {
-        userId,
-        promotionId: promotion.id,
-        points: promotion.points,
-        quantity: 1,
+    try {
+      const postConsumption = await axios.put(
+        `http://localhost:3000/api/user/${userId}`,
+        {
+          userId,
+          promotionId: promotion.id,
+          points: promotion.points,
+          quantity: 1,
+        }
+      );
+
+      await axios.post(`http://localhost:3000/api/socket/exchangePromotion`);
+
+      if (postConsumption.data.message === "success") {
+        updateUserState(userId, setUser);
       }
-    );
-
-    await axios.post(`http://localhost:3000/api/socket/exchangePromotion`);
-
-    if (postConsumption.data.message === "success") {
-      updateUserState(userId, setUser);
+    } catch (e) {
+      if (axios.isAxiosError(e)) {
+        setError(e.response?.data?.message);
+      }
     }
   };
 
@@ -41,11 +53,9 @@ export default function PromotionCard({ promotion, userId, setUser }: Props) {
         </p>
       </div>
       <div className={s.consumtpions}>
-        <p>
-          {promotion.consumptions.map((c) => (
-            <p>{c.consumption.name}</p>
-          ))}
-        </p>
+        {promotion.consumptions.map((c) => (
+          <p key={c.consumptionId}>{c.consumption.name}</p>
+        ))}
       </div>
       <button onClick={onSubmitPromotion}>CARGAR</button>
     </div>

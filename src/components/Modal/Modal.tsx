@@ -5,12 +5,19 @@ type Props = {
   children: React.ReactNode;
   isOpen: boolean;
   handleCloseModal: () => void;
+  error?: boolean;
 };
 
-export default function Modal({ children, isOpen, handleCloseModal }: Props) {
+export default function Modal({
+  children,
+  isOpen,
+  handleCloseModal,
+  error,
+}: Props) {
+  console.log(error);
   return (
     <>
-      <dialog open={isOpen} className={s.modal}>
+      <dialog open={isOpen} className={`${s.modal} ${error ? s.error : ""}`}>
         <div className={s.btn_wrapper}>
           <button type="button" onClick={handleCloseModal}>
             <XMark size={22} white />

@@ -63,51 +63,58 @@ export default async function handlerUser(
       }: PutBody = req.body;
 
       if (promotionId) {
-        const promotionOnUser = await prisma.promotionOnUser.create({
-          data: {
-            promotionId,
-            userId,
-            quantity: Number(quantity),
-          },
-        });
-
-        const user = await prisma.user.update({
+        const userToUpdate = await prisma.user.findUnique({
           where: { id: userId },
-          data: {
-            totalPoints: {
-              decrement: Number(points),
-            },
-            totalPointsSpent: {
-              increment: Number(points),
-            },
-          },
-          include: { membership: true },
+          select: { totalPoints: true },
         });
 
-        if (
-          user.membership &&
-          user.totalPointsSpent > user.membership?.maxPoints
-        ) {
-          const membership = await prisma.membership.findFirst({
-            where: {
-              AND: [
-                { minPoints: { lte: user.totalPointsSpent } },
-                { maxPoints: { gt: user.totalPointsSpent } },
-              ],
+        if (userToUpdate && userToUpdate.totalPoints - points >= 0) {
+          const promotionOnUser = await prisma.promotionOnUser.create({
+            data: {
+              promotionId,
+              userId,
+              quantity: Number(quantity),
             },
           });
 
-          if (membership) {
-            await prisma.user.update({
-              where: { id: userId },
-              data: {
-                membership: { connect: { id: membership.id } },
+          const user = await prisma.user.update({
+            where: { id: userId },
+            data: {
+              totalPoints: {
+                decrement: Number(points),
+              },
+              totalPointsSpent: {
+                increment: Number(points),
+              },
+            },
+            include: { membership: true },
+          });
+
+          if (
+            user.membership &&
+            user.totalPointsSpent > user.membership?.maxPoints
+          ) {
+            const membership = await prisma.membership.findFirst({
+              where: {
+                AND: [
+                  { minPoints: { lte: user.totalPointsSpent } },
+                  { maxPoints: { gt: user.totalPointsSpent } },
+                ],
               },
             });
-          }
-        }
 
-        return res.status(200).json({ message: "success" });
+            if (membership) {
+              await prisma.user.update({
+                where: { id: userId },
+                data: {
+                  membership: { connect: { id: membership.id } },
+                },
+              });
+            }
+          }
+          return res.status(200).json({ message: "success" });
+        }
+        return res.status(400).json({ message: "insufficient points" });
       }
 
       if (operation === "addPoints") {

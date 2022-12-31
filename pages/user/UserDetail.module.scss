@@ -1,5 +1,15 @@
 @import "../../styles/app.scss";
 
+.error_wrapper {
+  > p {
+    &:first-child {
+      font-weight: 600;
+      font-size: 1.1rem;
+      padding-bottom: 0.5em;
+    }
+  }
+}
+
 .main {
   background-color: $white;
   > div {
