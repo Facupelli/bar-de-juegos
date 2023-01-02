@@ -52,11 +52,11 @@ export default function PromotionCard({
           <strong>-{promotion.points}pts</strong>
         </p>
       </div>
-      <div className={s.consumtpions}>
+      <ul className={s.consumptions}>
         {promotion.consumptions.map((c) => (
-          <p key={c.consumptionId}>{c.consumption.name}</p>
+          <li key={c.consumptionId}>{c.consumption.name}</li>
         ))}
-      </div>
+      </ul>
       <button onClick={onSubmitPromotion}>CARGAR</button>
     </div>
   );

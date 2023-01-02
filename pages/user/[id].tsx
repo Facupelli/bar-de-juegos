@@ -1,34 +1,33 @@
 import axios from "axios";
-import { io, Socket } from "socket.io-client";
 import { GetServerSideProps } from "next";
 import Head from "next/head";
-import { Consumption, Promotion, User } from "../../src/types/model";
 import { authOptions } from "../api/auth/[...nextauth]";
 import { unstable_getServerSession } from "next-auth";
 import { useRouter } from "next/router";
 import { useState } from "react";
+
 import { fetchUserById } from "../../src/utils/fetching";
+import { updateUserState } from "../../src/utils/userID";
+
+import { Consumption, Promotion, User } from "../../src/types/model";
 
 //COMPONENTS
 import MembershipCard from "../../src/components/UserDetail/MembershipCard/MembershipCard";
 import AddPromotion from "../../src/components/UserDetail/AddPromotion/AddPromotion";
 import Table from "../../src/components/Ranking/Table/Table";
-import PromotionTale from "../../src/components/admin/PromotionTable/PromotionTable";
-import AddConsumptionList from "../../src/components/UserDetail/AddConsumptionList/AddConsumptionList";
 import ButtonOnClick from "../../src/components/UI/ButtonOnClick/ButtonOnClick";
 import Nav from "../../src/components/Nav/Nav";
-
-import s from "./UserDetail.module.scss";
-import { updateUserState } from "../../src/utils/userID";
 import AddConsumptionBtn from "../../src/components/UI/AddConsumptionBtn/AddConsumptionBtn";
 import KitchenTools from "../../src/icons/KitchenTools";
 import PercentageIcon from "../../src/icons/PercentageIcon";
 import BeerIcon from "../../src/icons/BeerIcon";
 import PoolIcon from "../../src/icons/PoolIcon";
 import ConsumptionCard from "../../src/components/UserDetail/ConsumptionCard/ConsumptionCard";
-import AddConsumption from "../../src/components/UserDetail/AddConsumptionList/AddCosumption/AddConsumption";
+import AddConsumption from "../../src/components/UserDetail/AddCosumption/AddConsumption";
 import PromotionCard from "../../src/components/UserDetail/PromotionCard/PromotionCard";
 import Modal from "../../src/components/Modal/Modal";
+
+import s from "./UserDetail.module.scss";
 
 type Props = {
   userData: User;
@@ -172,18 +171,6 @@ export default function Home({
               >
                 <PercentageIcon size={26} active={consumptionActive.promos} />
               </AddConsumptionBtn>
-
-              {/* <AddConsumptionList
-              consumptions={consumptions}
-              userId={userId}
-              setUser={setUser}
-            />
-            <AddPromotion
-              promotions={user.membership.promotions}
-              userId={userId}
-              userPoints={user.totalPoints}
-              setUser={setUser}
-            /> */}
             </div>
             <MembershipCard user={user} />
           </section>

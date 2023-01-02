@@ -64,13 +64,12 @@ export default function AddPromotion({
   return (
     <form className={s.form} onSubmit={handleSubmit(onSubmitPromotion)}>
       <select {...register("promotion")}>
-        <option>seleccionar</option>
         {promotions.map((promotion) => (
           <option
             key={promotion.id}
             value={`${promotion.id}-${promotion.points}`}
           >
-            {promotion.name}
+            {promotion.name} -{promotion.points} pts
           </option>
         ))}
       </select>

@@ -2,12 +2,12 @@ import axios from "axios";
 import { SetStateAction } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 
-import Button from "../../../UI/Button/Button";
+import Button from "../../UI/Button/Button";
 
-import { Consumption, User } from "../../../../types/model";
+import { Consumption, User } from "../../../types/model";
 
 import s from "./AddConsumption.module.scss";
-import { updateUserState } from "../../../../utils/userID";
+import { updateUserState } from "../../../utils/userID";
 
 type Props = {
   consumptions: Consumption[];
@@ -69,7 +69,7 @@ export default function AddConsumption({
               key={consumption.id}
               value={`${consumption.id}-${consumption.points}`}
             >
-              {consumption.name}
+              {consumption.name} +{consumption.points} pts
             </option>
           ))}
       </select>

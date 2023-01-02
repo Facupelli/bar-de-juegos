@@ -42,16 +42,21 @@
     text-align: right;
   }
 
-  strong {
-    font-weight: 300;
-    font-size: 1rem;
-  }
-
   .margin_t {
     margin-top: 0.5rem;
 
-    > p {
-      font-size: 1.3rem;
+    .actual_points {
+      font-weight: 400;
+      strong {
+        font-size: 1.3rem;
+        font-weight: 600;
+      }
+    }
+
+    .spent_points {
+      strong {
+        font-weight: 500;
+      }
     }
   }
 }
