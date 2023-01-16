@@ -9,7 +9,6 @@ export default async function handleConsumption(
   if (req.method === "PUT") {
     const { id, status }: { id: string; status: boolean } = req.body;
 
-    console.log("DATA BODY", id, status);
     try {
       if (id && (status === true || status === false)) {
         const updateConsumption = await prisma.consumptionOnUser.update({

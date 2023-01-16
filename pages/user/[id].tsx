@@ -68,7 +68,11 @@ export default function Home({
     promos: false,
   });
 
-  const updateGameWinner = async (id: string, status: boolean) => {
+  const updateGameWinner = async (
+    id: string,
+    status: boolean,
+    gameId: string
+  ) => {
     const updateConsumption = await axios.put(
       `http://localhost:3000/api/consumptionOnUser`,
       {
@@ -76,6 +80,10 @@ export default function Home({
         status,
       }
     );
+
+    await axios.post(`http://localhost:3000/api/socket/gameOver`, {
+      id: gameId,
+    });
 
     if (updateConsumption.data.message === "success") {
       updateUserState(userId, setUser);
@@ -277,7 +285,11 @@ export default function Home({
                         <div className={s.btns_wrapper}>
                           <ButtonOnClick
                             handleClick={() =>
-                              updateGameWinner(consumption.id, true)
+                              updateGameWinner(
+                                consumption.id,
+                                true,
+                                consumption.consumption.id
+                              )
                             }
                             type="primary"
                           >
@@ -285,7 +297,11 @@ export default function Home({
                           </ButtonOnClick>
                           <ButtonOnClick
                             handleClick={() =>
-                              updateGameWinner(consumption.id, false)
+                              updateGameWinner(
+                                consumption.id,
+                                false,
+                                consumption.consumption.id
+                              )
                             }
                             type="danger"
                           >

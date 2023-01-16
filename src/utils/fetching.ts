@@ -1,5 +1,6 @@
 import axios from "axios";
 import { Consumption, Membership, Promotion, User } from "../types/model";
+import { UsersRanking } from "../types/ranking";
 
 export const fetchConsumptions = async () => {
   const {
@@ -45,6 +46,13 @@ export const fetchUsersByExchange = async () => {
 export const fetchUserById = async (id: string) => {
   const { data }: { data: User } = await axios(
     `http://localhost:3000/api/user/${id}`
+  );
+  return data;
+};
+
+export const fetchGameRanking = async (id: string) => {
+  const { data }: { data: UsersRanking[] } = await axios(
+    `http://localhost:3000/api/ranking?gameId=${id}`
   );
   return data;
 };
