@@ -22,6 +22,7 @@ import { Consumption } from "../../../src/types/model";
 
 import s from "./ConsumptionPage.module.scss";
 import EditIcon from "../../../src/icons/EditIcon";
+import ConsumiptionsNav from "../../../src/components/admin/ConsumptionsNav/ConsumptionsNav";
 
 type Props = {
   consumptions: {
@@ -34,6 +35,12 @@ type Props = {
 const trTitles = ["Nombre", "Puntos"];
 
 export default function ConsumptionPage({ consumptions }: Props) {
+  const [showConsumption, setShowConsumption] = useState({
+    drinks: true,
+    food: false,
+    games: false,
+  });
+
   const [openCreateModal, setOpenCreateModal] = useState<boolean>(false);
 
   const { deleteId, setDeleteId, openDeleteModal, setOpenDeleteModal } =
@@ -61,6 +68,16 @@ export default function ConsumptionPage({ consumptions }: Props) {
     }
   };
 
+  const setShowDrinks = () => {
+    setShowConsumption((prev) => ({ drinks: true, games: false, food: false }));
+  };
+  const setShowGames = () => {
+    setShowConsumption((prev) => ({ drinks: false, games: true, food: false }));
+  };
+  const setShowFood = () => {
+    setShowConsumption((prev) => ({ drinks: false, games: false, food: true }));
+  };
+
   return (
     <div className={s.container}>
       <Head>
@@ -77,6 +94,7 @@ export default function ConsumptionPage({ consumptions }: Props) {
           <CreateConsumption
             setConsumptionsList={setConsumptionsList}
             setOpenCreateModal={setOpenCreateModal}
+            type={showConsumption}
           />
         </Modal>
       )}
@@ -102,100 +120,119 @@ export default function ConsumptionPage({ consumptions }: Props) {
             setConsumptionsList={setConsumptionsList}
             setOpenCreateModal={setOpenEditModal}
             consumption={consumption}
+            type={showConsumption}
           />
         </Modal>
       )}
 
-      <Nav />
+      <Nav route="admin" />
 
       <main className={s.main}>
         <AdminLayout route="consumptions">
-          <div className={s.btn_wrapper}>
-            <ButtonOnClick
-              type="primary"
-              handleClick={() => setOpenCreateModal(true)}
-            >
-              CREAR CONSUMICIÓN
-            </ButtonOnClick>
-          </div>
+          <section className={s.main_section}>
+            <ConsumiptionsNav
+              setShowDrinks={setShowDrinks}
+              setShowFood={setShowFood}
+              setShowGames={setShowGames}
+            />
 
-          <div className={s.table_wrapper}>
-            <h4 className={s.mb_2}>Bebidas</h4>
-            <Table trTitles={trTitles}>
-              {consumptionsList.drinks.map((consumption) => (
-                <TableRow
-                  key={consumption.id}
-                  id={consumption.id}
-                  setDeleteId={setDeleteId}
-                  setOpenDeleteModal={setOpenDeleteModal}
+            <div>
+              <div className={s.btn_wrapper}>
+                <ButtonOnClick
+                  type="primary"
+                  handleClick={() => setOpenCreateModal(true)}
                 >
-                  <td className={s.info}>{consumption.name}</td>
-                  <td className={s.info}>{consumption.points}</td>
-                  <td
-                    onClick={() => {
-                      setConsumption(consumption);
-                      setOpenEditModal(true);
-                    }}
-                    className={s.btn}
-                  >
-                    <EditIcon size={18} />
-                  </td>
-                </TableRow>
-              ))}
-            </Table>
-          </div>
+                  CREAR CONSUMICIÓN
+                </ButtonOnClick>
+              </div>
 
-          <div className={s.table_wrapper}>
-            <h4 className={s.mb_2}>Comidas</h4>
-            <Table trTitles={trTitles}>
-              {consumptionsList.foods.map((consumption) => (
-                <TableRow
-                  key={consumption.id}
-                  id={consumption.id}
-                  setDeleteId={setDeleteId}
-                  setOpenDeleteModal={setOpenDeleteModal}
-                >
-                  <td className={s.info}>{consumption.name}</td>
-                  <td className={s.info}>{consumption.points}</td>
-                  <td
-                    onClick={() => {
-                      setConsumption(consumption);
-                      setOpenEditModal(true);
-                    }}
-                    className={s.btn}
-                  >
-                    <EditIcon size={18} />
-                  </td>
-                </TableRow>
-              ))}
-            </Table>
-          </div>
+              {showConsumption.drinks && (
+                <>
+                  <div className={s.table_wrapper}>
+                    <h4 className={s.mb_2}>Bebidas</h4>
+                    <Table trTitles={trTitles}>
+                      {consumptionsList.drinks.map((consumption) => (
+                        <TableRow
+                          key={consumption.id}
+                          id={consumption.id}
+                          setDeleteId={setDeleteId}
+                          setOpenDeleteModal={setOpenDeleteModal}
+                        >
+                          <td className={s.info}>{consumption.name}</td>
+                          <td className={s.info}>{consumption.points}</td>
+                          <td
+                            onClick={() => {
+                              setConsumption(consumption);
+                              setOpenEditModal(true);
+                            }}
+                            className={s.btn}
+                          >
+                            <EditIcon size={18} />
+                          </td>
+                        </TableRow>
+                      ))}
+                    </Table>
+                  </div>
+                </>
+              )}
 
-          <div className={s.table_wrapper}>
-            <h4 className={s.mb_2}>Juegos</h4>
-            <Table trTitles={trTitles}>
-              {consumptionsList.games.map((consumption) => (
-                <TableRow
-                  key={consumption.id}
-                  id={consumption.id}
-                  setDeleteId={setDeleteId}
-                  setOpenDeleteModal={setOpenDeleteModal}
-                >
-                  <td className={s.info}>{consumption.name}</td>
-                  <td className={s.info}>{consumption.points}</td>
-                  <td
-                    onClick={() => {
-                      setConsumption(consumption);
-                      setOpenEditModal(true);
-                    }}
-                    className={s.btn}
-                  >
-                    <EditIcon size={18} />
-                  </td>
-                </TableRow>
-              ))}
-            </Table>
-          </div>
+              {showConsumption.food && (
+                <div className={s.table_wrapper}>
+                  <h4 className={s.mb_2}>Comidas</h4>
+                  <Table trTitles={trTitles}>
+                    {consumptionsList.foods.map((consumption) => (
+                      <TableRow
+                        key={consumption.id}
+                        id={consumption.id}
+                        setDeleteId={setDeleteId}
+                        setOpenDeleteModal={setOpenDeleteModal}
+                      >
+                        <td className={s.info}>{consumption.name}</td>
+                        <td className={s.info}>{consumption.points}</td>
+                        <td
+                          onClick={() => {
+                            setConsumption(consumption);
+                            setOpenEditModal(true);
+                          }}
+                          className={s.btn}
+                        >
+                          <EditIcon size={18} />
+                        </td>
+                      </TableRow>
+                    ))}
+                  </Table>
+                </div>
+              )}
+
+              {showConsumption.games && (
+                <div className={s.table_wrapper}>
+                  <h4 className={s.mb_2}>Juegos</h4>
+                  <Table trTitles={trTitles}>
+                    {consumptionsList.games.map((consumption) => (
+                      <TableRow
+                        key={consumption.id}
+                        id={consumption.id}
+                        setDeleteId={setDeleteId}
+                        setOpenDeleteModal={setOpenDeleteModal}
+                      >
+                        <td className={s.info}>{consumption.name}</td>
+                        <td className={s.info}>{consumption.points}</td>
+                        <td
+                          onClick={() => {
+                            setConsumption(consumption);
+                            setOpenEditModal(true);
+                          }}
+                          className={s.btn}
+                        >
+                          <EditIcon size={18} />
+                        </td>
+                      </TableRow>
+                    ))}
+                  </Table>
+                </div>
+              )}
+            </div>
+          </section>
         </AdminLayout>
       </main>
     </div>

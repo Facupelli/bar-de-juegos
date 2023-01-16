@@ -8,6 +8,7 @@ import Button from "../../UI/Button/Button";
 import { Consumption } from "../../../types/model";
 
 import s from "./CreateConsumption.module.scss";
+import { useEffect } from "react";
 
 type Props = {
   setConsumptionsList: React.Dispatch<
@@ -19,6 +20,11 @@ type Props = {
   >;
   setOpenCreateModal: React.Dispatch<React.SetStateAction<boolean>>;
   consumption?: Consumption;
+  type?: {
+    drinks: boolean;
+    games: boolean;
+    food: boolean;
+  };
 };
 
 type FormData = {
@@ -31,20 +37,41 @@ export default function CreateConsumption({
   setConsumptionsList,
   setOpenCreateModal,
   consumption,
+  type,
 }: Props) {
+  const getDefaultType = (
+    type:
+      | {
+          drinks: boolean;
+          games: boolean;
+          food: boolean;
+        }
+      | undefined
+  ) => {
+    if (type?.drinks) return "DRINK";
+    if (type?.games) return "GAME";
+    if (type?.food) return "FOOD";
+  };
+
+  console.log(consumption);
+
   const {
     register,
     handleSubmit,
-    watch,
     reset,
+    setFocus,
     formState: { errors },
   } = useForm<FormData>({
     defaultValues: {
-      type: consumption?.type,
+      type: getDefaultType(type),
       name: consumption?.name,
       points: consumption?.points,
     },
   });
+
+  useEffect(() => {
+    setFocus("name");
+  }, [setFocus]);
 
   const onSubmitConsumption: SubmitHandler<FormData> = async (data) => {
     let postConsumption;
@@ -95,7 +122,7 @@ export default function CreateConsumption({
       </div>
 
       <Button type="primary" operation="submit">
-        {consumption ? "CREAR" : "MODIFICAR"}
+        {consumption ? "MODIFICAR" : "CREAR"}
       </Button>
     </form>
   );

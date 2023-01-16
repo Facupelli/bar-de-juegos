@@ -3,6 +3,22 @@
   display: flex;
   justify-content: flex-end;
 }
+.main {
+  > div > div {
+    padding: 0;
+  }
+}
+
+.main_section {
+  // display: grid;
+  // grid-template-columns: 6em 1fr;
+  // width: 100%;
+
+  > div {
+    margin-left: 8em;
+    padding: 2em;
+  }
+}
 
 .table_wrapper {
   margin-bottom: 1em;
