@@ -35,12 +35,14 @@ import {
 } from "../../src/types/socketio";
 
 import s from "./Ranking.module.scss";
+import { UsersRanking } from "../../src/types/ranking";
 
 type Props = {
   drinksList: SortedConsumption[];
   gamesList: SortedConsumption[];
   promotionsList: SortedPromotion[];
   usersList: User[];
+  ranking: UsersRanking[];
 };
 
 const trDrinkTitle = ["Bebida", "Total"];
@@ -52,6 +54,7 @@ export default function Ranking({
   gamesList,
   promotionsList,
   usersList,
+  ranking,
 }: Props) {
   const [drinks, setDrinks] = useState<SortedConsumption[]>(drinksList);
   const [games, setGames] = useState<SortedConsumption[]>(gamesList);
@@ -113,6 +116,19 @@ export default function Ranking({
         <section>
           <div className={s.grid} ref={divRef}>
             <article>
+              <h5>RANKING JUGADORES</h5>
+              <RankingTable trTitles={["JUGADOR", "PARTDIOS GANADOS"]}>
+                {ranking?.map((rank) => (
+                  <RankingRow
+                    key={rank.id}
+                    name={rank.user.fullName}
+                    total={rank.quantity}
+                  />
+                ))}
+              </RankingTable>
+            </article>
+
+            {/* <article>
               <h5>Bebida más bebida</h5>
               <RankingTable trTitles={trDrinkTitle}>
                 {drinks?.map((drink) => (
@@ -162,7 +178,7 @@ export default function Ranking({
                   />
                 ))}
               </RankingTable>
-            </article>
+            </article> */}
           </div>
 
           <button type="submit" onClick={toggleFullScreen}>
@@ -206,12 +222,16 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   );
   const users = usersRersponse.data;
 
+  const usersGamesRanking = await axios("http://localhost:3000/api/ranking");
+  const ranking = usersGamesRanking.data;
+
   return {
     props: {
       drinksList: sortedDrinks,
       gamesList: sortedGames,
       promotionsList: sortedPromotions,
       usersList: users,
+      ranking,
     },
   };
 };

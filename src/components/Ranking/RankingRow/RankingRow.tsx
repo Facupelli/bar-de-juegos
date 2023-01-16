@@ -2,7 +2,7 @@ import { SortedConsumption } from "../../../types/model";
 import s from "./RankingRow.module.scss";
 
 type Props = {
-  name: string;
+  name: string | null;
   total: number;
 };
 
