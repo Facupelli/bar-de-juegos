@@ -134,6 +134,7 @@ export default function ConsumptionPage({ consumptions }: Props) {
               setShowDrinks={setShowDrinks}
               setShowFood={setShowFood}
               setShowGames={setShowGames}
+              showConsumption={showConsumption}
             />
 
             <div>

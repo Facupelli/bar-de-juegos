@@ -2,22 +2,26 @@
 
 .nav {
   background-color: $h-black;
-  padding: 1em;
   position: fixed;
   top: 70px;
   height: calc(100vh - 70px);
   width: 8em;
-  padding-top: 2em;
   color: $white;
 
   ul {
     list-style: none;
     display: flex;
     flex-direction: column;
-    gap: 1em;
 
     li {
       cursor: pointer;
+      padding: 1em;
     }
   }
+}
+
+.active {
+  background-color: $green;
+  color: $black;
+  font-weight: 600;
 }
