@@ -1,0 +1,9 @@
+@import "../../../../styles/app.scss";
+
+.button_wrapper {
+  button {
+    @include main-btn;
+    background-color: transparent;
+    padding: 0;
+  }
+}

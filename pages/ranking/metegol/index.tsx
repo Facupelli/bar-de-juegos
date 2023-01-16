@@ -9,6 +9,7 @@ import { updateGameRankingState } from "../../../src/utils/ranking";
 import RankingTable from "../../../src/components/Ranking/Table/Table";
 import RankingRow from "../../../src/components/Ranking/RankingRow/RankingRow";
 import Nav from "../../../src/components/Nav/Nav";
+import GoBackBtn from "../../../src/components/UI/GoBackBtn/GoBackBtn";
 
 import {
   SortedConsumption,
@@ -75,6 +76,8 @@ export default function Ranking({ ranking }: Props) {
       <Nav />
 
       <main>
+        <GoBackBtn />
+
         <section>
           <div className={s.grid} ref={divRef}>
             <article>
