@@ -12,20 +12,22 @@ import { updateUserState } from "../../src/utils/userID";
 import { Consumption, Promotion, User } from "../../src/types/model";
 
 //COMPONENTS
+import Nav from "../../src/components/Nav/Nav";
 import MembershipCard from "../../src/components/UserDetail/MembershipCard/MembershipCard";
 import AddPromotion from "../../src/components/UserDetail/AddPromotion/AddPromotion";
 import Table from "../../src/components/Ranking/Table/Table";
 import ButtonOnClick from "../../src/components/UI/ButtonOnClick/ButtonOnClick";
-import Nav from "../../src/components/Nav/Nav";
 import AddConsumptionBtn from "../../src/components/UI/AddConsumptionBtn/AddConsumptionBtn";
-import KitchenTools from "../../src/icons/KitchenTools";
-import PercentageIcon from "../../src/icons/PercentageIcon";
-import BeerIcon from "../../src/icons/BeerIcon";
-import PoolIcon from "../../src/icons/PoolIcon";
 import ConsumptionCard from "../../src/components/UserDetail/ConsumptionCard/ConsumptionCard";
 import AddConsumption from "../../src/components/UserDetail/AddCosumption/AddConsumption";
 import PromotionCard from "../../src/components/UserDetail/PromotionCard/PromotionCard";
 import Modal from "../../src/components/Modal/Modal";
+
+//ICONS
+import KitchenTools from "../../src/icons/KitchenTools";
+import PercentageIcon from "../../src/icons/PercentageIcon";
+import BeerIcon from "../../src/icons/BeerIcon";
+import PoolIcon from "../../src/icons/PoolIcon";
 
 import s from "./UserDetail.module.scss";
 

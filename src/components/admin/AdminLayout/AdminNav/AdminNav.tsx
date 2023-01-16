@@ -1,6 +1,7 @@
 import Link from "next/link";
 import BasketIcon from "../../../../icons/BasketIcon";
 import CardIcon from "../../../../icons/CardIcon";
+import ChartPie from "../../../../icons/ChartPie";
 import PercentageIcon from "../../../../icons/PercentageIcon";
 
 import s from "./AdminNav.module.scss";
@@ -13,9 +14,12 @@ export default function AdminNav({ route }: Props) {
   return (
     <nav className={s.nav}>
       <ul>
-        <li>
+        <li className={`${route === "admin" ? s.active : null}`}>
           <Link href="/admin" className={s.link}>
-            Inicio Admin
+            <div className={s.icon_wrapper}>
+              <ChartPie size={22} active={route === "admin"} />
+            </div>
+            <p>Inicio</p>
           </Link>
         </li>
 

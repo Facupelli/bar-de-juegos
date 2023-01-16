@@ -1,11 +1,19 @@
+@import "../../styles/app.scss";
+
 .container {
   main {
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 2rem;
-      background-color: white;
+    ul {
       padding: 2em;
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5em;
+
+      li {
+        @include main-btn;
+        background-color: $green;
+        width: 8em;
+      }
     }
   }
 }

@@ -4,24 +4,25 @@ import { GetServerSideProps } from "next";
 import Head from "next/head";
 import React, { useEffect, useRef, useState } from "react";
 
-import RankingTable from "../../src/components/Ranking/Table/Table";
-import RankingRow from "../../src/components/Ranking/RankingRow/RankingRow";
-import Nav from "../../src/components/Nav/Nav";
+import { updateGameRankingState } from "../../../src/utils/ranking";
+
+import RankingTable from "../../../src/components/Ranking/Table/Table";
+import RankingRow from "../../../src/components/Ranking/RankingRow/RankingRow";
+import Nav from "../../../src/components/Nav/Nav";
 
 import {
   SortedConsumption,
   SortedPromotion,
   User,
-} from "../../src/types/model";
+} from "../../../src/types/model";
 import {
   ClientToServerEvents,
   GameOver,
   ServerToClientEvents,
-} from "../../src/types/socketio";
+} from "../../../src/types/socketio";
+import { UsersRanking } from "../../../src/types/ranking";
 
-import s from "./Ranking.module.scss";
-import { UsersRanking } from "../../src/types/ranking";
-import { updateGameRankingState } from "../../src/utils/ranking";
+import s from "./Metegol.module.scss";
 
 type Props = {
   drinksList: SortedConsumption[];

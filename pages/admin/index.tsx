@@ -1,16 +1,53 @@
+import axios from "axios";
 import { unstable_getServerSession } from "next-auth";
 import { GetServerSideProps } from "next";
 import { authOptions } from "../api/auth/[...nextauth]";
+import { useState } from "react";
 import Head from "next/head";
+
+import {
+  fetchConsumptions,
+  fetchPromotionsRanking,
+} from "../../src/utils/fetching";
+import { getPromotionsReducedQuantity } from "../../src/utils/promotion";
+import { getConsumptionsReducedQuantity } from "../../src/utils/consumption";
+
+import {
+  SortedConsumption,
+  SortedPromotion,
+  User,
+} from "../../src/types/model";
 
 import Nav from "../../src/components/Nav/Nav";
 import AdminLayout from "../../src/components/admin/AdminLayout/AdminLayout";
+import RankingRow from "../../src/components/Ranking/RankingRow/RankingRow";
+import Table from "../../src/components/Ranking/Table/Table";
 
 import s from "./Admin.module.scss";
 
-const trTitles = ["Nombre", "Puntos"];
+const trDrinkTitle = ["Bebida", "Total"];
+const trGameTitle = ["Juego", "Total"];
+const trPromotionTitle = ["Promocion", "Total"];
 
-export default function Home() {
+type Props = {
+  drinksList: SortedConsumption[];
+  gamesList: SortedConsumption[];
+  promotionsList: SortedPromotion[];
+  usersList: User[];
+};
+
+export default function Home({
+  drinksList,
+  gamesList,
+  promotionsList,
+  usersList,
+}: Props) {
+  const [drinks, setDrinks] = useState<SortedConsumption[]>(drinksList);
+  const [games, setGames] = useState<SortedConsumption[]>(gamesList);
+  const [promotions, setPromotions] =
+    useState<SortedPromotion[]>(promotionsList);
+  const [users, setUsers] = useState<User[]>(usersList);
+
   return (
     <div className={s.container}>
       <Head>
@@ -19,11 +56,65 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <Nav />
+      <Nav route="admin" />
 
       <main className={s.main}>
-        <AdminLayout>
-          <div></div>
+        <AdminLayout route="admin">
+          <section>
+            <div className={s.flex_col}>
+              <article>
+                <h5>Bebida más bebida</h5>
+                <Table trTitles={trDrinkTitle}>
+                  {drinks?.map((drink) => (
+                    <RankingRow
+                      key={drink.id}
+                      name={drink.name}
+                      total={drink.total}
+                    />
+                  ))}
+                </Table>
+              </article>
+
+              <article>
+                <h5>Juego más jugado</h5>
+                <Table trTitles={trGameTitle}>
+                  {games?.map((game) => (
+                    <RankingRow
+                      key={game.id}
+                      name={game.name}
+                      total={game.total}
+                    />
+                  ))}
+                </Table>
+              </article>
+
+              <article>
+                <h5>Promo más canjeada</h5>
+                <Table trTitles={trPromotionTitle}>
+                  {promotions?.map((promotion) => (
+                    <RankingRow
+                      key={promotion.id}
+                      name={promotion.name}
+                      total={promotion.total}
+                    />
+                  ))}
+                </Table>
+              </article>
+
+              <article>
+                <h5>Jugadores con más puntos canjeados</h5>
+                <Table trTitles={trPromotionTitle}>
+                  {users?.map((user) => (
+                    <RankingRow
+                      key={user.id}
+                      name={user.fullName}
+                      total={user.totalPointsSpent}
+                    />
+                  ))}
+                </Table>
+              </article>
+            </div>
+          </section>
         </AdminLayout>
       </main>
     </div>
@@ -38,9 +129,44 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   );
 
   if (session?.user.role === "ADMIN") {
+    const consumptions = await fetchConsumptions();
+
+    const drinksReducedQuantity = getConsumptionsReducedQuantity(
+      consumptions.drinks
+    );
+
+    const sortedDrinks = drinksReducedQuantity.sort((a, b) =>
+      a.total > b.total ? -1 : 1
+    );
+
+    const gamesReducedQuantity = getConsumptionsReducedQuantity(
+      consumptions.games
+    );
+
+    const sortedGames = gamesReducedQuantity.sort((a, b) =>
+      a.total > b.total ? -1 : 1
+    );
+
+    const promotions = await fetchPromotionsRanking();
+
+    const promotionsReducedQuantity = getPromotionsReducedQuantity(promotions);
+
+    const sortedPromotions = promotionsReducedQuantity.sort((a, b) =>
+      a.total > b.total ? -1 : 1
+    );
+
+    const usersRersponse = await axios(
+      "http://localhost:3000/api/user?userRanking=true"
+    );
+    const users = usersRersponse.data;
+
     return {
       props: {
         session,
+        drinksList: sortedDrinks,
+        gamesList: sortedGames,
+        promotionsList: sortedPromotions,
+        usersList: users,
       },
     };
   }

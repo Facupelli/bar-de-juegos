@@ -5,4 +5,10 @@
     grid-auto-flow: column;
     gap: 3rem;
   }
+
+  .flex_col {
+    display: flex;
+    flex-direction: column;
+    gap: 3em;
+  }
 }

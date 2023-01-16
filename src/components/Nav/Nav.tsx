@@ -3,11 +3,15 @@ import Link from "next/link";
 
 import s from "./Nav.module.scss";
 
-export default function Nav() {
+type Props = {
+  route?: string;
+};
+
+export default function Nav({ route }: Props) {
   const { data: session } = useSession();
 
   return (
-    <nav className={s.nav}>
+    <nav className={`${s.nav} ${route === "admin" ? s.fixed : ""}`}>
       <ul>
         {session && <li onClick={async () => await signOut()}>SALIR</li>}
 
