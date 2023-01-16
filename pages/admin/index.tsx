@@ -27,7 +27,7 @@ import s from "./Admin.module.scss";
 
 const trDrinkTitle = ["Bebida", "Total"];
 const trGameTitle = ["Juego", "Total"];
-const trPromotionTitle = ["Promocion", "Total"];
+const trPromotionTitle = ["Promoción", "Total"];
 
 type Props = {
   drinksList: SortedConsumption[];
@@ -60,60 +60,58 @@ export default function Home({
 
       <main className={s.main}>
         <AdminLayout route="admin">
-          <section>
-            <div className={s.flex_col}>
-              <article>
-                <h5>Bebida más bebida</h5>
-                <Table trTitles={trDrinkTitle}>
-                  {drinks?.map((drink) => (
-                    <RankingRow
-                      key={drink.id}
-                      name={drink.name}
-                      total={drink.total}
-                    />
-                  ))}
-                </Table>
-              </article>
+          <section className={s.flex_col}>
+            <article>
+              <h5>Bebida más bebida</h5>
+              <Table trTitles={trDrinkTitle}>
+                {drinks?.map((drink) => (
+                  <RankingRow
+                    key={drink.id}
+                    name={drink.name}
+                    total={drink.total}
+                  />
+                ))}
+              </Table>
+            </article>
 
-              <article>
-                <h5>Juego más jugado</h5>
-                <Table trTitles={trGameTitle}>
-                  {games?.map((game) => (
-                    <RankingRow
-                      key={game.id}
-                      name={game.name}
-                      total={game.total}
-                    />
-                  ))}
-                </Table>
-              </article>
+            <article>
+              <h5>Juego más jugado</h5>
+              <Table trTitles={trGameTitle}>
+                {games?.map((game) => (
+                  <RankingRow
+                    key={game.id}
+                    name={game.name}
+                    total={game.total}
+                  />
+                ))}
+              </Table>
+            </article>
 
-              <article>
-                <h5>Promo más canjeada</h5>
-                <Table trTitles={trPromotionTitle}>
-                  {promotions?.map((promotion) => (
-                    <RankingRow
-                      key={promotion.id}
-                      name={promotion.name}
-                      total={promotion.total}
-                    />
-                  ))}
-                </Table>
-              </article>
+            <article>
+              <h5>Promo más canjeada</h5>
+              <Table trTitles={trPromotionTitle}>
+                {promotions?.map((promotion) => (
+                  <RankingRow
+                    key={promotion.id}
+                    name={promotion.name}
+                    total={promotion.total}
+                  />
+                ))}
+              </Table>
+            </article>
 
-              <article>
-                <h5>Jugadores con más puntos canjeados</h5>
-                <Table trTitles={trPromotionTitle}>
-                  {users?.map((user) => (
-                    <RankingRow
-                      key={user.id}
-                      name={user.fullName}
-                      total={user.totalPointsSpent}
-                    />
-                  ))}
-                </Table>
-              </article>
-            </div>
+            <article>
+              <h5>Jugadores con más puntos canjeados</h5>
+              <Table trTitles={trPromotionTitle}>
+                {users?.map((user) => (
+                  <RankingRow
+                    key={user.id}
+                    name={user.fullName}
+                    total={user.totalPointsSpent}
+                  />
+                ))}
+              </Table>
+            </article>
           </section>
         </AdminLayout>
       </main>
