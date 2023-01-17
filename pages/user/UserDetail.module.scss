@@ -16,10 +16,13 @@
     max-width: 1200px;
     margin: 0 auto;
     padding: 0 1.5em;
+    display: flex;
+    flex-direction: column;
+    gap: 3em;
   }
 
   .input_section {
-    padding: 3em 0em;
+    padding: 3em 0em 1em 0em;
     display: grid;
     grid-template-columns: 1fr 35%;
     gap: 2em;
@@ -35,7 +38,8 @@
   }
 
   .add_consumptions_wrapper {
-    padding: 2em 0em 4em 0em;
+    padding: 2em 1em;
+    background-color: white;
 
     .flex {
       padding: 0em 0 2em 0em;
@@ -145,7 +149,7 @@
   }
 
   .margin_t {
-    margin-top: 2em;
+    // margin-top: 2em;
 
     table {
       thead {
@@ -184,7 +188,7 @@
   }
 
   .btn_wrrapper {
-    padding: 2em;
+    padding: 0em 0em 2em 0em;
     display: flex;
     justify-content: flex-end;
 
