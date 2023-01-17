@@ -6,7 +6,7 @@
     ul {
       list-style: none;
       display: flex;
-      flex-direction: column;
+      // flex-direction: column;
       gap: 0.5em;
 
       li {
@@ -15,5 +15,31 @@
         width: 8em;
       }
     }
+
+    .article_wrapper {
+      padding: 2em 0em;
+      background-color: white;
+
+      h5 {
+        padding-bottom: 1em;
+        font-weight: 700;
+        font-size: 0.9rem;
+      }
+
+      // article {
+      //   padding: 0 2em;
+      // }
+    }
+
+    > button {
+      @include main-btn;
+      background-color: $black;
+    }
+  }
+}
+
+.full_screen_active {
+  article {
+    padding: 0 2em;
   }
 }

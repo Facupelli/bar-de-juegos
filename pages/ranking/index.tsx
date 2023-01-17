@@ -1,11 +1,25 @@
+import axios from "axios";
+import { GetServerSideProps } from "next";
 import Head from "next/head";
-import Link from "next/link";
-import React from "react";
+import React, { useEffect, useRef, useState } from "react";
+
 import Nav from "../../src/components/Nav/Nav";
+import RankingRow from "../../src/components/Ranking/RankingRow/RankingRow";
+import Table from "../../src/components/Ranking/Table/Table";
+
+import { Consumption } from "../../src/types/model";
+import { UsersRanking } from "../../src/types/ranking";
+
+import { toggleFullScreen } from "../../src/utils/fullScreenMode";
+import { getGameRanking } from "../../src/utils/ranking";
 
 import s from "./Ranking.module.scss";
 
-export default function Ranking() {
+type Props = {
+  allGames: Consumption[];
+};
+
+export default function Ranking({ allGames }: Props) {
   // useEffect((): any => {
   //   const socket: Socket<ServerToClientEvents, ClientToServerEvents> = io(
   //     "http://localhost:3000",
@@ -38,6 +52,27 @@ export default function Ranking() {
   //   if (socket) return () => socket.disconnect();
   // }, []);
 
+  const [gameActive, setGameActive] = useState<string>("");
+  const [usersRanking, setUsersRanking] = useState<UsersRanking[]>();
+  const [fullScreenActive, setFullScreenActive] = useState<boolean>(false);
+
+  const divRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const getFullScreenMode = () => {
+      if (document.fullscreenElement) {
+        setFullScreenActive(true);
+      } else {
+        setFullScreenActive(false);
+      }
+    };
+
+    document.addEventListener("fullscreenchange", getFullScreenMode);
+
+    return () =>
+      document.removeEventListener("fullscreenchange", getFullScreenMode);
+  }, []);
+
   return (
     <div className={s.container}>
       <Head>
@@ -50,14 +85,54 @@ export default function Ranking() {
 
       <main>
         <ul>
-          <li>
-            <Link href="/ranking/pool">POOL</Link>
-          </li>
-          <li>
-            <Link href="/ranking/metegol">METEGOL</Link>
-          </li>
+          {allGames.map((game) => (
+            <li
+              key={game.id}
+              onClick={() => {
+                getGameRanking(game.id, setUsersRanking);
+                setGameActive(game.name);
+              }}
+            >
+              {game.name}
+            </li>
+          ))}
         </ul>
+
+        <div
+          className={`${s.article_wrapper} ${
+            fullScreenActive ? s.full_screen_active : ""
+          }`}
+          ref={divRef}
+        >
+          <article>
+            <h5>RANKING {gameActive.toUpperCase()}</h5>
+            <Table trTitles={["JUGADOR", "PARTIDOS GANADOS"]}>
+              {usersRanking?.map((user) => (
+                <RankingRow
+                  key={user.id}
+                  name={user.user.fullName}
+                  total={user.quantity}
+                />
+              ))}
+            </Table>
+          </article>
+        </div>
+
+        <button type="submit" onClick={() => toggleFullScreen(divRef)}>
+          PANTALLA COMPLETA
+        </button>
       </main>
     </div>
   );
 }
+
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  const response = await axios("http://localhost:3000/api/allGames");
+  const allGames: Consumption[] = response.data;
+
+  return {
+    props: {
+      allGames,
+    },
+  };
+};
