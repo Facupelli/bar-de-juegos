@@ -37,6 +37,22 @@
   .add_consumptions_wrapper {
     padding: 2em 0em 4em 0em;
 
+    .flex {
+      padding: 0em 0 2em 0em;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 4em;
+
+      > * {
+        flex-basis: 50%;
+      }
+
+      > input {
+        padding: 0.2em 0.5em;
+      }
+    }
+
     .consumptions_wrapper {
       display: grid;
       gap: 1em;

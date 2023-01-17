@@ -4,7 +4,7 @@ import Head from "next/head";
 import { authOptions } from "../api/auth/[...nextauth]";
 import { unstable_getServerSession } from "next-auth";
 import { useRouter } from "next/router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { fetchUserById } from "../../src/utils/fetching";
 import { updateUserState } from "../../src/utils/userID";
@@ -43,7 +43,6 @@ type Props = {
     games: Consumption[];
     foods: Consumption[];
   };
-  promotions: Promotion[];
   userId: string;
 };
 
@@ -53,7 +52,6 @@ export default function Home({
   userData,
   consumptions,
   userConsumptions,
-  promotions,
   userId,
 }: Props) {
   const router = useRouter();
@@ -61,7 +59,8 @@ export default function Home({
   const [user, setUser] = useState<User>(userData);
   const [error, setError] = useState<string>("");
 
-  console.log(error);
+  const [consumptionsList, setConsumptionsList] = useState(consumptions);
+  const [promotions, setPromotions] = useState(user?.membership?.promotions);
 
   const [consumptionActive, setConsumptionActive] = useState({
     drinks: true,
@@ -69,6 +68,41 @@ export default function Home({
     games: false,
     promos: false,
   });
+
+  const [searchInput, setSearchinput] = useState<string>("");
+  const [searchPromoInput, setSearchPromoInput] = useState<string>("");
+
+  useEffect(() => {
+    if (searchInput) {
+      setConsumptionsList((prev) => ({
+        drinks: consumptions.drinks.filter((d) =>
+          d.name.toLowerCase().includes(searchInput.toLowerCase())
+        ),
+        foods: consumptions.foods.filter((f) =>
+          f.name.toLowerCase().includes(searchInput.toLowerCase())
+        ),
+        games: consumptions.games.filter((g) =>
+          g.name.toLowerCase().includes(searchInput.toLowerCase())
+        ),
+      }));
+    }
+    if (!searchInput) {
+      setConsumptionsList(consumptions);
+    }
+  }, [searchInput]);
+
+  useEffect(() => {
+    if (searchPromoInput) {
+      setPromotions(
+        user.membership.promotions.filter((p) =>
+          p.name.toLowerCase().includes(searchPromoInput.toLowerCase())
+        )
+      );
+    }
+    if (!searchPromoInput) {
+      setPromotions(user.membership.promotions);
+    }
+  }, [searchPromoInput]);
 
   const updateGameWinner = async (
     id: string,
@@ -123,60 +157,64 @@ export default function Home({
             <div className={s.btns_wrapper}>
               <AddConsumptionBtn
                 text="BEBIDAS"
-                handleClick={() =>
+                handleClick={() => {
                   setConsumptionActive((prev) => ({
                     ...prev,
                     drinks: !consumptionActive.drinks,
                     foods: false,
                     games: false,
                     promos: false,
-                  }))
-                }
+                  }));
+                  setSearchinput("");
+                }}
                 active={consumptionActive.drinks}
               >
                 <BeerIcon size={26} active={consumptionActive.drinks} />
               </AddConsumptionBtn>
               <AddConsumptionBtn
                 text="COMIDAS"
-                handleClick={() =>
+                handleClick={() => {
                   setConsumptionActive((prev) => ({
                     ...prev,
                     foods: !consumptionActive.foods,
                     games: false,
                     promos: false,
                     drinks: false,
-                  }))
-                }
+                  }));
+                  setSearchinput("");
+                }}
                 active={consumptionActive.foods}
               >
                 <KitchenTools size={26} active={consumptionActive.foods} />
               </AddConsumptionBtn>
               <AddConsumptionBtn
                 text="JUEGOS"
-                handleClick={() =>
+                handleClick={() => {
                   setConsumptionActive((prev) => ({
                     ...prev,
                     games: !consumptionActive.games,
                     promos: false,
                     drinks: false,
                     foods: false,
-                  }))
-                }
+                  }));
+                  setSearchinput("");
+                }}
                 active={consumptionActive.games}
               >
                 <PoolIcon size={26} active={consumptionActive.games} />
               </AddConsumptionBtn>
               <AddConsumptionBtn
                 text="PROMOCIONES"
-                handleClick={() =>
+                handleClick={() => {
                   setConsumptionActive((prev) => ({
                     ...prev,
                     promos: !consumptionActive.promos,
                     games: false,
                     drinks: false,
                     foods: false,
-                  }))
-                }
+                  }));
+                  setSearchinput("");
+                }}
                 active={consumptionActive.promos}
               >
                 <PercentageIcon size={26} active={consumptionActive.promos} />
@@ -188,14 +226,21 @@ export default function Home({
           <section className={s.add_consumptions_wrapper}>
             {consumptionActive.drinks && (
               <>
-                <AddConsumption
-                  consumptions={consumptions.drinks}
-                  name="DRINK"
-                  userId={userId}
-                  setUser={setUser}
-                />
+                <div className={s.flex}>
+                  <input
+                    type="search"
+                    placeholder="Buscar..."
+                    onChange={(e) => setSearchinput(e.target.value)}
+                  />
+                  <AddConsumption
+                    consumptions={consumptions.drinks}
+                    name="DRINK"
+                    userId={userId}
+                    setUser={setUser}
+                  />
+                </div>
                 <div className={s.consumptions_wrapper}>
-                  {consumptions.drinks.map((drink) => (
+                  {consumptionsList.drinks.map((drink) => (
                     <ConsumptionCard
                       name="DRINK"
                       setUser={setUser}
@@ -210,14 +255,21 @@ export default function Home({
 
             {consumptionActive.foods && (
               <>
-                <AddConsumption
-                  consumptions={consumptions.foods}
-                  name="Comida"
-                  userId={userId}
-                  setUser={setUser}
-                />
+                <div className={s.flex}>
+                  <input
+                    type="search"
+                    placeholder="Buscar..."
+                    onChange={(e) => setSearchinput(e.target.value)}
+                  />
+                  <AddConsumption
+                    consumptions={consumptions.foods}
+                    name="Comida"
+                    userId={userId}
+                    setUser={setUser}
+                  />
+                </div>
                 <div className={s.consumptions_wrapper}>
-                  {consumptions.foods.map((food) => (
+                  {consumptionsList.foods.map((food) => (
                     <ConsumptionCard
                       name="FOOD"
                       setUser={setUser}
@@ -232,14 +284,21 @@ export default function Home({
 
             {consumptionActive.games && (
               <>
-                <AddConsumption
-                  consumptions={consumptions.games}
-                  name="Juegos"
-                  userId={userId}
-                  setUser={setUser}
-                />
+                <div className={s.flex}>
+                  <input
+                    type="search"
+                    placeholder="Buscar..."
+                    onChange={(e) => setSearchinput(e.target.value)}
+                  />
+                  <AddConsumption
+                    consumptions={consumptions.games}
+                    name="Juegos"
+                    userId={userId}
+                    setUser={setUser}
+                  />
+                </div>
                 <div className={s.consumptions_wrapper}>
-                  {consumptions.games.map((game) => (
+                  {consumptionsList.games.map((game) => (
                     <ConsumptionCard
                       name="GAME"
                       setUser={setUser}
@@ -254,14 +313,21 @@ export default function Home({
 
             {consumptionActive.promos && (
               <>
-                <AddPromotion
-                  promotions={user.membership.promotions}
-                  userId={userId}
-                  userPoints={user.totalPoints}
-                  setUser={setUser}
-                />
+                <div className={s.flex}>
+                  <input
+                    type="search"
+                    placeholder="Buscar..."
+                    onChange={(e) => setSearchPromoInput(e.target.value)}
+                  />
+                  <AddPromotion
+                    promotions={user.membership.promotions}
+                    userId={userId}
+                    userPoints={user.totalPoints}
+                    setUser={setUser}
+                  />
+                </div>
                 <div className={s.promotions_wrapper}>
-                  {user.membership.promotions?.map((promotion) => (
+                  {promotions?.map((promotion) => (
                     <PromotionCard
                       key={promotion.id}
                       promotion={promotion}

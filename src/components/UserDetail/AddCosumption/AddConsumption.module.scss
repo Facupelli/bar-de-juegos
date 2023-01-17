@@ -1,13 +1,10 @@
 @import "../../../../styles/app.scss";
 
 .form {
-  padding: 0em 0 2em 0;
-  margin-left: auto;
-  width: 50%;
   display: grid;
-  grid-template-columns: 1fr 35%;
   align-items: center;
-  gap: 1em;
+  gap: 0.5em;
+  grid-template-columns: 1fr 30%;
 
   label {
     font-weight: 600;
