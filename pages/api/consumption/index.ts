@@ -1,38 +1,91 @@
 import { prisma } from "../../../db";
 import type { NextApiRequest, NextApiResponse } from "next";
 import { ConsumptionType } from "../../../src/types/model";
+import { unstable_getServerSession } from "next-auth";
+import { authOptions } from "../auth/[...nextauth]";
 
 export default async function handleConsumption(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  if (req.method === "GET") {
-    const userId = req.query.userId as string;
-    const ranking = req.query.ranking as string;
+  const session = await unstable_getServerSession(req, res, authOptions);
+  if (session) {
+    if (req.method === "GET") {
+      const userId = req.query.userId as string;
+      const ranking = req.query.ranking as string;
 
-    if (userId) {
+      if (userId) {
+        try {
+          const drinkConsumptions = await prisma.consumption.findMany({
+            include: { users: { where: { userId: userId } } },
+            where: { type: "DRINK" },
+            orderBy: { points: "asc" },
+          });
+
+          const gameConsumptions = await prisma.consumption.findMany({
+            include: { users: { where: { userId: userId } } },
+            where: { type: "GAME" },
+            orderBy: { points: "asc" },
+          });
+
+          const foodConsumptions = await prisma.consumption.findMany({
+            include: { users: { where: { userId: userId } } },
+            where: { type: "FOOD" },
+            orderBy: { points: "asc" },
+          });
+
+          return res.json({
+            drinks: drinkConsumptions,
+            games: gameConsumptions,
+            foods: foodConsumptions,
+          });
+        } catch (e) {
+          console.error(e);
+          res.status(500).json({ message: `error ${e}` });
+        }
+      }
+
+      if (ranking) {
+        try {
+          const consumptions = await prisma.consumption.findMany({
+            include: { _count: { select: { users: true } } },
+            where: { type: "DRINK" },
+            orderBy: {
+              users: {
+                _count: "desc",
+              },
+            },
+          });
+
+          return res.json({ consumptions });
+        } catch (e) {
+          console.error(e);
+          res.status(500).json({ message: `error ${e}` });
+        }
+      }
+
       try {
         const drinkConsumptions = await prisma.consumption.findMany({
-          include: { users: { where: { userId: userId } } },
           where: { type: "DRINK" },
+          include: { users: true },
           orderBy: { points: "asc" },
         });
 
-        const gameConsumptions = await prisma.consumption.findMany({
-          include: { users: { where: { userId: userId } } },
+        const gamesConsumptions = await prisma.consumption.findMany({
           where: { type: "GAME" },
+          include: { users: true },
           orderBy: { points: "asc" },
         });
 
         const foodConsumptions = await prisma.consumption.findMany({
-          include: { users: { where: { userId: userId } } },
           where: { type: "FOOD" },
+          include: { users: true },
           orderBy: { points: "asc" },
         });
 
         return res.json({
           drinks: drinkConsumptions,
-          games: gameConsumptions,
+          games: gamesConsumptions,
           foods: foodConsumptions,
         });
       } catch (e) {
@@ -41,125 +94,80 @@ export default async function handleConsumption(
       }
     }
 
-    if (ranking) {
-      try {
-        const consumptions = await prisma.consumption.findMany({
-          include: { _count: { select: { users: true } } },
-          where: { type: "DRINK" },
-          orderBy: {
-            users: {
-              _count: "desc",
-            },
-          },
-        });
+    const {
+      id,
+      type,
+      name,
+      points,
+    }: {
+      id: string;
+      type: ConsumptionType;
+      name: string;
+      points: number;
+    } = req.body;
 
-        return res.json({ consumptions });
+    if (req.method === "POST") {
+      try {
+        if (name && points) {
+          const newConsumption = await prisma.consumption.create({
+            data: {
+              name,
+              points: Number(points),
+              type,
+            },
+          });
+
+          return res.status(200).json({ message: "success" });
+        }
+
+        return res.status(400).json({ message: "missing data" });
       } catch (e) {
         console.error(e);
         res.status(500).json({ message: `error ${e}` });
       }
     }
 
-    try {
-      const drinkConsumptions = await prisma.consumption.findMany({
-        where: { type: "DRINK" },
-        include: { users: true },
-        orderBy: { points: "asc" },
-      });
+    if (req.method === "PUT") {
+      try {
+        if (id && (name || points)) {
+          const updateDrink = await prisma.consumption.update({
+            where: { id },
+            data: {
+              name,
+              points: Number(points),
+            },
+          });
 
-      const gamesConsumptions = await prisma.consumption.findMany({
-        where: { type: "GAME" },
-        include: { users: true },
-        orderBy: { points: "asc" },
-      });
+          return res.status(200).json({ message: "success" });
+        }
 
-      const foodConsumptions = await prisma.consumption.findMany({
-        where: { type: "FOOD" },
-        include: { users: true },
-        orderBy: { points: "asc" },
-      });
-
-      return res.json({
-        drinks: drinkConsumptions,
-        games: gamesConsumptions,
-        foods: foodConsumptions,
-      });
-    } catch (e) {
-      console.error(e);
-      res.status(500).json({ message: `error ${e}` });
-    }
-  }
-
-  const {
-    id,
-    type,
-    name,
-    points,
-  }: {
-    id: string;
-    type: ConsumptionType;
-    name: string;
-    points: number;
-  } = req.body;
-
-  if (req.method === "POST") {
-    try {
-      if (name && points) {
-        const newConsumption = await prisma.consumption.create({
-          data: {
-            name,
-            points: Number(points),
-            type,
-          },
-        });
-
-        return res.status(200).json({ message: "success" });
+        return res.status(400).json({ message: "missing data" });
+      } catch (e) {
+        console.error(e);
+        res.status(500).json({ message: `error ${e}` });
       }
-
-      return res.status(400).json({ message: "missing data" });
-    } catch (e) {
-      console.error(e);
-      res.status(500).json({ message: `error ${e}` });
     }
-  }
 
-  if (req.method === "PUT") {
-    try {
-      if (id && (name || points)) {
-        const updateDrink = await prisma.consumption.update({
-          where: { id },
-          data: {
-            name,
-            points: Number(points),
-          },
-        });
+    if (req.method === "DELETE") {
+      try {
+        const { consumptionId }: { consumptionId: string } = req.body;
 
-        return res.status(200).json({ message: "success" });
+        if (consumptionId) {
+          const deleteConsumption = await prisma.consumption.delete({
+            where: { id: consumptionId },
+          });
+
+          return res.status(200).json({ message: "success" });
+        }
+
+        return res.status(400).json({ message: "missing id" });
+      } catch (e) {
+        console.error(e);
+        res.status(500).json({ message: `error ${e}` });
       }
-
-      return res.status(400).json({ message: "missing data" });
-    } catch (e) {
-      console.error(e);
-      res.status(500).json({ message: `error ${e}` });
     }
-  }
-
-  if (req.method === "DELETE") {
-    try {
-      const { consumptionId }: { consumptionId: string } = req.body;
-
-      if (consumptionId) {
-        const deleteConsumption = await prisma.consumption.delete({
-          where: { id: consumptionId },
-        });
-
-        return res.status(200).json({ message: "success" });
-      }
-
-      return res.status(400).json({ message: "missing id" });
-    } catch (e) {
-      console.error(e);
-      res.status(500).json({ message: `error ${e}` });
-    }
+  } else {
+    // Not Signed in
+    res.status(401).json({ message: "unauthorized" });
   }
 }
