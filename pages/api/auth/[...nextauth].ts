@@ -11,7 +11,7 @@ export const authOptions = {
     }),
   ],
   callbacks: {
-    async session({ session }) {
+    async session({ session, token }) {
       const data = {
         email: session.user.email,
         name: session.user.name,
@@ -24,6 +24,7 @@ export const authOptions = {
       const userLogged = await response.data;
 
       session.user.role = userLogged.role;
+      token.role = userLogged.role;
 
       if (userLogged.message === "success") return session;
     },

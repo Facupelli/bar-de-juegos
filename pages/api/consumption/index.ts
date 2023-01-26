@@ -67,8 +67,6 @@ export default async function handleConsumption(
         orderBy: { points: "asc" },
       });
 
-      console.log("ACAAA", drinkConsumptions);
-
       const gamesConsumptions = await prisma.consumption.findMany({
         where: { type: "GAME" },
         include: { users: true },

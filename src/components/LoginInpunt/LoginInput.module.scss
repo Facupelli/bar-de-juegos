@@ -1,5 +1,13 @@
 .section {
+  // visibility: hidden;
   input {
     width: 100%;
+    border: none;
+    opacity: 0;
+
+    &:focus,
+    &:active {
+      outline: none;
+    }
   }
 }
