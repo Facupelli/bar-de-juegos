@@ -1,17 +1,18 @@
 import axios from "axios";
-import NextAuth from "next-auth";
+import NextAuth, { Session } from "next-auth";
+import { JWT } from "next-auth/jwt";
 import GoogleProvider from "next-auth/providers/google";
 
 export const authOptions = {
   // Configure one or more authentication providers
   providers: [
     GoogleProvider({
-      clientId: process.env.GOOGLE_CLIENT_ID,
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+      clientId: process.env.GOOGLE_CLIENT_ID || "secret",
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET || "secret",
     }),
   ],
   callbacks: {
-    async session({ session, token }) {
+    async session({ session, token }: { session: Session; token: JWT }) {
       const data = {
         email: session.user.email,
         name: session.user.name,
@@ -26,7 +27,7 @@ export const authOptions = {
       session.user.role = userLogged.role;
       token.role = userLogged.role;
 
-      if (userLogged.message === "success") return session;
+      return session;
     },
   },
 };
