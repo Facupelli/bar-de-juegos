@@ -24,6 +24,7 @@ import RankingRow from "../../src/components/Ranking/RankingRow/RankingRow";
 import Table from "../../src/components/Ranking/Table/Table";
 
 import s from "./Admin.module.scss";
+import { PrismaClient } from "@prisma/client";
 
 const trDrinkTitle = ["Bebida", "Total"];
 const trGameTitle = ["Juego", "Total"];
@@ -126,8 +127,34 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     authOptions
   );
 
+  // const prisma = new PrismaClient();
+
   if (session?.user.role === "ADMIN") {
-    const consumptions = await fetchConsumptions();
+    const drinkConsumptions = await prisma?.consumption.findMany({
+      where: { type: "DRINK" },
+      include: { users: true },
+      orderBy: { points: "asc" },
+    });
+
+    console.log("-------------------------------", drinkConsumptions[1].users);
+
+    const gamesConsumptions = await prisma?.consumption.findMany({
+      where: { type: "GAME" },
+      include: { users: true },
+      orderBy: { points: "asc" },
+    });
+
+    // const foodConsumptions = await prisma.consumption.findMany({
+    //   where: { type: "FOOD" },
+    //   include: { users: true },
+    //   orderBy: { points: "asc" },
+    // });
+
+    const consumptions = {
+      drinks: drinkConsumptions,
+      games: gamesConsumptions,
+      // food: foodConsumptions,
+    };
 
     const drinksReducedQuantity = getConsumptionsReducedQuantity(
       consumptions.drinks
@@ -145,7 +172,11 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       a.total > b.total ? -1 : 1
     );
 
-    const promotions = await fetchPromotionsRanking();
+    const promotions = await prisma?.promotion.findMany({
+      include: {
+        users: true,
+      },
+    });
 
     const promotionsReducedQuantity = getPromotionsReducedQuantity(promotions);
 
@@ -153,18 +184,20 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       a.total > b.total ? -1 : 1
     );
 
-    const usersRersponse = await axios(
-      "http://localhost:3000/api/user?userRanking=true"
-    );
-    const users = usersRersponse.data;
+    const users = await prisma?.user.findMany({
+      orderBy: {
+        totalPointsSpent: "desc",
+      },
+      take: 10,
+    });
 
     return {
       props: {
         session,
-        drinksList: sortedDrinks,
-        gamesList: sortedGames,
-        promotionsList: sortedPromotions,
-        usersList: users,
+        drinksList: JSON.parse(JSON.stringify(sortedDrinks)),
+        gamesList: JSON.parse(JSON.stringify(sortedGames)),
+        promotionsList: JSON.parse(JSON.stringify(sortedPromotions)),
+        usersList: JSON.parse(JSON.stringify(users)),
       },
     };
   }

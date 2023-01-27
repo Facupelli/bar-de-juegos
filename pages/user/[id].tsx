@@ -1,5 +1,5 @@
 import axios from "axios";
-import { GetServerSideProps } from "next";
+import { GetServerSideProps, GetStaticPaths, GetStaticProps } from "next";
 import Head from "next/head";
 import { authOptions } from "../api/auth/[...nextauth]";
 import { unstable_getServerSession } from "next-auth";
@@ -30,6 +30,8 @@ import BeerIcon from "../../src/icons/BeerIcon";
 import PoolIcon from "../../src/icons/PoolIcon";
 
 import s from "./UserDetail.module.scss";
+import { PrismaClient } from "@prisma/client";
+import { ParsedUrlQuery } from "querystring";
 
 type Props = {
   userData: User;
@@ -455,49 +457,232 @@ export default function Home({
   );
 }
 
-export const getServerSideProps: GetServerSideProps = async (context) => {
-  const session = await unstable_getServerSession(
-    context.req,
-    context.res,
-    authOptions
-  );
+interface IParams extends ParsedUrlQuery {
+  id: string;
+}
 
-  if (session?.user.role === "ADMIN" || session?.user.role === "EMPLOYEE") {
-    const id = context.query.id as string;
+export const getStaticProps: GetStaticProps = async (context) => {
+  const prisma = new PrismaClient();
+  const { id } = context.params as IParams;
 
-    const user: User = await fetchUserById(id);
+  let user,
+    drinkConsumptions,
+    gamesConsumptions,
+    foodConsumptions,
+    userDrinksConsumptions,
+    userGamesConsumptions,
+    userFoodConsumptions;
 
-    const consumptionsResponse = await axios(
-      "http://localhost:3000/api/consumption"
-    );
-    const consumptions: Consumption[] = consumptionsResponse.data;
-
-    const userConsumptionsResponse = await axios(
-      `http://localhost:3000/api/consumption?userId=${user?.id}`
-    );
-    const userConsumptions: Consumption[] = userConsumptionsResponse.data;
-
-    // const promotionsResponse = await axios(
-    //   `http://localhost:3000/api/promotions?membership=${user.membership}`
-    // );
-    // const promotions = promotionsResponse.data;
-
-    return {
-      props: {
-        userData: user,
-        consumptions,
-        userConsumptions,
-        userId: id,
-        // promotions,
+  try {
+    user = await prisma?.user.findUnique({
+      where: { id },
+      include: {
+        membership: {
+          include: {
+            promotions: {
+              include: {
+                consumptions: { include: { consumption: true } },
+                memberships: true,
+              },
+            },
+          },
+        },
+        consumptions: {
+          include: { consumption: true },
+          orderBy: { createdAt: "desc" },
+        },
       },
-    };
+    });
+  } catch (e) {
+    console.log(e);
+  }
+
+  try {
+    drinkConsumptions = await prisma?.consumption.findMany({
+      where: { type: "DRINK" },
+      include: { users: true },
+      orderBy: { points: "asc" },
+    });
+
+    gamesConsumptions = await prisma?.consumption.findMany({
+      where: { type: "GAME" },
+      include: { users: true },
+      orderBy: { points: "asc" },
+    });
+
+    foodConsumptions = await prisma?.consumption.findMany({
+      where: { type: "FOOD" },
+      include: { users: true },
+      orderBy: { points: "asc" },
+    });
+  } catch (e) {
+    console.error(e);
+  }
+
+  try {
+    userDrinksConsumptions = await prisma?.consumption.findMany({
+      include: { users: { where: { userId: id } } },
+      where: { type: "DRINK" },
+      orderBy: { points: "asc" },
+    });
+
+    userGamesConsumptions = await prisma?.consumption.findMany({
+      include: { users: { where: { userId: id } } },
+      where: { type: "GAME" },
+      orderBy: { points: "asc" },
+    });
+
+    userFoodConsumptions = await prisma?.consumption.findMany({
+      include: { users: { where: { userId: id } } },
+      where: { type: "FOOD" },
+      orderBy: { points: "asc" },
+    });
+  } catch (e) {
+    console.error(e);
   }
 
   return {
-    redirect: {
-      destination: "/",
-      permanent: false,
+    props: {
+      userData: JSON.parse(JSON.stringify(user)),
+      consumptions: {
+        drinks: JSON.parse(JSON.stringify(drinkConsumptions)),
+        foods: JSON.parse(JSON.stringify(foodConsumptions)),
+        games: JSON.parse(JSON.stringify(gamesConsumptions)),
+      },
+      userConsumptions: {
+        drinks: JSON.parse(JSON.stringify(userDrinksConsumptions)),
+        foods: JSON.parse(JSON.stringify(userFoodConsumptions)),
+        games: JSON.parse(JSON.stringify(userGamesConsumptions)),
+      },
+      userId: id,
     },
-    props: {},
+    revalidate: 10,
   };
 };
+
+export const getStaticPaths: GetStaticPaths<IParams> = async () => {
+  const prisma = new PrismaClient();
+  const users = await prisma.user.findMany({ select: { id: true } });
+
+  return {
+    paths: users?.map((user) => ({
+      params: {
+        id: user.id,
+      },
+    })),
+    fallback: "blocking",
+  };
+};
+
+// export const getServerSideProps: GetServerSideProps = async (context) => {
+//   const session = await unstable_getServerSession(
+//     context.req,
+//     context.res,
+//     authOptions
+//   );
+
+//   if (session?.user.role === "ADMIN" || session?.user.role === "EMPLOYEE") {
+//     const id = context.query.id as string;
+
+//     let user,
+//       drinkConsumptions,
+//       gamesConsumptions,
+//       foodConsumptions,
+//       userDrinksConsumptions,
+//       userGamesConsumptions,
+//       userFoodConsumptions;
+
+//     try {
+//       user = await prisma?.user.findUnique({
+//         where: { id },
+//         include: {
+//           membership: {
+//             include: {
+//               promotions: {
+//                 include: {
+//                   consumptions: { include: { consumption: true } },
+//                   memberships: true,
+//                 },
+//               },
+//             },
+//           },
+//           consumptions: {
+//             include: { consumption: true },
+//             orderBy: { createdAt: "desc" },
+//           },
+//         },
+//       });
+//     } catch (e) {
+//       console.log(e);
+//     }
+
+//     try {
+//       drinkConsumptions = await prisma?.consumption.findMany({
+//         where: { type: "DRINK" },
+//         include: { users: true },
+//         orderBy: { points: "asc" },
+//       });
+
+//       gamesConsumptions = await prisma?.consumption.findMany({
+//         where: { type: "GAME" },
+//         include: { users: true },
+//         orderBy: { points: "asc" },
+//       });
+
+//       foodConsumptions = await prisma?.consumption.findMany({
+//         where: { type: "FOOD" },
+//         include: { users: true },
+//         orderBy: { points: "asc" },
+//       });
+//     } catch (e) {
+//       console.error(e);
+//     }
+
+//     try {
+//       userDrinksConsumptions = await prisma?.consumption.findMany({
+//         include: { users: { where: { userId: id } } },
+//         where: { type: "DRINK" },
+//         orderBy: { points: "asc" },
+//       });
+
+//       userGamesConsumptions = await prisma?.consumption.findMany({
+//         include: { users: { where: { userId: id } } },
+//         where: { type: "GAME" },
+//         orderBy: { points: "asc" },
+//       });
+
+//       userFoodConsumptions = await prisma?.consumption.findMany({
+//         include: { users: { where: { userId: id } } },
+//         where: { type: "FOOD" },
+//         orderBy: { points: "asc" },
+//       });
+//     } catch (e) {
+//       console.error(e);
+//     }
+
+//     return {
+//       props: {
+//         userData: JSON.parse(JSON.stringify(user)),
+//         consumptions: {
+//           drinks: JSON.parse(JSON.stringify(drinkConsumptions)),
+//           foods: JSON.parse(JSON.stringify(foodConsumptions)),
+//           games: JSON.parse(JSON.stringify(gamesConsumptions)),
+//         },
+//         userConsumptions: {
+//           drinks: JSON.parse(JSON.stringify(userDrinksConsumptions)),
+//           foods: JSON.parse(JSON.stringify(userFoodConsumptions)),
+//           games: JSON.parse(JSON.stringify(userGamesConsumptions)),
+//         },
+//         userId: id,
+//       },
+//     };
+//   }
+
+//   return {
+//     redirect: {
+//       destination: "/",
+//       permanent: false,
+//     },
+//     props: {},
+//   };
+// };

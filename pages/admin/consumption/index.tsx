@@ -248,14 +248,33 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   );
 
   if (session?.user.role === "ADMIN") {
-    const consumptionsResponse = await axios(
-      "http://localhost:3000/api/consumption"
-    );
-    const consumptions = consumptionsResponse.data;
+    const drinkConsumptions = await prisma?.consumption.findMany({
+      where: { type: "DRINK" },
+      include: { users: true },
+      orderBy: { points: "asc" },
+    });
+
+    const gamesConsumptions = await prisma?.consumption.findMany({
+      where: { type: "GAME" },
+      include: { users: true },
+      orderBy: { points: "asc" },
+    });
+
+    const foodConsumptions = await prisma?.consumption.findMany({
+      where: { type: "FOOD" },
+      include: { users: true },
+      orderBy: { points: "asc" },
+    });
+
+    const consumptions = {
+      drinks: drinkConsumptions,
+      games: gamesConsumptions,
+      food: foodConsumptions,
+    };
 
     return {
       props: {
-        consumptions,
+        consumptions: JSON.parse(JSON.stringify(consumptions)),
       },
     };
   }

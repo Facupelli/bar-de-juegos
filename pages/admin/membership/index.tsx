@@ -152,10 +152,9 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   );
 
   if (session?.user.role === "ADMIN") {
-    const membershipsResponse = await axios(
-      "http://localhost:3000/api/membership"
-    );
-    const memberships = membershipsResponse.data;
+    const memberships = await prisma?.membership.findMany({
+      orderBy: { minPoints: "asc" },
+    });
 
     return {
       props: {

@@ -128,26 +128,45 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   );
 
   if (session?.user.role === "ADMIN") {
-    const membershipsResponse = await axios(
-      "http://localhost:3000/api/membership"
-    );
-    const memberships = membershipsResponse.data;
+    const memberships = await prisma?.membership.findMany({
+      orderBy: { minPoints: "asc" },
+    });
 
-    const consumptionsResponse = await axios(
-      "http://localhost:3000/api/consumption"
-    );
-    const consumptions = consumptionsResponse.data;
+    const drinkConsumptions = await prisma?.consumption.findMany({
+      where: { type: "DRINK" },
+      include: { users: true },
+      orderBy: { points: "asc" },
+    });
 
-    const promotionsResponse = await axios(
-      "http://localhost:3000/api/promotion"
-    );
-    const promotions = promotionsResponse.data;
+    const gamesConsumptions = await prisma?.consumption.findMany({
+      where: { type: "GAME" },
+      include: { users: true },
+      orderBy: { points: "asc" },
+    });
+
+    const foodConsumptions = await prisma?.consumption.findMany({
+      where: { type: "FOOD" },
+      include: { users: true },
+      orderBy: { points: "asc" },
+    });
+
+    const consumptions = {
+      drinks: drinkConsumptions,
+      games: gamesConsumptions,
+      food: foodConsumptions,
+    };
+
+    const promotions = await prisma?.promotion.findMany({
+      include: {
+        users: true,
+      },
+    });
 
     return {
       props: {
-        memberships,
-        promotions,
-        consumptions,
+        memberships: JSON.parse(JSON.stringify(memberships)),
+        promotions: JSON.parse(JSON.stringify(promotions)),
+        consumptions: JSON.parse(JSON.stringify(consumptions)),
       },
     };
   }

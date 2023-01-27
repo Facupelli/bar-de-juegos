@@ -127,8 +127,9 @@ export default function Ranking({ allGames }: Props) {
 }
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  const response = await axios("http://localhost:3000/api/allGames");
-  const allGames: Consumption[] = response.data;
+  const allGames = await prisma?.consumption.findMany({
+    where: { type: "GAME" },
+  });
 
   return {
     props: {
