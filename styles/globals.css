@@ -25,9 +25,3 @@ video {
   display: block;
   width: 100%;
 }
-
-@media (max-width: 480px) {
-  body {
-    margin: 0px 2px;
-  }
-}

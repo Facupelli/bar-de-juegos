@@ -155,7 +155,7 @@ export default function Home({
 
       <main className={s.main}>
         <div>
-          <section className={` ${s.input_section}`}>
+          <section className={` ${s.first_section}`}>
             <div className={s.btns_wrapper}>
               <AddConsumptionBtn
                 text="BEBIDAS"
@@ -228,7 +228,7 @@ export default function Home({
           <section className={s.add_consumptions_wrapper}>
             {consumptionActive.drinks && (
               <>
-                <div className={s.flex}>
+                <div className={s.inputs_grid}>
                   <input
                     type="search"
                     placeholder="Buscar..."
