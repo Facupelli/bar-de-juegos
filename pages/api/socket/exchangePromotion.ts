@@ -1,7 +1,10 @@
 import { NextApiRequest } from "next";
 import { NextApiResponseServerIO } from "../../../src/types/next";
 
-export default (req: NextApiRequest, res: NextApiResponseServerIO) => {
+const exchangePromotion = (
+  req: NextApiRequest,
+  res: NextApiResponseServerIO
+) => {
   if (req.method === "POST") {
     // get message
 
@@ -12,3 +15,5 @@ export default (req: NextApiRequest, res: NextApiResponseServerIO) => {
     res.status(201).json({ message: "success" });
   }
 };
+
+export default exchangePromotion;

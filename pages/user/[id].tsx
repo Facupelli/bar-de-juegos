@@ -91,7 +91,7 @@ export default function Home({
     if (!searchInput) {
       setConsumptionsList(consumptions);
     }
-  }, [searchInput]);
+  }, [searchInput, consumptions]);
 
   useEffect(() => {
     if (searchPromoInput) {
@@ -104,7 +104,7 @@ export default function Home({
     if (!searchPromoInput) {
       setPromotions(user.membership.promotions);
     }
-  }, [searchPromoInput]);
+  }, [searchPromoInput, user.membership.promotions]);
 
   const updateGameWinner = async (
     id: string,

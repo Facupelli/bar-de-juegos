@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import Modal from "../Modal/Modal";
 
@@ -26,25 +26,28 @@ export default function LoginInput() {
 
   const id = watch("id");
 
-  const onSubmit = async (id: string) => {
-    try {
-      const user = await axios(`http://localhost:3000/api/user/${id}`);
-      reset({ id: "" });
-      if (user) {
-        setCalledPush(true);
-        router.push(`/user/${id}`);
+  const onSubmit = useCallback(
+    async (id: string) => {
+      try {
+        const user = await axios(`http://localhost:3000/api/user/${id}`);
+        reset({ id: "" });
+        if (user) {
+          setCalledPush(true);
+          router.push(`/user/${id}`);
+        }
+      } catch (e: any) {
+        console.log("catch", e.response);
+        setError(e?.response?.data?.message);
       }
-    } catch (e: any) {
-      console.log("catch", e.response);
-      setError(e?.response?.data?.message);
-    }
-  };
+    },
+    [reset, router]
+  );
 
   useEffect(() => {
     if (id?.length === 25 && !calledPush) {
       onSubmit(id);
     }
-  }, [id?.length, calledPush]);
+  }, [id, calledPush, onSubmit]);
 
   useEffect(() => {
     setFocus("id");

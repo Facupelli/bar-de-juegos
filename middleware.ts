@@ -14,12 +14,6 @@ export default withAuth(function middleware(req) {
   const { pathname } = req.nextUrl;
   const token = req.nextauth.token;
 
-  console.log(
-    "ACA -------------------------->",
-    isAdminRoute(pathname),
-    token?.role !== "ADMIN"
-  );
-
   if (isAdminRoute(pathname) && token?.role !== "ADMIN") {
     return NextResponse.redirect(new URL("/", req.url));
   }

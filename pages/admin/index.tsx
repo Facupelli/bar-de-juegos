@@ -136,8 +136,6 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       orderBy: { points: "asc" },
     });
 
-    console.log("-------------------------------", drinkConsumptions[1].users);
-
     const gamesConsumptions = await prisma?.consumption.findMany({
       where: { type: "GAME" },
       include: { users: true },
