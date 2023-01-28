@@ -61,8 +61,8 @@ export default async function handlerPromotion(
           };
 
           const ranking: Ranking[] = groupBy(playersGameConsumptions[0].users);
-          const result: UsersRanking[] = Object.keys(ranking).map(
-            (id) => ranking[id]
+          const result = Object.keys(ranking).map(
+            (id) => ranking[id as keyof typeof ranking]
           );
 
           return res.status(200).json(result);

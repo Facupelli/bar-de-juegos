@@ -260,7 +260,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       orderBy: { points: "asc" },
     });
 
-    const foodConsumptions = await prisma?.consumption.findMany({
+    const foodsConsumptions = await prisma?.consumption.findMany({
       where: { type: "FOOD" },
       include: { users: true },
       orderBy: { points: "asc" },
@@ -269,7 +269,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     const consumptions = {
       drinks: drinkConsumptions,
       games: gamesConsumptions,
-      food: foodConsumptions,
+      foods: foodsConsumptions,
     };
 
     return {

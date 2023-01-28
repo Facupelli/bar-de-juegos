@@ -1,3 +1,4 @@
+import { PrismaClient } from "@prisma/client";
 import axios from "axios";
 import { GetServerSideProps } from "next";
 import Head from "next/head";
@@ -121,7 +122,8 @@ export default function Ranking({ allGames }: Props) {
 }
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  const allGames = await prisma?.consumption.findMany({
+  const prisma = new PrismaClient();
+  const allGames = await prisma.consumption.findMany({
     where: { type: "GAME" },
   });
 
