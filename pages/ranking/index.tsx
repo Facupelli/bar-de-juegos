@@ -11,15 +11,10 @@ import Table from "../../src/components/Ranking/Table/Table";
 import { Consumption } from "../../src/types/model";
 import { UsersRanking } from "../../src/types/ranking";
 import {
-  addConsumption,
   ClientToServerEvents,
   GameOver,
   ServerToClientEvents,
 } from "../../src/types/socketio";
-import {
-  updateDrinksState,
-  updateGamesState,
-} from "../../src/utils/consumption";
 
 import { toggleFullScreen } from "../../src/utils/fullScreenMode";
 import { getGameRanking } from "../../src/utils/ranking";
@@ -34,8 +29,6 @@ export default function Ranking({ allGames }: Props) {
   const [gameActive, setGameActive] = useState<string>("");
   const [usersRanking, setUsersRanking] = useState<UsersRanking[]>();
   const [fullScreenActive, setFullScreenActive] = useState<boolean>(false);
-
-  console.log(gameActive);
 
   const divRef = useRef<HTMLDivElement>(null);
 

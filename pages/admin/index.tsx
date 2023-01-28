@@ -129,14 +129,14 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
   // const prisma = new PrismaClient();
 
-  if (session?.user.role === "ADMIN") {
-    const drinkConsumptions = await prisma?.consumption.findMany({
+  if (session?.user.role === "ADMIN" && prisma) {
+    const drinkConsumptions = await prisma.consumption.findMany({
       where: { type: "DRINK" },
       include: { users: true },
       orderBy: { points: "asc" },
     });
 
-    const gamesConsumptions = await prisma?.consumption.findMany({
+    const gamesConsumptions = await prisma.consumption.findMany({
       where: { type: "GAME" },
       include: { users: true },
       orderBy: { points: "asc" },
@@ -148,23 +148,15 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     //   orderBy: { points: "asc" },
     // });
 
-    const consumptions = {
-      drinks: drinkConsumptions,
-      games: gamesConsumptions,
-      // food: foodConsumptions,
-    };
-
-    const drinksReducedQuantity = getConsumptionsReducedQuantity(
-      consumptions.drinks
-    );
+    const drinksReducedQuantity =
+      getConsumptionsReducedQuantity(drinkConsumptions);
 
     const sortedDrinks = drinksReducedQuantity.sort((a, b) =>
       a.total > b.total ? -1 : 1
     );
 
-    const gamesReducedQuantity = getConsumptionsReducedQuantity(
-      consumptions.games
-    );
+    const gamesReducedQuantity =
+      getConsumptionsReducedQuantity(gamesConsumptions);
 
     const sortedGames = gamesReducedQuantity.sort((a, b) =>
       a.total > b.total ? -1 : 1
