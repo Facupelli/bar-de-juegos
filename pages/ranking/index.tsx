@@ -2,6 +2,7 @@ import axios from "axios";
 import { GetServerSideProps } from "next";
 import Head from "next/head";
 import React, { useEffect, useRef, useState } from "react";
+import { io, Socket } from "socket.io-client";
 
 import Nav from "../../src/components/Nav/Nav";
 import RankingRow from "../../src/components/Ranking/RankingRow/RankingRow";
@@ -9,6 +10,16 @@ import Table from "../../src/components/Ranking/Table/Table";
 
 import { Consumption } from "../../src/types/model";
 import { UsersRanking } from "../../src/types/ranking";
+import {
+  addConsumption,
+  ClientToServerEvents,
+  GameOver,
+  ServerToClientEvents,
+} from "../../src/types/socketio";
+import {
+  updateDrinksState,
+  updateGamesState,
+} from "../../src/utils/consumption";
 
 import { toggleFullScreen } from "../../src/utils/fullScreenMode";
 import { getGameRanking } from "../../src/utils/ranking";
@@ -20,43 +31,33 @@ type Props = {
 };
 
 export default function Ranking({ allGames }: Props) {
-  // useEffect((): any => {
-  //   const socket: Socket<ServerToClientEvents, ClientToServerEvents> = io(
-  //     "http://localhost:3000",
-  //     {
-  //       path: "/api/socketio",
-  //     }
-  //   );
-
-  //   socket.on("connect", () => {
-  //     console.log("SOCKET CONNECTED!", socket.id);
-  //     // setConnected(true);
-  //   });
-
-  //   socket.on("addConsumption", async (data: addConsumption) => {
-  //     if (data.consumptionType === "GAME") {
-  //       await updateGamesState(setGames);
-  //     }
-  //     if (data.consumptionType === "DRINK") {
-  //       await updateDrinksState(setDrinks);
-  //     }
-  //   });
-
-  //   socket.on("exchangePromotion", async () => {
-  //     await updatePromtoionsState(setPromotions);
-
-  //     const updatedUsers = await fetchUsersByExchange();
-  //     setUsers(updatedUsers);
-  //   });
-
-  //   if (socket) return () => socket.disconnect();
-  // }, []);
-
   const [gameActive, setGameActive] = useState<string>("");
   const [usersRanking, setUsersRanking] = useState<UsersRanking[]>();
   const [fullScreenActive, setFullScreenActive] = useState<boolean>(false);
 
+  console.log(gameActive);
+
   const divRef = useRef<HTMLDivElement>(null);
+
+  useEffect((): any => {
+    const socket: Socket<ServerToClientEvents, ClientToServerEvents> = io(
+      "http://localhost:3000",
+      {
+        path: "/api/socketio",
+      }
+    );
+
+    socket.on("connect", () => {
+      console.log("SOCKET CONNECTED!", socket.id);
+      // setConnected(true);
+    });
+
+    socket.on("gameOver", async (data: GameOver) => {
+      getGameRanking(data.id, setUsersRanking);
+    });
+
+    if (socket) return () => socket.disconnect();
+  }, []);
 
   useEffect(() => {
     const getFullScreenMode = () => {
