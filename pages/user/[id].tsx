@@ -257,7 +257,7 @@ export default function Home({
 
             {consumptionActive.foods && (
               <>
-                <div className={s.flex}>
+                <div className={s.inputs_grid}>
                   <input
                     type="search"
                     placeholder="Buscar..."
@@ -286,7 +286,7 @@ export default function Home({
 
             {consumptionActive.games && (
               <>
-                <div className={s.flex}>
+                <div className={s.inputs_grid}>
                   <input
                     type="search"
                     placeholder="Buscar..."
@@ -315,7 +315,7 @@ export default function Home({
 
             {consumptionActive.promos && (
               <>
-                <div className={s.flex}>
+                <div className={s.inputs_grid}>
                   <input
                     type="search"
                     placeholder="Buscar..."
