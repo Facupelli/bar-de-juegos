@@ -500,7 +500,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
   if (!user) {
     return {
       redirect: {
-        destination: "/?userError=true",
+        destination: "/",
         permanent: false,
       },
     };

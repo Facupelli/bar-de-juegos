@@ -10,11 +10,7 @@ type SubmitData = {
   id: string;
 };
 
-type Props = {
-  error: boolean;
-};
-
-export default function LoginInput({ error }: Props) {
+export default function LoginInput() {
   const {
     register,
     watch,
@@ -56,12 +52,16 @@ export default function LoginInput({ error }: Props) {
 
   useEffect(() => {
     setFocus("id");
-  }, [setFocus, submitError, error]);
+  }, [setFocus, submitError]);
 
   return (
     <>
       {submitError && !!submitError && (
-        <Modal isOpen={!!submitError} handleCloseModal={() => setError("")}>
+        <Modal
+          isOpen={!!submitError}
+          handleCloseModal={() => setError("")}
+          error
+        >
           <p>{submitError}</p>
         </Modal>
       )}
