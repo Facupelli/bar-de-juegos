@@ -344,103 +344,102 @@ export default function Home({
           </section>
 
           <section className={`${s.margin_t} ${s.last_consumptions_wrapper}`}>
-            <h4>Ultimas consumiciones:</h4>
-            <Table trTitles={trLastConsumptionsTitles}>
-              {user.consumptions.slice(0, 10).map((consumption) => (
-                <tr key={consumption.id}>
-                  <td>{consumption.consumption.name}</td>
-                  <td>
-                    {consumption.consumption.type === "GAME" &&
-                      (consumption.winner === null ? (
-                        <div className={s.btns_wrapper}>
-                          <ButtonOnClick
-                            handleClick={() =>
-                              updateGameWinner(
-                                consumption.id,
-                                true,
-                                consumption.consumption.id
-                              )
-                            }
-                            type="primary"
-                          >
-                            GANÓ
-                          </ButtonOnClick>
-                          <ButtonOnClick
-                            handleClick={() =>
-                              updateGameWinner(
-                                consumption.id,
-                                false,
-                                consumption.consumption.id
-                              )
-                            }
-                            type="danger"
-                          >
-                            PERDIÓ
-                          </ButtonOnClick>
-                        </div>
-                      ) : (
-                        <div>{consumption.winner ? "SI" : "NO"}</div>
-                      ))}
-                  </td>
-                  <td>{consumption.quantity}</td>
-                  <td>
-                    {new Date(consumption.createdAt).toLocaleDateString(
-                      "es-AR",
-                      {
-                        year: "numeric",
-                        day: "numeric",
-                        month: "short",
-                      }
-                    )}
-                    {" - "}
-                    {new Date(consumption.createdAt).toLocaleTimeString(
-                      "es-AR",
-                      {
-                        hour: "2-digit",
-                        minute: "2-digit",
-                      }
-                    )}
-                  </td>
-                </tr>
-              ))}
-            </Table>
+            <details>
+              <summary>Ultimas consumiciones:</summary>
+              <Table trTitles={trLastConsumptionsTitles}>
+                {user.consumptions.slice(0, 10).map((consumption) => (
+                  <tr key={consumption.id}>
+                    <td>{consumption.consumption.name}</td>
+                    <td>
+                      {consumption.consumption.type === "GAME" &&
+                        (consumption.winner === null ? (
+                          <div className={s.btns_wrapper}>
+                            <ButtonOnClick
+                              handleClick={() =>
+                                updateGameWinner(
+                                  consumption.id,
+                                  true,
+                                  consumption.consumption.id
+                                )
+                              }
+                              type="primary"
+                            >
+                              GANÓ
+                            </ButtonOnClick>
+                            <ButtonOnClick
+                              handleClick={() =>
+                                updateGameWinner(
+                                  consumption.id,
+                                  false,
+                                  consumption.consumption.id
+                                )
+                              }
+                              type="danger"
+                            >
+                              PERDIÓ
+                            </ButtonOnClick>
+                          </div>
+                        ) : (
+                          <div>{consumption.winner ? "SI" : "NO"}</div>
+                        ))}
+                    </td>
+                    <td>{consumption.quantity}</td>
+                    <td>
+                      {new Date(consumption.createdAt).toLocaleDateString(
+                        "es-AR",
+                        {
+                          year: "numeric",
+                          day: "numeric",
+                          month: "short",
+                        }
+                      )}
+                      {" - "}
+                      {new Date(consumption.createdAt).toLocaleTimeString(
+                        "es-AR",
+                        {
+                          hour: "2-digit",
+                          minute: "2-digit",
+                        }
+                      )}
+                    </td>
+                  </tr>
+                ))}
+              </Table>
+            </details>
           </section>
 
-          {/* <section className={s.margin_t}>
-            <h4>Promociones para membresia {user.membership.name}:</h4>
-            <PromotionTale promotions={user.membership.promotions} />
-          </section> */}
-
           <section className={`${s.margin_t} ${s.total_consumptions_wrapper}`}>
-            <h4>Consumiciones totales:</h4>
-            <div className={`${s.user_consumptions_section}`}>
-              <Table trTitles={["Nombre", "Cantidad"]}>
-                {userConsumptions.drinks?.map((consumption) => (
-                  <tr key={consumption.id}>
-                    <td>{consumption.name}</td>
-                    <td>{consumption.users.length}</td>
-                  </tr>
-                ))}
-              </Table>
+            <details>
+              <summary>Consumiciones totales:</summary>
+              <div className={`${s.user_consumptions_section}`}>
+                <Table trTitles={["Nombre", "Cantidad"]}>
+                  {userConsumptions.drinks?.map((consumption) => (
+                    <tr key={consumption.id}>
+                      <td>{consumption.name}</td>
+                      <td>{consumption.users.length}</td>
+                    </tr>
+                  ))}
+                </Table>
 
-              <Table trTitles={["Nombre", "Cantidad"]}>
-                {userConsumptions.games?.map((consumption) => (
-                  <tr key={consumption.id}>
-                    <td>{consumption.name}</td>
-                    <td>{consumption.users.length}</td>
-                  </tr>
-                ))}
-              </Table>
+                <Table trTitles={["Nombre", "Cantidad"]}>
+                  {userConsumptions.games?.map((consumption) => (
+                    <tr key={consumption.id}>
+                      <td>{consumption.name}</td>
+                      <td>{consumption.users.length}</td>
+                    </tr>
+                  ))}
+                </Table>
 
-              <Table trTitles={["Nombre", "Cantidad"]}>
-                {userConsumptions.foods?.map((consumption) => (
-                  <tr key={consumption.id}>
-                    <td>{consumption.name}</td>
-                    <td>{consumption.users.length}</td>
-                  </tr>
-                ))}
-              </Table>
-            </div>
+                <Table trTitles={["Nombre", "Cantidad"]}>
+                  {userConsumptions.foods?.map((consumption) => (
+                    <tr key={consumption.id}>
+                      <td>{consumption.name}</td>
+                      <td>{consumption.users.length}</td>
+                    </tr>
+                  ))}
+                </Table>
+              </div>
+            </details>
           </section>
 
           <div className={s.btn_wrrapper}>

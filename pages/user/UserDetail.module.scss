@@ -12,10 +12,13 @@
 
 .main {
   background-color: $white;
+  min-height: calc(100vh - 70px);
+  min-height: calc(100dvh - 70px);
+
   > div {
+    padding: 0 1.5em;
     max-width: 1200px;
     margin: 0 auto;
-    padding: 0 1.5em;
     display: flex;
     flex-direction: column;
     gap: 3em;
@@ -172,9 +175,15 @@
   }
 
   section {
-    > h4 {
-      font-weight: 600;
-      font-size: 0.85rem;
+    details {
+      summary {
+        font-weight: 600;
+        font-size: 1rem;
+        cursor: pointer;
+      }
+    }
+
+    details[open] summary {
       margin-bottom: 1em;
     }
   }
