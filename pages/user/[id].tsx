@@ -497,6 +497,15 @@ export const getStaticProps: GetStaticProps = async (context) => {
     console.log(e);
   }
 
+  if (!user) {
+    return {
+      redirect: {
+        destination: "/?userError=true",
+        permanent: false,
+      },
+    };
+  }
+
   try {
     drinkConsumptions = await prisma?.consumption.findMany({
       where: { type: "DRINK" },

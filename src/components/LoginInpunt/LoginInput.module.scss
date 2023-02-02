@@ -3,11 +3,11 @@
   input {
     width: 100%;
     border: none;
-    opacity: 0;
+    opacity: 100;
 
-    &:focus,
-    &:active {
-      outline: none;
-    }
+    // &:focus,
+    // &:active {
+    //   outline: none;
+    // }
   }
 }

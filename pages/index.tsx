@@ -1,10 +1,18 @@
 import Head from "next/head";
+import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
 import LoginInput from "../src/components/LoginInpunt/LoginInput";
+import Modal from "../src/components/Modal/Modal";
 import Nav from "../src/components/Nav/Nav";
 
 import s from "../styles/Home.module.scss";
 
 export default function Home() {
+  const router = useRouter();
+  const { userError } = router.query;
+
+  const [error, setError] = useState(!userError);
+
   return (
     <div className={s.container}>
       <Head>
@@ -13,11 +21,27 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
+      {error && (
+        <Modal
+          isOpen={error ? true : false}
+          handleCloseModal={() => {
+            router.push("/");
+            setError(false);
+          }}
+          error
+        >
+          <div className={s.error_wrapper}>
+            <p>ERROR</p>
+            <p>{"Usuario no encontrado"}</p>
+          </div>
+        </Modal>
+      )}
+
       <Nav />
 
       <main className={s.main}>
         <h1>BAR DE JUEGOS</h1>
-        <LoginInput />
+        <LoginInput error={error} />
       </main>
 
       <footer className={s.footer}></footer>

@@ -10,19 +10,23 @@ type SubmitData = {
   id: string;
 };
 
-export default function LoginInput() {
+type Props = {
+  error: boolean;
+};
+
+export default function LoginInput({ error }: Props) {
   const {
     register,
-    handleSubmit,
     watch,
     formState: { errors },
     setFocus,
     reset,
+    setValue,
   } = useForm<SubmitData>();
   const router = useRouter();
 
   const [calledPush, setCalledPush] = useState(false);
-  const [error, setError] = useState<string>("");
+  const [submitError, setError] = useState<string>("");
 
   const id = watch("id");
 
@@ -38,6 +42,7 @@ export default function LoginInput() {
       } catch (e: any) {
         console.log("catch", e.response);
         setError(e?.response?.data?.message);
+        setValue("id", "");
       }
     },
     [reset, router]
@@ -51,13 +56,13 @@ export default function LoginInput() {
 
   useEffect(() => {
     setFocus("id");
-  }, [setFocus, error]);
+  }, [setFocus, submitError, error]);
 
   return (
     <>
-      {error && !!error && (
-        <Modal isOpen={!!error} handleCloseModal={() => setError("")}>
-          <p>{error}</p>
+      {submitError && !!submitError && (
+        <Modal isOpen={!!submitError} handleCloseModal={() => setError("")}>
+          <p>{submitError}</p>
         </Modal>
       )}
       <form>
