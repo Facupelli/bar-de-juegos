@@ -1,3 +1,4 @@
+import { PrismaClient } from "@prisma/client";
 import axios from "axios";
 import Head from "next/head";
 import { GetServerSideProps } from "next";
@@ -17,12 +18,12 @@ import CreateConsumption from "../../../src/components/admin/CreateConsumption/C
 import ButtonOnClick from "../../../src/components/UI/ButtonOnClick/ButtonOnClick";
 import DeleteModalChild from "../../../src/components/admin/DeleteModalChild/DeleteModalChild";
 import TableRow from "../../../src/components/Ranking/TableRow/TableRow";
+import EditIcon from "../../../src/icons/EditIcon";
+import ConsumiptionsNav from "../../../src/components/admin/ConsumptionsNav/ConsumptionsNav";
 
 import { Consumption } from "../../../src/types/model";
 
 import s from "./ConsumptionPage.module.scss";
-import EditIcon from "../../../src/icons/EditIcon";
-import ConsumiptionsNav from "../../../src/components/admin/ConsumptionsNav/ConsumptionsNav";
 
 type Props = {
   consumptions: {
@@ -246,6 +247,8 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     context.res,
     authOptions
   );
+
+  const prisma = new PrismaClient();
 
   if (session?.user.role === "ADMIN") {
     const drinkConsumptions = await prisma?.consumption.findMany({

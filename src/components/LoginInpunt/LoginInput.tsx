@@ -41,7 +41,7 @@ export default function LoginInput() {
         setValue("id", "");
       }
     },
-    [reset, router]
+    [reset, router, setValue]
   );
 
   useEffect(() => {

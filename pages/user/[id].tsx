@@ -1,15 +1,14 @@
+import { PrismaClient } from "@prisma/client";
+import { ParsedUrlQuery } from "querystring";
 import axios from "axios";
 import { GetServerSideProps, GetStaticPaths, GetStaticProps } from "next";
 import Head from "next/head";
-import { authOptions } from "../api/auth/[...nextauth]";
-import { unstable_getServerSession } from "next-auth";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
-import { fetchUserById } from "../../src/utils/fetching";
 import { updateUserState } from "../../src/utils/userID";
 
-import { Consumption, Promotion, User } from "../../src/types/model";
+import { Consumption, User } from "../../src/types/model";
 
 //COMPONENTS
 import Nav from "../../src/components/Nav/Nav";
@@ -30,8 +29,6 @@ import BeerIcon from "../../src/icons/BeerIcon";
 import PoolIcon from "../../src/icons/PoolIcon";
 
 import s from "./UserDetail.module.scss";
-import { PrismaClient } from "@prisma/client";
-import { ParsedUrlQuery } from "querystring";
 
 type Props = {
   userData: User;

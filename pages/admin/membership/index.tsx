@@ -1,3 +1,4 @@
+import { PrismaClient } from "@prisma/client";
 import axios from "axios";
 import Head from "next/head";
 import { GetServerSideProps } from "next";
@@ -17,11 +18,11 @@ import ButtonOnClick from "../../../src/components/UI/ButtonOnClick/ButtonOnClic
 import CreateMembership from "../../../src/components/admin/CreateMembership/CreateMembership";
 import DeleteModalChild from "../../../src/components/admin/DeleteModalChild/DeleteModalChild";
 import TableRow from "../../../src/components/Ranking/TableRow/TableRow";
+import EditIcon from "../../../src/icons/EditIcon";
 
 import { Membership } from "../../../src/types/model";
 
 import s from "./MembershipPage.module.scss";
-import EditIcon from "../../../src/icons/EditIcon";
 
 type Props = {
   memberships: Membership[];
@@ -150,6 +151,8 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     context.res,
     authOptions
   );
+
+  const prisma = new PrismaClient();
 
   if (session?.user.role === "ADMIN") {
     const memberships = await prisma?.membership.findMany({

@@ -18,11 +18,17 @@ export const authOptions = {
         name: session.user.name,
       };
 
-      const response = await axios.post(
-        `http://localhost:3000/api/auth/login`,
-        data
-      );
-      const userLogged = await response.data;
+      let userLogged;
+
+      try {
+        const response = await axios.post(
+          `http://192.168.1.44:3000/api/auth/login`,
+          data
+        );
+        userLogged = await response.data;
+      } catch (e) {
+        console.error("LOGIN ERROR:", e);
+      }
 
       session.user.role = userLogged.role;
       token.role = userLogged.role;

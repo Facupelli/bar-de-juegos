@@ -127,7 +127,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     authOptions
   );
 
-  // const prisma = new PrismaClient();
+  const prisma = new PrismaClient();
 
   if (session?.user.role === "ADMIN" && prisma) {
     const drinkConsumptions = await prisma.consumption.findMany({
