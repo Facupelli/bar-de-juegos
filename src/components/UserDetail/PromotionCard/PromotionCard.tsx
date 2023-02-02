@@ -7,6 +7,7 @@ import s from "./PromotionCard.module.scss";
 type Props = {
   promotion: Promotion;
   userId: string;
+  userPoints: number;
   setUser: Dispatch<SetStateAction<User>>;
   setError: Dispatch<SetStateAction<string>>;
 };
@@ -16,6 +17,7 @@ export default function PromotionCard({
   userId,
   setUser,
   setError,
+  userPoints,
 }: Props) {
   const onSubmitPromotion = async () => {
     try {
@@ -41,6 +43,8 @@ export default function PromotionCard({
     }
   };
 
+  const isDisabled = !(userPoints - promotion.points >= 0);
+
   return (
     <div className={s.card_container}>
       <p className={s.name}>{promotion.name}</p>
@@ -57,7 +61,13 @@ export default function PromotionCard({
           <li key={c.consumptionId}>{c.consumption.name}</li>
         ))}
       </ul>
-      <button onClick={onSubmitPromotion}>CARGAR</button>
+      <button
+        className={isDisabled ? s.disabled : ""}
+        disabled={isDisabled}
+        onClick={onSubmitPromotion}
+      >
+        CARGAR
+      </button>
     </div>
   );
 }

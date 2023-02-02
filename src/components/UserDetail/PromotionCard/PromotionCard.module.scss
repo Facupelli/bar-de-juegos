@@ -45,4 +45,9 @@
     font-size: 0.7rem;
     cursor: pointer;
   }
+
+  .disabled {
+    background-color: $gray;
+    cursor: auto;
+  }
 }

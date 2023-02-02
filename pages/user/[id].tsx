@@ -335,6 +335,7 @@ export default function Home({
                       promotion={promotion}
                       setUser={setUser}
                       userId={user.id}
+                      userPoints={user.totalPoints}
                       setError={setError}
                     />
                   ))}
