@@ -12,6 +12,10 @@
     > div {
       margin-left: 130px;
       padding: 2em;
+
+      // @media (max-width: 1024px) {
+      //   margin-left: 0px;
+      // }
     }
 
     .table_wrapper {
