@@ -29,6 +29,7 @@ import BeerIcon from "../../src/icons/BeerIcon";
 import PoolIcon from "../../src/icons/PoolIcon";
 
 import s from "./UserDetail.module.scss";
+import { useUserIdHotkeys } from "../../src/hooks/useUserIdHotkeys";
 
 type Props = {
   userData: User;
@@ -70,6 +71,8 @@ export default function Home({
 
   const [searchInput, setSearchinput] = useState<string>("");
   const [searchPromoInput, setSearchPromoInput] = useState<string>("");
+
+  useUserIdHotkeys(setConsumptionActive);
 
   useEffect(() => {
     if (searchInput) {
@@ -155,7 +158,7 @@ export default function Home({
           <section className={` ${s.first_section}`}>
             <div className={s.btns_wrapper}>
               <AddConsumptionBtn
-                text="BEBIDAS"
+                text="2.BEBIDAS"
                 handleClick={() => {
                   setConsumptionActive((prev) => ({
                     ...prev,
@@ -171,7 +174,7 @@ export default function Home({
                 <BeerIcon size={26} active={consumptionActive.drinks} />
               </AddConsumptionBtn>
               <AddConsumptionBtn
-                text="COMIDAS"
+                text="2.COMIDAS"
                 handleClick={() => {
                   setConsumptionActive((prev) => ({
                     ...prev,
@@ -187,7 +190,7 @@ export default function Home({
                 <KitchenTools size={26} active={consumptionActive.foods} />
               </AddConsumptionBtn>
               <AddConsumptionBtn
-                text="JUEGOS"
+                text="3.JUEGOS"
                 handleClick={() => {
                   setConsumptionActive((prev) => ({
                     ...prev,
@@ -203,7 +206,7 @@ export default function Home({
                 <PoolIcon size={26} active={consumptionActive.games} />
               </AddConsumptionBtn>
               <AddConsumptionBtn
-                text="PROMOCIONES"
+                text="4.PROMOCIONES"
                 handleClick={() => {
                   setConsumptionActive((prev) => ({
                     ...prev,
