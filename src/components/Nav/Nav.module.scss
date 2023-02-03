@@ -8,11 +8,20 @@
   height: 70px;
   z-index: 10;
 
+  @media (max-width: 480px) {
+    padding: 1.5em;
+  }
+
   ul {
     display: flex;
     justify-content: flex-end;
     align-items: center;
-    gap: 1.5rem;
+    gap: 1.5em;
+
+    @media (max-width: 480px) {
+      font-size: 12px;
+      gap: 1em;
+    }
 
     li {
       list-style: none;
