@@ -11,6 +11,7 @@ export default function KitchenTools({
       className="icon icon-tabler icon-tabler-tools-kitchen-2"
       width={size}
       height={size}
+      preserveAspectRatio="xMidYMin slice"
       viewBox="0 0 24 24"
       strokeWidth="1.5"
       stroke={active ? "#2b2c2b" : "#e0e0e0"}

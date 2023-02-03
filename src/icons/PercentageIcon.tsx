@@ -11,6 +11,7 @@ export default function PercentageIcon({
       className="icon icon-tabler icon-tabler-percentage"
       width={size}
       height={size}
+      preserveAspectRatio="xMidYMin slice"
       viewBox="0 0 24 24"
       strokeWidth="2"
       stroke={active ? "#2b2c2b" : "#e0e0e0"}
