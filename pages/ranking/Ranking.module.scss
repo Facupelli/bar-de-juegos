@@ -6,7 +6,7 @@
     ul {
       list-style: none;
       display: flex;
-      // flex-direction: column;
+      flex-wrap: wrap;
       gap: 0.5em;
 
       li {
@@ -25,10 +25,6 @@
         font-weight: 700;
         font-size: 0.9rem;
       }
-
-      // article {
-      //   padding: 0 2em;
-      // }
     }
 
     > button {

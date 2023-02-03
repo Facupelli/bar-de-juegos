@@ -4,46 +4,48 @@
   min-height: 100vh;
   min-height: 100dvh;
 
-  .btn_wrapper {
-    margin-bottom: 1em;
-    display: flex;
-    justify-content: flex-end;
-  }
+  .main {
+    .btn_wrapper {
+      margin-bottom: 1em;
+      display: flex;
+      justify-content: flex-end;
+    }
 
-  .table_wrapper {
-    margin-bottom: 1em;
+    .table_wrapper {
+      margin-bottom: 1em;
 
-    tbody {
-      tr {
-        &:nth-child(odd) {
-          background-color: rgb(243, 243, 243);
-        }
-        &:nth-child(even) {
-          background-color: rgb(228, 228, 228);
-        }
-
-        td {
-          padding: 0.5em 0.2em;
-
-          &:nth-child(4) {
-            width: 2rem;
+      tbody {
+        tr {
+          &:nth-child(odd) {
+            background-color: rgb(243, 243, 243);
           }
-        }
+          &:nth-child(even) {
+            background-color: rgb(228, 228, 228);
+          }
 
-        .info {
-          width: 46%;
-        }
+          td {
+            padding: 0.5em 0.2em;
 
-        .btn {
-          cursor: pointer;
+            &:nth-child(4) {
+              width: 2rem;
+            }
+          }
+
+          .info {
+            width: 46%;
+          }
+
+          .btn {
+            cursor: pointer;
+          }
         }
       }
     }
-  }
 
-  .mb_2 {
-    margin-bottom: 0.8em;
-    font-weight: 600;
-    font-size: 1.1rem;
+    .mb_2 {
+      margin-bottom: 0.8em;
+      font-weight: 600;
+      font-size: 1.1rem;
+    }
   }
 }

@@ -91,7 +91,7 @@ export default function PromotionPage({
         </Modal>
       )}
 
-      <Nav />
+      <Nav route="admin" />
 
       <main className={s.main}>
         <AdminLayout route="promotions">

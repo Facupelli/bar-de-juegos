@@ -100,45 +100,47 @@ export default function MembershipPage({ memberships }: Props) {
         </Modal>
       )}
 
-      <Nav />
+      <Nav route="admin" />
 
       <main className={s.main}>
         <AdminLayout route="memberships">
-          <div className={s.btn_wrapper}>
-            <ButtonOnClick
-              type="primary"
-              handleClick={() => setOpenCreateModal(true)}
-            >
-              CREAR MEMBRESÍA
-            </ButtonOnClick>
-          </div>
+          <section>
+            <div className={s.btn_wrapper}>
+              <ButtonOnClick
+                type="primary"
+                handleClick={() => setOpenCreateModal(true)}
+              >
+                CREAR MEMBRESÍA
+              </ButtonOnClick>
+            </div>
 
-          <div className={s.table_wrapper}>
-            <h4 className={s.mb_2}>Membresías</h4>
-            <Table trTitles={trTitles}>
-              {membershipsList.map((membership) => (
-                <TableRow
-                  key={membership.id}
-                  id={membership.id}
-                  setDeleteId={setDeleteId}
-                  setOpenDeleteModal={setOpenDeleteModal}
-                >
-                  <td>{membership.name}</td>
-                  <td>{membership.minPoints}</td>
-                  <td>{membership.maxPoints}</td>
-                  <td
-                    onClick={() => {
-                      setMembership(membership);
-                      setOpenEditModal(true);
-                    }}
-                    className={s.btn}
+            <div className={s.table_wrapper}>
+              <h4 className={s.mb_2}>Membresías</h4>
+              <Table trTitles={trTitles}>
+                {membershipsList.map((membership) => (
+                  <TableRow
+                    key={membership.id}
+                    id={membership.id}
+                    setDeleteId={setDeleteId}
+                    setOpenDeleteModal={setOpenDeleteModal}
                   >
-                    <EditIcon size={18} />
-                  </td>
-                </TableRow>
-              ))}
-            </Table>
-          </div>
+                    <td>{membership.name}</td>
+                    <td>{membership.minPoints}</td>
+                    <td>{membership.maxPoints}</td>
+                    <td
+                      onClick={() => {
+                        setMembership(membership);
+                        setOpenEditModal(true);
+                      }}
+                      className={s.btn}
+                    >
+                      <EditIcon size={18} />
+                    </td>
+                  </TableRow>
+                ))}
+              </Table>
+            </div>
+          </section>
         </AdminLayout>
       </main>
     </div>
