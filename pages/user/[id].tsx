@@ -336,6 +336,9 @@ export default function Home({
                       setError={setError}
                     />
                   ))}
+                  {promotions?.length === 0 && (
+                    <p>Actualmente no hay promociones para tu membresía!</p>
+                  )}
                 </div>
               </>
             )}

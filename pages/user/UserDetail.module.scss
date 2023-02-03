@@ -84,6 +84,10 @@
       > * {
         flex-basis: 100%;
       }
+
+      > p {
+        grid-column: 1/-1;
+      }
     }
   }
 
