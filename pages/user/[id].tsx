@@ -158,7 +158,7 @@ export default function Home({
           <section className={` ${s.first_section}`}>
             <div className={s.btns_wrapper}>
               <AddConsumptionBtn
-                text="2.BEBIDAS"
+                text="1.BEBIDAS"
                 handleClick={() => {
                   setConsumptionActive((prev) => ({
                     ...prev,
