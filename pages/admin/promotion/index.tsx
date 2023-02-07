@@ -1,7 +1,7 @@
-import { PrismaClient } from "@prisma/client";
 import axios from "axios";
 import Head from "next/head";
 import { GetServerSideProps } from "next";
+import { prisma } from "../../../db";
 import { unstable_getServerSession } from "next-auth";
 import { authOptions } from "../../api/auth/[...nextauth]";
 import { useState } from "react";
@@ -127,8 +127,6 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     context.res,
     authOptions
   );
-
-  const prisma = new PrismaClient();
 
   if (session?.user.role === "ADMIN") {
     const memberships = await prisma?.membership.findMany({

@@ -1,0 +1,54 @@
+@import "../../../styles/app.scss";
+
+.container {
+  .form {
+    display: grid;
+    gap: 1em;
+
+    > div {
+      display: grid;
+    }
+
+    input[type="text"] {
+      @include input;
+    }
+  }
+
+  .main {
+    .btn_wrapper {
+      margin-bottom: 1em;
+      display: flex;
+      justify-content: flex-end;
+
+      button {
+        display: flex;
+        align-items: center;
+        gap: 0.5em;
+      }
+    }
+
+    .table_wrapper {
+      tbody {
+        tr {
+          &:nth-child(odd) {
+            background-color: rgb(243, 243, 243);
+          }
+          &:nth-child(even) {
+            background-color: rgb(228, 228, 228);
+          }
+
+          td {
+            padding: 0.3em;
+          }
+        }
+      }
+    }
+
+    .pagination_wrapper {
+      margin-top: 1em;
+      display: flex;
+      justify-content: center;
+      gap: 1em;
+    }
+  }
+}

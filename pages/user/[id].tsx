@@ -1,10 +1,10 @@
-import { PrismaClient } from "@prisma/client";
 import { ParsedUrlQuery } from "querystring";
 import axios from "axios";
 import { GetServerSideProps, GetStaticPaths, GetStaticProps } from "next";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
+import { prisma } from "../../db";
 
 import { useUserIdHotkeys } from "../../src/hooks/useUserIdHotkeys";
 
@@ -48,12 +48,6 @@ type Props = {
 };
 
 const trLastConsumptionsTitles = ["consumición", "ganó?", "cantidad", "fecha"];
-const consumptionsNames = [
-  "1.BEBIDAS",
-  "2.COMIDAS",
-  "3.JUEGOS",
-  "4.PROMOCIONES",
-];
 
 export default function Home({
   userData,
@@ -472,7 +466,6 @@ interface IParams extends ParsedUrlQuery {
 }
 
 export const getStaticProps: GetStaticProps = async (context) => {
-  const prisma = new PrismaClient();
   const { id } = context.params as IParams;
 
   let user,
@@ -484,7 +477,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
     userFoodConsumptions;
 
   try {
-    user = await prisma?.user.findUnique({
+    user = await prisma.user.findUnique({
       where: { id },
       include: {
         membership: {
@@ -580,7 +573,6 @@ export const getStaticProps: GetStaticProps = async (context) => {
 };
 
 export const getStaticPaths: GetStaticPaths<IParams> = async () => {
-  const prisma = new PrismaClient();
   const users = await prisma.user.findMany({ select: { id: true } });
 
   return {

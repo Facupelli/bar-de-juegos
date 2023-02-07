@@ -1,8 +1,10 @@
 import Link from "next/link";
+
 import BasketIcon from "../../../../icons/BasketIcon";
 import CardIcon from "../../../../icons/CardIcon";
 import ChartPie from "../../../../icons/ChartPie";
 import PercentageIcon from "../../../../icons/PercentageIcon";
+import UsersIcon from "../../../../icons/Users";
 
 import s from "./AdminNav.module.scss";
 
@@ -47,6 +49,15 @@ export default function AdminNav({ route }: Props) {
               <PercentageIcon size={22} active={route === "promotions"} />
             </div>
             <p>Promociones</p>
+          </Link>
+        </li>
+
+        <li className={`${route === "users" ? s.active : null}`}>
+          <Link href="/admin/users" className={s.link}>
+            <div className={s.icon_wrapper}>
+              <UsersIcon size={22} active={route === "users"} />
+            </div>
+            <p>Usuarios</p>
           </Link>
         </li>
       </ul>

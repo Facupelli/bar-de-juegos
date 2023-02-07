@@ -1,14 +1,10 @@
-import axios from "axios";
 import { unstable_getServerSession } from "next-auth";
+import { prisma } from "../../db";
 import { GetServerSideProps } from "next";
 import { authOptions } from "../api/auth/[...nextauth]";
 import { useState } from "react";
 import Head from "next/head";
 
-import {
-  fetchConsumptions,
-  fetchPromotionsRanking,
-} from "../../src/utils/fetching";
 import { getPromotionsReducedQuantity } from "../../src/utils/promotion";
 import { getConsumptionsReducedQuantity } from "../../src/utils/consumption";
 
@@ -24,7 +20,6 @@ import RankingRow from "../../src/components/Ranking/RankingRow/RankingRow";
 import Table from "../../src/components/Ranking/Table/Table";
 
 import s from "./Admin.module.scss";
-import { PrismaClient } from "@prisma/client";
 
 const trDrinkTitle = ["Bebida", "Total"];
 const trGameTitle = ["Juego", "Total"];
@@ -126,8 +121,6 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     context.res,
     authOptions
   );
-
-  const prisma = new PrismaClient();
 
   if (session?.user.role === "ADMIN" && prisma) {
     const drinkConsumptions = await prisma.consumption.findMany({

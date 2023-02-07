@@ -12,6 +12,7 @@ export default async function handlerUser(
     if (req.method === "GET") {
       try {
         const userRanking = req.query.userRanking as string;
+        const skip = req.query.skip as string;
 
         if (userRanking) {
           const users = await prisma.user.findMany({
@@ -19,6 +20,15 @@ export default async function handlerUser(
               totalPointsSpent: "desc",
             },
             take: 10,
+          });
+
+          return res.status(200).json(users);
+        }
+
+        if (skip) {
+          const users = await prisma.user.findMany({
+            take: 1,
+            skip: Number(skip),
           });
 
           return res.status(200).json(users);
@@ -33,14 +43,16 @@ export default async function handlerUser(
 
     if (req.method === "POST") {
       try {
-        const { id, membershipId }: { id: string; membershipId: string } =
-          req.body;
+        const {
+          membershipId,
+          fullName,
+        }: { fullName: string; membershipId: string } = req.body;
 
-        if (id && membershipId) {
+        if (membershipId) {
           const newUser = await prisma.user.create({
             data: {
-              id,
               membershipId,
+              fullName,
             },
           });
 
