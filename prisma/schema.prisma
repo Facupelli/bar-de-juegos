@@ -42,7 +42,7 @@ model Membership {
   id                      String                @default(cuid()) @id
   name                    String
   minPoints               Int
-  maxPoints               Int
+  maxPoints               Int?
   users                   User[]
   promotions              Promotion[]
 }

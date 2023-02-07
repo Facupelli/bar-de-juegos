@@ -97,6 +97,7 @@ export default async function handlerUser(
 
               if (
                 user.membership &&
+                user.membership?.maxPoints &&
                 user.totalPointsSpent > user.membership?.maxPoints
               ) {
                 const membership = await prisma.membership.findFirst({

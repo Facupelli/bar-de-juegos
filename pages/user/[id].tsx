@@ -6,9 +6,9 @@ import Head from "next/head";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
-import { updateUserState } from "../../src/utils/userID";
+import { useUserIdHotkeys } from "../../src/hooks/useUserIdHotkeys";
 
-import { Consumption, User } from "../../src/types/model";
+import { updateUserState } from "../../src/utils/userID";
 
 //COMPONENTS
 import Nav from "../../src/components/Nav/Nav";
@@ -28,8 +28,9 @@ import PercentageIcon from "../../src/icons/PercentageIcon";
 import BeerIcon from "../../src/icons/BeerIcon";
 import PoolIcon from "../../src/icons/PoolIcon";
 
+import { Consumption, User } from "../../src/types/model";
+
 import s from "./UserDetail.module.scss";
-import { useUserIdHotkeys } from "../../src/hooks/useUserIdHotkeys";
 
 type Props = {
   userData: User;
@@ -47,6 +48,12 @@ type Props = {
 };
 
 const trLastConsumptionsTitles = ["consumición", "ganó?", "cantidad", "fecha"];
+const consumptionsNames = [
+  "1.BEBIDAS",
+  "2.COMIDAS",
+  "3.JUEGOS",
+  "4.PROMOCIONES",
+];
 
 export default function Home({
   userData,
@@ -162,7 +169,7 @@ export default function Home({
                 handleClick={() => {
                   setConsumptionActive((prev) => ({
                     ...prev,
-                    drinks: !consumptionActive.drinks,
+                    drinks: true,
                     foods: false,
                     games: false,
                     promos: false,
@@ -178,7 +185,7 @@ export default function Home({
                 handleClick={() => {
                   setConsumptionActive((prev) => ({
                     ...prev,
-                    foods: !consumptionActive.foods,
+                    foods: true,
                     games: false,
                     promos: false,
                     drinks: false,
@@ -194,7 +201,7 @@ export default function Home({
                 handleClick={() => {
                   setConsumptionActive((prev) => ({
                     ...prev,
-                    games: !consumptionActive.games,
+                    games: true,
                     promos: false,
                     drinks: false,
                     foods: false,
@@ -210,7 +217,7 @@ export default function Home({
                 handleClick={() => {
                   setConsumptionActive((prev) => ({
                     ...prev,
-                    promos: !consumptionActive.promos,
+                    promos: true,
                     games: false,
                     drinks: false,
                     foods: false,
