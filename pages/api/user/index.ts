@@ -27,7 +27,7 @@ export default async function handlerUser(
 
         if (skip) {
           const users = await prisma.user.findMany({
-            take: 1,
+            take: 20,
             skip: Number(skip),
           });
 

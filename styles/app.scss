@@ -20,6 +20,16 @@ $white: #e0e0e0;
   }
 }
 
+@mixin disabled {
+  background-color: $gray;
+  color: $white;
+  cursor: auto;
+
+  &:hover {
+    opacity: 1;
+  }
+}
+
 @mixin select {
   padding: 0.2em 0.5em;
   border-radius: 0.2em;

@@ -132,8 +132,8 @@ export default function PromotionPage({
               type="primary"
               handleClick={() => {
                 if (skip === 0) return;
-                getNextPage(skip - 30);
-                setSkip((prev) => prev - 30);
+                getNextPage(skip - 20);
+                setSkip((prev) => prev - 20);
               }}
             >
               {"<-"}
@@ -141,10 +141,11 @@ export default function PromotionPage({
             <ButtonOnClick
               type="primary"
               handleClick={() => {
-                if (skip + 30 > usersCount) return;
-                getNextPage(skip + 30);
-                setSkip((prev) => prev + 30);
+                if (skip + 20 > usersCount) return;
+                getNextPage(skip + 20);
+                setSkip((prev) => prev + 20);
               }}
+              isDisabled={skip + 20 > usersCount}
             >
               {"->"}
             </ButtonOnClick>
@@ -169,7 +170,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
     const users = await prisma.user.findMany({
       skip: 0,
-      take: 1,
+      take: 20,
     });
 
     const usersCount = await prisma.user.count();
