@@ -135,6 +135,7 @@ export default function PromotionPage({
                 getNextPage(skip - 20);
                 setSkip((prev) => prev - 20);
               }}
+              isDisabled={skip === 0}
             >
               {"<-"}
             </ButtonOnClick>

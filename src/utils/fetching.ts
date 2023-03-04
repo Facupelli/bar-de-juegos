@@ -1,17 +1,17 @@
 import axios from "axios";
-import { Consumption, Membership, Promotion, User } from "../types/model";
+import {
+  Consumption,
+  ConsumptionCategory,
+  Membership,
+  Promotion,
+  User,
+} from "../types/model";
 import { UsersRanking } from "../types/ranking";
 
 export const fetchConsumptions = async () => {
-  const {
-    data,
-  }: {
-    data: {
-      drinks: Consumption[];
-      games: Consumption[];
-      foods: Consumption[];
-    };
-  } = await axios("http://localhost:3000/api/consumption");
+  const { data }: { data: ConsumptionCategory[] } = await axios(
+    "http://localhost:3000/api/consumption"
+  );
   return data;
 };
 

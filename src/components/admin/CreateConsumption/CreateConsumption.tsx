@@ -1,35 +1,25 @@
-import { ConsumptionType } from "@prisma/client";
 import axios from "axios";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { fetchConsumptions } from "../../../utils/fetching";
 
 import Button from "../../UI/Button/Button";
 
-import { Consumption } from "../../../types/model";
+import { Consumption, ConsumptionCategory } from "../../../types/model";
 
 import s from "./CreateConsumption.module.scss";
 import { useEffect } from "react";
 
 type Props = {
-  setConsumptionsList: React.Dispatch<
-    React.SetStateAction<{
-      drinks: Consumption[];
-      games: Consumption[];
-      foods: Consumption[];
-    }>
-  >;
+  setConsumptionsList: React.Dispatch<ConsumptionCategory[]>;
   setOpenCreateModal: React.Dispatch<React.SetStateAction<boolean>>;
   consumption?: Consumption;
-  type?: {
-    drinks: boolean;
-    games: boolean;
-    food: boolean;
-  };
+  categoryId?: string;
+  consumptionCategories: { name: string; id: string }[];
 };
 
 type FormData = {
   name: string;
-  type: ConsumptionType;
+  categoryId: string;
   points: number;
 };
 
@@ -37,24 +27,9 @@ export default function CreateConsumption({
   setConsumptionsList,
   setOpenCreateModal,
   consumption,
-  type,
+  categoryId,
+  consumptionCategories,
 }: Props) {
-  const getDefaultType = (
-    type:
-      | {
-          drinks: boolean;
-          games: boolean;
-          food: boolean;
-        }
-      | undefined
-  ) => {
-    if (type?.drinks) return "DRINK";
-    if (type?.games) return "GAME";
-    if (type?.food) return "FOOD";
-  };
-
-  console.log(consumption);
-
   const {
     register,
     handleSubmit,
@@ -63,7 +38,7 @@ export default function CreateConsumption({
     formState: { errors },
   } = useForm<FormData>({
     defaultValues: {
-      type: getDefaultType(type),
+      categoryId,
       name: consumption?.name,
       points: consumption?.points,
     },
@@ -87,8 +62,7 @@ export default function CreateConsumption({
       );
     }
 
-    if (postConsumption.data.message) {
-      console.log(postConsumption.data.message);
+    if (postConsumption.data.message === "success") {
       setConsumptionsList(await fetchConsumptions());
       setOpenCreateModal(false);
       reset();
@@ -104,10 +78,12 @@ export default function CreateConsumption({
 
       <div className={s.flex_column}>
         <label>Tipo:</label>
-        <select {...register("type")}>
-          <option value="DRINK">Bebida</option>
-          <option value="FOOD">Comida</option>
-          <option value="GAME">Juego</option>
+        <select {...register("categoryId")}>
+          {consumptionCategories.map((category) => (
+            <option key={category.id} value={category.id}>
+              {category.name}
+            </option>
+          ))}
         </select>
       </div>
 

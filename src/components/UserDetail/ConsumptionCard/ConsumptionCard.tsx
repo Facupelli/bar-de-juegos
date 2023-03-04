@@ -7,7 +7,7 @@ import s from "./ConsumptionCard.module.scss";
 
 type Props = {
   consumption: Consumption;
-  name: string;
+  name?: string;
   userId: string;
   setUser: React.Dispatch<SetStateAction<User>>;
 };

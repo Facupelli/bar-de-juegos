@@ -11,12 +11,17 @@ export type User = {
   updatedAt: Date;
 };
 
-export type ConsumptionType = "GAME" | "FOOD" | "DRINK";
+export type ConsumptionCategory = {
+  id: string;
+  name: string;
+  consumptions?: Consumption[];
+};
 
 export type Consumption = {
   id: string;
   name: string;
-  type: ConsumptionType;
+  consumptionCategory: ConsumptionCategory;
+  consumptionCategoryId: string;
   points: number;
   users: ConsumptionOnUser[];
   promotions: ConsumptionOnPromotion[];
@@ -25,7 +30,7 @@ export type Consumption = {
 export type SortedConsumption = {
   id: string;
   name: string;
-  type: ConsumptionType;
+  type: ConsumptionCategory;
   points: number;
   users: ConsumptionOnUser[];
   promotions: ConsumptionOnPromotion[];

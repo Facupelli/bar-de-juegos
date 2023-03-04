@@ -4,17 +4,18 @@ import { fetchPromotions } from "../../../utils/fetching";
 
 import Button from "../../UI/Button/Button";
 
-import { Consumption, Membership, Promotion } from "../../../types/model";
+import {
+  Consumption,
+  ConsumptionCategory,
+  Membership,
+  Promotion,
+} from "../../../types/model";
 
 import s from "./CreatePromotion.module.scss";
 
 type Props = {
   memberships: Membership[];
-  consumptions: {
-    drinks: Consumption[];
-    games: Consumption[];
-    foods: Consumption[];
-  };
+  consumptions: ConsumptionCategory[];
   setPromotionsList: React.Dispatch<React.SetStateAction<Promotion[]>>;
   setOpenCreateModal: React.Dispatch<React.SetStateAction<boolean>>;
 };
@@ -24,6 +25,7 @@ type PromotionData = {
   membershipsIds: string[];
   gamesIds: string[];
   drinksIds: string[];
+  foodIds: string[];
   points: number;
   discount: number;
 };
@@ -84,36 +86,56 @@ export default function CreatePromotion({
         </select>
       </div>
 
+      {/* 
+      <div className={s.flex_column}>
+        {Object.entries(consumptionsByCategory).map((category) => (
+          <>
+            <label>{category[0]}:</label>
+            <select key={category[0]} multiple {...register(`${category[0].toLowerCase()}Ids`)}>
+              {category[1].map((consumption) => (
+                <option>{consumption.name}</option>
+              ))}
+            </select>
+          </>
+        ))}
+      </div> */}
+
+      <div className={s.flex_column}>
+        <label>Comida:</label>
+        <select multiple {...register("foodIds")}>
+          {consumptions
+            .find((c) => c.name === "Comida")
+            ?.consumptions?.map((food) => (
+              <option key={food.id} value={food.id}>
+                {food.name}
+              </option>
+            ))}
+        </select>
+      </div>
+
+      <div className={s.flex_column}>
+        <label>Bebida:</label>
+        <select multiple {...register("drinksIds")}>
+          {consumptions
+            .find((c) => c.name === "Bebida")
+            ?.consumptions?.map((drink) => (
+              <option key={drink.id} value={drink.id}>
+                {drink.name}
+              </option>
+            ))}
+        </select>
+      </div>
+
       <div className={s.flex_column}>
         <label>Juegos:</label>
         <select multiple {...register("gamesIds")}>
-          {consumptions.games?.map((game) => (
-            <option key={game.id} value={game.id}>
-              {game.name}
-            </option>
-          ))}
-        </select>
-      </div>
-
-      <div className={s.flex_column}>
-        <label>Bebidas:</label>
-        <select multiple {...register("drinksIds")}>
-          {consumptions.drinks?.map((drink) => (
-            <option key={drink.id} value={drink.id}>
-              {drink.name}
-            </option>
-          ))}
-        </select>
-      </div>
-
-      <div className={s.flex_column}>
-        <label>Comidas:</label>
-        <select multiple {...register("drinksIds")}>
-          {consumptions.games?.map((game) => (
-            <option key={game.id} value={game.id}>
-              {game.name}
-            </option>
-          ))}
+          {consumptions
+            .find((c) => c.name === "Juego")
+            ?.consumptions?.map((game) => (
+              <option key={game.id} value={game.id}>
+                {game.name}
+              </option>
+            ))}
         </select>
       </div>
 

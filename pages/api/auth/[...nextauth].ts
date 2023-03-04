@@ -22,7 +22,7 @@ export const authOptions = {
 
       try {
         const response = await axios.post(
-          `http://192.168.1.44:3000/api/auth/login`,
+          `http://localhost:3000/api/auth/login`,
           data
         );
         userLogged = await response.data;

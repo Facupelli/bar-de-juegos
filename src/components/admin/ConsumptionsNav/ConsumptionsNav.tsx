@@ -1,43 +1,30 @@
+import { SetStateAction } from "react";
+import { ConsumptionCategory } from "../../../types/model";
 import s from "./ConsumptionsNav.module.scss";
 
 type Props = {
-  setShowDrinks: () => void;
-  setShowGames: () => void;
-  setShowFood: () => void;
-  showConsumption: {
-    drinks: boolean;
-    games: boolean;
-    food: boolean;
-  };
+  categories: ConsumptionCategory[];
+  setCategoryActive: React.Dispatch<SetStateAction<string>>;
+  categoryActive: string;
 };
 
 export default function ConsumiptionsNav({
-  setShowDrinks,
-  setShowFood,
-  setShowGames,
-  showConsumption,
+  categories,
+  setCategoryActive,
+  categoryActive,
 }: Props) {
   return (
     <nav className={s.nav}>
       <ul>
-        <li
-          onClick={setShowDrinks}
-          className={`${showConsumption.drinks ? s.active : ""}`}
-        >
-          Bebidas
-        </li>
-        <li
-          onClick={setShowFood}
-          className={`${showConsumption.food ? s.active : ""}`}
-        >
-          Comidas
-        </li>
-        <li
-          onClick={setShowGames}
-          className={`${showConsumption.games ? s.active : ""}`}
-        >
-          Juegos
-        </li>
+        {categories.map((category) => (
+          <li
+            key={category.id}
+            onClick={() => setCategoryActive(category.id)}
+            className={`${categoryActive === category.id ? s.active : ""}`}
+          >
+            {category.name}
+          </li>
+        ))}
       </ul>
     </nav>
   );

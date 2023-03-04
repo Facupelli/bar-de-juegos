@@ -40,26 +40,27 @@ model UserLoggedInfo {
 
 model Membership {
   id                      String                @default(cuid()) @id
-  name                    String
+  name                    String                @unique
   minPoints               Int
   maxPoints               Int?
   users                   User[]
   promotions              Promotion[]
 }
 
-enum ConsumptionType {
-  DRINK
-  GAME
-  FOOD
+model ConsumptionCategory {
+  id                      String                @default(cuid()) @id
+  name                    String                @unique
+  consumptions            Consumption[]
 }
 
 model Consumption {
-  id                      String                      @default(cuid()) @id
-  name                    String
-  type                    ConsumptionType
-  points                  Int
-  users                   ConsumptionOnUser[]
-  promotions              ConsumptionOnPromotion[]
+  id                            String                      @default(cuid()) @id
+  name                          String                      @unique
+  consumptionCategory           ConsumptionCategory         @relation(fields: [consumptionCategoryId], references: [id])
+  consumptionCategoryId         String
+  points                        Int
+  users                         ConsumptionOnUser[]
+  promotions                    ConsumptionOnPromotion[]
 }
 
 model ConsumptionOnUser {

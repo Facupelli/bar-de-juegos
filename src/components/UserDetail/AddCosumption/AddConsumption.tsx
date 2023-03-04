@@ -10,7 +10,7 @@ import s from "./AddConsumption.module.scss";
 import { updateUserState } from "../../../utils/userID";
 
 type Props = {
-  consumptions: Consumption[];
+  consumptions?: Consumption[];
   name: string;
   userId: string;
   setUser: React.Dispatch<SetStateAction<User>>;
@@ -63,7 +63,8 @@ export default function AddConsumption({
     <form onSubmit={handleSubmit(onSubmitConsumption)} className={s.form}>
       {/* <label>{name}:</label> */}
       <select {...register("id")}>
-        {consumptions?.length > 0 &&
+        {consumptions &&
+          consumptions?.length > 0 &&
           consumptions.map((consumption) => (
             <option
               key={consumption.id}

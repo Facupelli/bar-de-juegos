@@ -124,13 +124,13 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
   if (session?.user.role === "ADMIN" && prisma) {
     const drinkConsumptions = await prisma.consumption.findMany({
-      where: { type: "DRINK" },
+      where: { consumptionCategoryId: "cleubcq1e0007e788mgknnrix" },
       include: { users: true },
       orderBy: { points: "asc" },
     });
 
     const gamesConsumptions = await prisma.consumption.findMany({
-      where: { type: "GAME" },
+      where: { consumptionCategoryId: "cleubcq1e0005e788cizbtne3" },
       include: { users: true },
       orderBy: { points: "asc" },
     });

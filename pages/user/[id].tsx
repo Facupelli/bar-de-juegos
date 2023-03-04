@@ -28,17 +28,13 @@ import PercentageIcon from "../../src/icons/PercentageIcon";
 import BeerIcon from "../../src/icons/BeerIcon";
 import PoolIcon from "../../src/icons/PoolIcon";
 
-import { Consumption, User } from "../../src/types/model";
+import { Consumption, ConsumptionCategory, User } from "../../src/types/model";
 
 import s from "./UserDetail.module.scss";
 
 type Props = {
   userData: User;
-  consumptions: {
-    drinks: Consumption[];
-    games: Consumption[];
-    foods: Consumption[];
-  };
+  allConsumptions: ConsumptionCategory[];
   userConsumptions: {
     drinks: Consumption[];
     games: Consumption[];
@@ -51,48 +47,39 @@ const trLastConsumptionsTitles = ["consumición", "ganó?", "cantidad", "fecha"]
 
 export default function Home({
   userData,
-  consumptions,
+  allConsumptions,
   userConsumptions,
   userId,
 }: Props) {
   const router = useRouter();
 
+  console.log(userData);
+
+  const categories = allConsumptions.map((category) => ({
+    name: category.name,
+    id: category.id,
+  }));
+
   const [user, setUser] = useState<User>(userData);
   const [error, setError] = useState<string>("");
 
-  const [consumptionsList, setConsumptionsList] = useState(consumptions);
+  const [consumptionsList, setConsumptionsList] = useState(allConsumptions);
   const [promotions, setPromotions] = useState(user?.membership?.promotions);
 
-  const [consumptionActive, setConsumptionActive] = useState({
-    drinks: true,
-    foods: false,
-    games: false,
-    promos: false,
-  });
+  const [consumptionActive, setConsumptionActive] = useState(
+    allConsumptions[0].id
+  );
 
   const [searchInput, setSearchinput] = useState<string>("");
   const [searchPromoInput, setSearchPromoInput] = useState<string>("");
 
-  useUserIdHotkeys(setConsumptionActive);
+  const consumptionsToShow = consumptionsList
+    .find((category) => category.id === consumptionActive)
+    ?.consumptions?.filter((c) =>
+      c.name.toLowerCase().includes(searchInput.toLowerCase())
+    );
 
-  useEffect(() => {
-    if (searchInput) {
-      setConsumptionsList((prev) => ({
-        drinks: consumptions.drinks.filter((d) =>
-          d.name.toLowerCase().includes(searchInput.toLowerCase())
-        ),
-        foods: consumptions.foods.filter((f) =>
-          f.name.toLowerCase().includes(searchInput.toLowerCase())
-        ),
-        games: consumptions.games.filter((g) =>
-          g.name.toLowerCase().includes(searchInput.toLowerCase())
-        ),
-      }));
-    }
-    if (!searchInput) {
-      setConsumptionsList(consumptions);
-    }
-  }, [searchInput, consumptions]);
+  useUserIdHotkeys(setConsumptionActive, categories);
 
   useEffect(() => {
     if (searchPromoInput) {
@@ -158,163 +145,84 @@ export default function Home({
         <div>
           <section className={` ${s.first_section}`}>
             <div className={s.btns_wrapper}>
-              <AddConsumptionBtn
-                text="1.BEBIDAS"
-                handleClick={() => {
-                  setConsumptionActive((prev) => ({
-                    ...prev,
-                    drinks: true,
-                    foods: false,
-                    games: false,
-                    promos: false,
-                  }));
-                  setSearchinput("");
-                }}
-                active={consumptionActive.drinks}
-              >
-                <BeerIcon size={26} active={consumptionActive.drinks} />
-              </AddConsumptionBtn>
-              <AddConsumptionBtn
-                text="2.COMIDAS"
-                handleClick={() => {
-                  setConsumptionActive((prev) => ({
-                    ...prev,
-                    foods: true,
-                    games: false,
-                    promos: false,
-                    drinks: false,
-                  }));
-                  setSearchinput("");
-                }}
-                active={consumptionActive.foods}
-              >
-                <KitchenTools size={26} active={consumptionActive.foods} />
-              </AddConsumptionBtn>
-              <AddConsumptionBtn
-                text="3.JUEGOS"
-                handleClick={() => {
-                  setConsumptionActive((prev) => ({
-                    ...prev,
-                    games: true,
-                    promos: false,
-                    drinks: false,
-                    foods: false,
-                  }));
-                  setSearchinput("");
-                }}
-                active={consumptionActive.games}
-              >
-                <PoolIcon size={26} active={consumptionActive.games} />
-              </AddConsumptionBtn>
+              {categories.map((category, i) => (
+                <AddConsumptionBtn
+                  key={category.id}
+                  text={`${i + 1}.${category.name.toUpperCase()}S`}
+                  handleClick={() => setConsumptionActive(category.id)}
+                  categoryId={category.id}
+                  active={consumptionActive}
+                >
+                  {category.name === "Bebida" && (
+                    <BeerIcon
+                      size={26}
+                      active={category.id === consumptionActive}
+                    />
+                  )}
+                  {category.name === "Comida" && (
+                    <KitchenTools
+                      size={26}
+                      active={category.id === consumptionActive}
+                    />
+                  )}
+                  {category.name === "Juego" && (
+                    <PoolIcon
+                      size={26}
+                      active={category.id === consumptionActive}
+                    />
+                  )}
+                </AddConsumptionBtn>
+              ))}
+
               <AddConsumptionBtn
                 text="4.PROMOCIONES"
                 handleClick={() => {
-                  setConsumptionActive((prev) => ({
-                    ...prev,
-                    promos: true,
-                    games: false,
-                    drinks: false,
-                    foods: false,
-                  }));
+                  setConsumptionActive(() => "promos");
                   setSearchinput("");
                 }}
-                active={consumptionActive.promos}
+                categoryId="promos"
+                active={consumptionActive}
               >
-                <PercentageIcon size={26} active={consumptionActive.promos} />
+                <PercentageIcon
+                  size={26}
+                  active={consumptionActive === "promos"}
+                />
               </AddConsumptionBtn>
             </div>
             <MembershipCard user={user} />
           </section>
 
           <section className={s.add_consumptions_wrapper}>
-            {consumptionActive.drinks && (
-              <>
-                <div className={s.inputs_grid}>
-                  <input
-                    type="search"
-                    placeholder="Buscar..."
-                    onChange={(e) => setSearchinput(e.target.value)}
-                  />
-                  <AddConsumption
-                    consumptions={consumptions.drinks}
-                    name="DRINK"
-                    userId={userId}
-                    setUser={setUser}
-                  />
-                </div>
-                <div className={s.consumptions_wrapper}>
-                  {consumptionsList.drinks.map((drink) => (
-                    <ConsumptionCard
-                      name="DRINK"
-                      setUser={setUser}
-                      userId={user.id}
-                      consumption={drink}
-                      key={drink.id}
-                    />
-                  ))}
-                </div>
-              </>
+            {consumptionActive !== "promos" && (
+              <div className={s.inputs_grid}>
+                <input
+                  type="search"
+                  placeholder="Buscar..."
+                  onChange={(e) => setSearchinput(e.target.value)}
+                />
+                <AddConsumption
+                  consumptions={consumptionsToShow}
+                  name="DRINK"
+                  userId={userId}
+                  setUser={setUser}
+                />
+              </div>
             )}
+            <div className={s.consumptions_wrapper}>
+              {consumptionsToShow?.map((consumption) => (
+                <ConsumptionCard
+                  name={categories
+                    .find((category) => category.id === consumptionActive)
+                    ?.name.toUpperCase()}
+                  setUser={setUser}
+                  userId={user.id}
+                  consumption={consumption}
+                  key={consumption.id}
+                />
+              ))}
+            </div>
 
-            {consumptionActive.foods && (
-              <>
-                <div className={s.inputs_grid}>
-                  <input
-                    type="search"
-                    placeholder="Buscar..."
-                    onChange={(e) => setSearchinput(e.target.value)}
-                  />
-                  <AddConsumption
-                    consumptions={consumptions.foods}
-                    name="Comida"
-                    userId={userId}
-                    setUser={setUser}
-                  />
-                </div>
-                <div className={s.consumptions_wrapper}>
-                  {consumptionsList.foods.map((food) => (
-                    <ConsumptionCard
-                      name="FOOD"
-                      setUser={setUser}
-                      userId={user.id}
-                      consumption={food}
-                      key={food.id}
-                    />
-                  ))}
-                </div>
-              </>
-            )}
-
-            {consumptionActive.games && (
-              <>
-                <div className={s.inputs_grid}>
-                  <input
-                    type="search"
-                    placeholder="Buscar..."
-                    onChange={(e) => setSearchinput(e.target.value)}
-                  />
-                  <AddConsumption
-                    consumptions={consumptions.games}
-                    name="Juegos"
-                    userId={userId}
-                    setUser={setUser}
-                  />
-                </div>
-                <div className={s.consumptions_wrapper}>
-                  {consumptionsList.games.map((game) => (
-                    <ConsumptionCard
-                      name="GAME"
-                      setUser={setUser}
-                      userId={user.id}
-                      consumption={game}
-                      key={game.id}
-                    />
-                  ))}
-                </div>
-              </>
-            )}
-
-            {consumptionActive.promos && (
+            {consumptionActive === "promos" && (
               <>
                 <div className={s.inputs_grid}>
                   <input
@@ -356,7 +264,8 @@ export default function Home({
                   <tr key={consumption.id}>
                     <td>{consumption.consumption.name}</td>
                     <td>
-                      {consumption.consumption.type === "GAME" &&
+                      {consumption.consumption.consumptionCategoryId ===
+                        "cleubcq1e0005e788cizbtne3" &&
                         (consumption.winner === null ? (
                           <div className={s.btns_wrapper}>
                             <ButtonOnClick
@@ -469,9 +378,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
   const { id } = context.params as IParams;
 
   let user,
-    drinkConsumptions,
-    gamesConsumptions,
-    foodConsumptions,
+    allConsumptions,
     userDrinksConsumptions,
     userGamesConsumptions,
     userFoodConsumptions;
@@ -510,22 +417,10 @@ export const getStaticProps: GetStaticProps = async (context) => {
   }
 
   try {
-    drinkConsumptions = await prisma?.consumption.findMany({
-      where: { type: "DRINK" },
-      include: { users: true },
-      orderBy: { points: "asc" },
-    });
-
-    gamesConsumptions = await prisma?.consumption.findMany({
-      where: { type: "GAME" },
-      include: { users: true },
-      orderBy: { points: "asc" },
-    });
-
-    foodConsumptions = await prisma?.consumption.findMany({
-      where: { type: "FOOD" },
-      include: { users: true },
-      orderBy: { points: "asc" },
+    allConsumptions = await prisma.consumptionCategory.findMany({
+      include: {
+        consumptions: true,
+      },
     });
   } catch (e) {
     console.error(e);
@@ -534,19 +429,19 @@ export const getStaticProps: GetStaticProps = async (context) => {
   try {
     userDrinksConsumptions = await prisma?.consumption.findMany({
       include: { users: { where: { userId: id } } },
-      where: { type: "DRINK" },
+      where: { consumptionCategoryId: "cleubcq1e0007e788mgknnrix" },
       orderBy: { points: "asc" },
     });
 
     userGamesConsumptions = await prisma?.consumption.findMany({
       include: { users: { where: { userId: id } } },
-      where: { type: "GAME" },
+      where: { consumptionCategoryId: "cleubcq1e0005e788cizbtne3" },
       orderBy: { points: "asc" },
     });
 
     userFoodConsumptions = await prisma?.consumption.findMany({
       include: { users: { where: { userId: id } } },
-      where: { type: "FOOD" },
+      where: { consumptionCategoryId: "cleubcq1e0003e788dvrvlsyo" },
       orderBy: { points: "asc" },
     });
   } catch (e) {
@@ -556,11 +451,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
   return {
     props: {
       userData: JSON.parse(JSON.stringify(user)),
-      consumptions: {
-        drinks: JSON.parse(JSON.stringify(drinkConsumptions)),
-        foods: JSON.parse(JSON.stringify(foodConsumptions)),
-        games: JSON.parse(JSON.stringify(gamesConsumptions)),
-      },
+      allConsumptions: JSON.parse(JSON.stringify(allConsumptions)),
       userConsumptions: {
         drinks: JSON.parse(JSON.stringify(userDrinksConsumptions)),
         foods: JSON.parse(JSON.stringify(userFoodConsumptions)),
@@ -584,116 +475,3 @@ export const getStaticPaths: GetStaticPaths<IParams> = async () => {
     fallback: "blocking",
   };
 };
-
-// export const getServerSideProps: GetServerSideProps = async (context) => {
-//   const session = await unstable_getServerSession(
-//     context.req,
-//     context.res,
-//     authOptions
-//   );
-
-//   if (session?.user.role === "ADMIN" || session?.user.role === "EMPLOYEE") {
-//     const id = context.query.id as string;
-
-//     let user,
-//       drinkConsumptions,
-//       gamesConsumptions,
-//       foodConsumptions,
-//       userDrinksConsumptions,
-//       userGamesConsumptions,
-//       userFoodConsumptions;
-
-//     try {
-//       user = await prisma?.user.findUnique({
-//         where: { id },
-//         include: {
-//           membership: {
-//             include: {
-//               promotions: {
-//                 include: {
-//                   consumptions: { include: { consumption: true } },
-//                   memberships: true,
-//                 },
-//               },
-//             },
-//           },
-//           consumptions: {
-//             include: { consumption: true },
-//             orderBy: { createdAt: "desc" },
-//           },
-//         },
-//       });
-//     } catch (e) {
-//       console.log(e);
-//     }
-
-//     try {
-//       drinkConsumptions = await prisma?.consumption.findMany({
-//         where: { type: "DRINK" },
-//         include: { users: true },
-//         orderBy: { points: "asc" },
-//       });
-
-//       gamesConsumptions = await prisma?.consumption.findMany({
-//         where: { type: "GAME" },
-//         include: { users: true },
-//         orderBy: { points: "asc" },
-//       });
-
-//       foodConsumptions = await prisma?.consumption.findMany({
-//         where: { type: "FOOD" },
-//         include: { users: true },
-//         orderBy: { points: "asc" },
-//       });
-//     } catch (e) {
-//       console.error(e);
-//     }
-
-//     try {
-//       userDrinksConsumptions = await prisma?.consumption.findMany({
-//         include: { users: { where: { userId: id } } },
-//         where: { type: "DRINK" },
-//         orderBy: { points: "asc" },
-//       });
-
-//       userGamesConsumptions = await prisma?.consumption.findMany({
-//         include: { users: { where: { userId: id } } },
-//         where: { type: "GAME" },
-//         orderBy: { points: "asc" },
-//       });
-
-//       userFoodConsumptions = await prisma?.consumption.findMany({
-//         include: { users: { where: { userId: id } } },
-//         where: { type: "FOOD" },
-//         orderBy: { points: "asc" },
-//       });
-//     } catch (e) {
-//       console.error(e);
-//     }
-
-//     return {
-//       props: {
-//         userData: JSON.parse(JSON.stringify(user)),
-//         consumptions: {
-//           drinks: JSON.parse(JSON.stringify(drinkConsumptions)),
-//           foods: JSON.parse(JSON.stringify(foodConsumptions)),
-//           games: JSON.parse(JSON.stringify(gamesConsumptions)),
-//         },
-//         userConsumptions: {
-//           drinks: JSON.parse(JSON.stringify(userDrinksConsumptions)),
-//           foods: JSON.parse(JSON.stringify(userFoodConsumptions)),
-//           games: JSON.parse(JSON.stringify(userGamesConsumptions)),
-//         },
-//         userId: id,
-//       },
-//     };
-//   }
-
-//   return {
-//     redirect: {
-//       destination: "/",
-//       permanent: false,
-//     },
-//     props: {},
-//   };
-// };

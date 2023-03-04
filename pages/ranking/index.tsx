@@ -122,7 +122,7 @@ export default function Ranking({ allGames }: Props) {
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const allGames = await prisma.consumption.findMany({
-    where: { type: "GAME" },
+    where: { consumptionCategoryId: "cleubcq1e0005e788cizbtne3" },
   });
 
   return {

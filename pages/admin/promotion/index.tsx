@@ -19,24 +19,25 @@ import CreatePromotion from "../../../src/components/admin/CreatePromotion/Creat
 import DeleteModalChild from "../../../src/components/admin/DeleteModalChild/DeleteModalChild";
 import PlusIcon from "../../../src/icons/PlusIcon";
 
-import { Consumption, Membership, Promotion } from "../../../src/types/model";
+import {
+  Consumption,
+  ConsumptionCategory,
+  Membership,
+  Promotion,
+} from "../../../src/types/model";
 
 import s from "./PromotionPage.module.scss";
 
 type Props = {
   promotions: Promotion[];
   memberships: Membership[];
-  consumptions: {
-    drinks: Consumption[];
-    games: Consumption[];
-    foods: Consumption[];
-  };
+  allConsumptions: ConsumptionCategory[];
 };
 
 export default function PromotionPage({
   promotions,
   memberships,
-  consumptions,
+  allConsumptions,
 }: Props) {
   const [openCreateModal, setOpenCreateModal] = useState<boolean>(false);
 
@@ -72,7 +73,7 @@ export default function PromotionPage({
         >
           <CreatePromotion
             memberships={memberships}
-            consumptions={consumptions}
+            consumptions={allConsumptions}
             setOpenCreateModal={setOpenCreateModal}
             setPromotionsList={setPromotionsList}
           />
@@ -133,29 +134,9 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       orderBy: { minPoints: "asc" },
     });
 
-    const drinkConsumptions = await prisma?.consumption.findMany({
-      where: { type: "DRINK" },
-      include: { users: true },
-      orderBy: { points: "asc" },
+    const allConsumptions = await prisma.consumptionCategory.findMany({
+      include: { consumptions: true },
     });
-
-    const gamesConsumptions = await prisma?.consumption.findMany({
-      where: { type: "GAME" },
-      include: { users: true },
-      orderBy: { points: "asc" },
-    });
-
-    const foodConsumptions = await prisma?.consumption.findMany({
-      where: { type: "FOOD" },
-      include: { users: true },
-      orderBy: { points: "asc" },
-    });
-
-    const consumptions = {
-      drinks: drinkConsumptions,
-      games: gamesConsumptions,
-      food: foodConsumptions,
-    };
 
     const promotions = await prisma?.promotion.findMany({
       include: {
@@ -167,7 +148,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       props: {
         memberships: JSON.parse(JSON.stringify(memberships)),
         promotions: JSON.parse(JSON.stringify(promotions)),
-        consumptions: JSON.parse(JSON.stringify(consumptions)),
+        allConsumptions,
       },
     };
   }

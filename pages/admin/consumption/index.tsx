@@ -21,26 +21,18 @@ import TableRow from "../../../src/components/Ranking/TableRow/TableRow";
 import EditIcon from "../../../src/icons/EditIcon";
 import ConsumiptionsNav from "../../../src/components/admin/ConsumptionsNav/ConsumptionsNav";
 
-import { Consumption } from "../../../src/types/model";
+import { Consumption, ConsumptionCategory } from "../../../src/types/model";
 
 import s from "./ConsumptionPage.module.scss";
 
 type Props = {
-  consumptions: {
-    drinks: Consumption[];
-    games: Consumption[];
-    foods: Consumption[];
-  };
+  consumptions: ConsumptionCategory[];
 };
 
 const trTitles = ["Nombre", "Puntos"];
 
 export default function ConsumptionPage({ consumptions }: Props) {
-  const [showConsumption, setShowConsumption] = useState({
-    drinks: true,
-    food: false,
-    games: false,
-  });
+  const [categoryActive, setCategoryActive] = useState(consumptions[0].id);
 
   const [openCreateModal, setOpenCreateModal] = useState<boolean>(false);
 
@@ -50,11 +42,13 @@ export default function ConsumptionPage({ consumptions }: Props) {
   const [openEditModal, setOpenEditModal] = useState<boolean>(false);
   const [consumption, setConsumption] = useState<Consumption>();
 
-  const [consumptionsList, setConsumptionsList] = useState<{
-    drinks: Consumption[];
-    games: Consumption[];
-    foods: Consumption[];
-  }>(consumptions);
+  const [consumptionsList, setConsumptionsList] =
+    useState<ConsumptionCategory[]>(consumptions);
+
+  const consumptionCategories = consumptions.map((consumption) => ({
+    name: consumption.name,
+    id: consumption.id,
+  }));
 
   const handleDeleteConsumption = async (consumptionId: string) => {
     const { data } = await axios.delete(
@@ -69,15 +63,19 @@ export default function ConsumptionPage({ consumptions }: Props) {
     }
   };
 
-  const setShowDrinks = () => {
-    setShowConsumption((prev) => ({ drinks: true, games: false, food: false }));
-  };
-  const setShowGames = () => {
-    setShowConsumption((prev) => ({ drinks: false, games: true, food: false }));
-  };
-  const setShowFood = () => {
-    setShowConsumption((prev) => ({ drinks: false, games: false, food: true }));
-  };
+  const consumptionsToShow = consumptionsList.find(
+    (consumption) => consumption.id === categoryActive
+  );
+
+  // const setShowDrinks = () => {
+  //   setShowConsumption((prev) => ({ drinks: true, games: false, food: false }));
+  // };
+  // const setShowGames = () => {
+  //   setShowConsumption((prev) => ({ drinks: false, games: true, food: false }));
+  // };
+  // const setShowFood = () => {
+  //   setShowConsumption((prev) => ({ drinks: false, games: false, food: true }));
+  // };
 
   return (
     <div className={s.container}>
@@ -95,7 +93,8 @@ export default function ConsumptionPage({ consumptions }: Props) {
           <CreateConsumption
             setConsumptionsList={setConsumptionsList}
             setOpenCreateModal={setOpenCreateModal}
-            type={showConsumption}
+            categoryId={categoryActive}
+            consumptionCategories={consumptionCategories}
           />
         </Modal>
       )}
@@ -121,7 +120,8 @@ export default function ConsumptionPage({ consumptions }: Props) {
             setConsumptionsList={setConsumptionsList}
             setOpenCreateModal={setOpenEditModal}
             consumption={consumption}
-            type={showConsumption}
+            categoryId={categoryActive}
+            consumptionCategories={consumptionCategories}
           />
         </Modal>
       )}
@@ -132,10 +132,9 @@ export default function ConsumptionPage({ consumptions }: Props) {
         <AdminLayout route="consumptions">
           <section className={s.main_section}>
             <ConsumiptionsNav
-              setShowDrinks={setShowDrinks}
-              setShowFood={setShowFood}
-              setShowGames={setShowGames}
-              showConsumption={showConsumption}
+              categories={consumptionCategories}
+              setCategoryActive={setCategoryActive}
+              categoryActive={categoryActive}
             />
 
             <div>
@@ -148,12 +147,77 @@ export default function ConsumptionPage({ consumptions }: Props) {
                 </ButtonOnClick>
               </div>
 
-              {showConsumption.drinks && (
+              <div className={s.table_wrapper}>
+                <h4 className={s.mb_2}>
+                  {
+                    consumptionCategories.find(
+                      (category) => category.id === categoryActive
+                    )?.name
+                  }
+                </h4>
+                <Table trTitles={trTitles}>
+                  {consumptionsToShow?.consumptions?.map((consumption) => (
+                    <TableRow
+                      key={consumption.id}
+                      id={consumption.id}
+                      setDeleteId={setDeleteId}
+                      setOpenDeleteModal={setOpenDeleteModal}
+                    >
+                      <td className={s.info}>{consumption.name}</td>
+                      <td className={s.info}>{consumption.points}</td>
+                      <td
+                        onClick={() => {
+                          setConsumption(consumption);
+                          setOpenEditModal(true);
+                        }}
+                        className={s.btn}
+                      >
+                        <EditIcon size={18} />
+                      </td>
+                    </TableRow>
+                  ))}
+                </Table>
+              </div>
+
+              {/* {showConsumption.drinks && (
                 <>
                   <div className={s.table_wrapper}>
                     <h4 className={s.mb_2}>Bebidas</h4>
                     <Table trTitles={trTitles}>
-                      {consumptionsList.drinks.map((consumption) => (
+                      {consumptionsList
+                        .filter((c) => c.name === "Drink")[0]
+                        .consumptions.map((consumption) => (
+                          <TableRow
+                            key={consumption.id}
+                            id={consumption.id}
+                            setDeleteId={setDeleteId}
+                            setOpenDeleteModal={setOpenDeleteModal}
+                          >
+                            <td className={s.info}>{consumption.name}</td>
+                            <td className={s.info}>{consumption.points}</td>
+                            <td
+                              onClick={() => {
+                                setConsumption(consumption);
+                                setOpenEditModal(true);
+                              }}
+                              className={s.btn}
+                            >
+                              <EditIcon size={18} />
+                            </td>
+                          </TableRow>
+                        ))}
+                    </Table>
+                  </div>
+                </>
+              )}
+
+              {showConsumption.food && (
+                <div className={s.table_wrapper}>
+                  <h4 className={s.mb_2}>Comidas</h4>
+                  <Table trTitles={trTitles}>
+                    {consumptionsList
+                      .filter((c) => c.name === "Food")[0]
+                      .consumptions.map((consumption) => (
                         <TableRow
                           key={consumption.id}
                           id={consumption.id}
@@ -173,35 +237,6 @@ export default function ConsumptionPage({ consumptions }: Props) {
                           </td>
                         </TableRow>
                       ))}
-                    </Table>
-                  </div>
-                </>
-              )}
-
-              {showConsumption.food && (
-                <div className={s.table_wrapper}>
-                  <h4 className={s.mb_2}>Comidas</h4>
-                  <Table trTitles={trTitles}>
-                    {consumptionsList.foods.map((consumption) => (
-                      <TableRow
-                        key={consumption.id}
-                        id={consumption.id}
-                        setDeleteId={setDeleteId}
-                        setOpenDeleteModal={setOpenDeleteModal}
-                      >
-                        <td className={s.info}>{consumption.name}</td>
-                        <td className={s.info}>{consumption.points}</td>
-                        <td
-                          onClick={() => {
-                            setConsumption(consumption);
-                            setOpenEditModal(true);
-                          }}
-                          className={s.btn}
-                        >
-                          <EditIcon size={18} />
-                        </td>
-                      </TableRow>
-                    ))}
                   </Table>
                 </div>
               )}
@@ -210,29 +245,31 @@ export default function ConsumptionPage({ consumptions }: Props) {
                 <div className={s.table_wrapper}>
                   <h4 className={s.mb_2}>Juegos</h4>
                   <Table trTitles={trTitles}>
-                    {consumptionsList.games.map((consumption) => (
-                      <TableRow
-                        key={consumption.id}
-                        id={consumption.id}
-                        setDeleteId={setDeleteId}
-                        setOpenDeleteModal={setOpenDeleteModal}
-                      >
-                        <td className={s.info}>{consumption.name}</td>
-                        <td className={s.info}>{consumption.points}</td>
-                        <td
-                          onClick={() => {
-                            setConsumption(consumption);
-                            setOpenEditModal(true);
-                          }}
-                          className={s.btn}
+                    {consumptionsList
+                      .filter((c) => c.name === "Game")[0]
+                      .consumptions.map((consumption) => (
+                        <TableRow
+                          key={consumption.id}
+                          id={consumption.id}
+                          setDeleteId={setDeleteId}
+                          setOpenDeleteModal={setOpenDeleteModal}
                         >
-                          <EditIcon size={18} />
-                        </td>
-                      </TableRow>
-                    ))}
+                          <td className={s.info}>{consumption.name}</td>
+                          <td className={s.info}>{consumption.points}</td>
+                          <td
+                            onClick={() => {
+                              setConsumption(consumption);
+                              setOpenEditModal(true);
+                            }}
+                            className={s.btn}
+                          >
+                            <EditIcon size={18} />
+                          </td>
+                        </TableRow>
+                      ))}
                   </Table>
                 </div>
-              )}
+              )} */}
             </div>
           </section>
         </AdminLayout>
@@ -249,33 +286,15 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   );
 
   if (session?.user.role === "ADMIN") {
-    const drinkConsumptions = await prisma?.consumption.findMany({
-      where: { type: "DRINK" },
-      include: { users: true },
-      orderBy: { points: "asc" },
+    const allConsumptions = await prisma.consumptionCategory.findMany({
+      include: {
+        consumptions: true,
+      },
     });
-
-    const gamesConsumptions = await prisma?.consumption.findMany({
-      where: { type: "GAME" },
-      include: { users: true },
-      orderBy: { points: "asc" },
-    });
-
-    const foodsConsumptions = await prisma?.consumption.findMany({
-      where: { type: "FOOD" },
-      include: { users: true },
-      orderBy: { points: "asc" },
-    });
-
-    const consumptions = {
-      drinks: drinkConsumptions,
-      games: gamesConsumptions,
-      foods: foodsConsumptions,
-    };
 
     return {
       props: {
-        consumptions: JSON.parse(JSON.stringify(consumptions)),
+        consumptions: allConsumptions,
       },
     };
   }

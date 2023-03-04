@@ -1,8 +1,8 @@
 import { prisma } from "../../../db";
 import type { NextApiRequest, NextApiResponse } from "next";
-import { ConsumptionType } from "../../../src/types/model";
 import { unstable_getServerSession } from "next-auth";
 import { authOptions } from "../auth/[...nextauth]";
+import { ConsumptionCategory } from "../../../src/types/model";
 
 export default async function handleConsumption(
   req: NextApiRequest,
@@ -16,78 +16,46 @@ export default async function handleConsumption(
 
       if (userId) {
         try {
-          const drinkConsumptions = await prisma.consumption.findMany({
-            include: { users: { where: { userId: userId } } },
-            where: { type: "DRINK" },
-            orderBy: { points: "asc" },
-          });
-
-          const gameConsumptions = await prisma.consumption.findMany({
-            include: { users: { where: { userId: userId } } },
-            where: { type: "GAME" },
-            orderBy: { points: "asc" },
-          });
-
-          const foodConsumptions = await prisma.consumption.findMany({
-            include: { users: { where: { userId: userId } } },
-            where: { type: "FOOD" },
-            orderBy: { points: "asc" },
-          });
-
-          return res.json({
-            drinks: drinkConsumptions,
-            games: gameConsumptions,
-            foods: foodConsumptions,
-          });
-        } catch (e) {
-          console.error(e);
-          res.status(500).json({ message: `error ${e}` });
-        }
-      }
-
-      if (ranking) {
-        try {
-          const consumptions = await prisma.consumption.findMany({
-            include: { _count: { select: { users: true } } },
-            where: { type: "DRINK" },
-            orderBy: {
-              users: {
-                _count: "desc",
-              },
+          const allConsumptions = await prisma.consumptionCategory.findMany({
+            include: {
+              consumptions: true,
             },
           });
 
-          return res.json({ consumptions });
+          return res.json(allConsumptions);
         } catch (e) {
           console.error(e);
           res.status(500).json({ message: `error ${e}` });
         }
       }
 
+      // if (ranking) {
+      //   try {
+      //     const consumptions = await prisma.consumption.findMany({
+      //       include: { _count: { select: { users: true } } },
+      //       where: { type: "DRINK" },
+      //       orderBy: {
+      //         users: {
+      //           _count: "desc",
+      //         },
+      //       },
+      //     });
+
+      //     return res.json({ consumptions });
+      //   } catch (e) {
+      //     console.error(e);
+      //     res.status(500).json({ message: `error ${e}` });
+      //   }
+      // }
+
       try {
-        const drinkConsumptions = await prisma.consumption.findMany({
-          where: { type: "DRINK" },
-          include: { users: true },
-          orderBy: { points: "asc" },
+        const allConsumptions = await prisma.consumptionCategory.findMany({
+          include: {
+            consumptions: true,
+          },
         });
 
-        const gamesConsumptions = await prisma.consumption.findMany({
-          where: { type: "GAME" },
-          include: { users: true },
-          orderBy: { points: "asc" },
-        });
-
-        const foodConsumptions = await prisma.consumption.findMany({
-          where: { type: "FOOD" },
-          include: { users: true },
-          orderBy: { points: "asc" },
-        });
-
-        return res.json({
-          drinks: drinkConsumptions,
-          games: gamesConsumptions,
-          foods: foodConsumptions,
-        });
+        return res.status(200).json(allConsumptions);
       } catch (e) {
         console.error(e);
         res.status(500).json({ message: `error ${e}` });
@@ -96,12 +64,12 @@ export default async function handleConsumption(
 
     const {
       id,
-      type,
+      categoryId,
       name,
       points,
     }: {
       id: string;
-      type: ConsumptionType;
+      categoryId: string;
       name: string;
       points: number;
     } = req.body;
@@ -113,7 +81,7 @@ export default async function handleConsumption(
             data: {
               name,
               points: Number(points),
-              type,
+              consumptionCategoryId: categoryId,
             },
           });
 

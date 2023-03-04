@@ -9,7 +9,8 @@ type ConsumptionState = {
 };
 
 export const useUserIdHotkeys = (
-  setConsumptionActive: Dispatch<SetStateAction<ConsumptionState>>
+  setConsumptionActive: Dispatch<SetStateAction<string>>,
+  categories: { name: string; id: string }[]
 ) => {
   const router = useRouter();
 
@@ -23,40 +24,16 @@ export const useUserIdHotkeys = (
         }
 
         if (e.key === "1") {
-          setConsumptionActive((prev: ConsumptionState) => ({
-            ...prev,
-            drinks: true,
-            foods: false,
-            games: false,
-            promos: false,
-          }));
+          setConsumptionActive("cleubcq1e0003e788dvrvlsyo");
         }
         if (e.key === "2") {
-          setConsumptionActive((prev: ConsumptionState) => ({
-            ...prev,
-            drinks: false,
-            foods: true,
-            games: false,
-            promos: false,
-          }));
+          setConsumptionActive("cleubcq1e0005e788cizbtne3");
         }
         if (e.key === "3") {
-          setConsumptionActive((prev: ConsumptionState) => ({
-            ...prev,
-            drinks: false,
-            foods: false,
-            games: true,
-            promos: false,
-          }));
+          setConsumptionActive("cleubcq1e0007e788mgknnrix");
         }
         if (e.key === "4") {
-          setConsumptionActive((prev: ConsumptionState) => ({
-            ...prev,
-            drinks: false,
-            foods: false,
-            games: false,
-            promos: true,
-          }));
+          setConsumptionActive("promos");
         }
       };
     }
