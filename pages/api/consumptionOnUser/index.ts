@@ -1,6 +1,5 @@
 import { prisma } from "../../../db";
 import type { NextApiRequest, NextApiResponse } from "next";
-import { ConsumptionType } from "../../../src/types/model";
 import { unstable_getServerSession } from "next-auth";
 import { authOptions } from "../auth/[...nextauth]";
 

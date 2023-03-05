@@ -12,6 +12,7 @@ const trPromotionTitles = [
   "Nombre",
   "Membresias",
   "Bebidas",
+  "Comidas",
   "Juegos",
   "Descuento",
   "Puntos",
@@ -22,6 +23,8 @@ export default function PromotionTable({
   setOpenDeleteModal,
   setDeleteId,
 }: Props) {
+  console.log(promotions);
+
   return (
     <>
       <Table trTitles={trPromotionTitles}>
@@ -41,7 +44,9 @@ export default function PromotionTable({
             <td>
               {promotion.consumptions
                 ?.filter(
-                  (consumption) => consumption.consumption?.type === "DRINK"
+                  (consumption) =>
+                    consumption.consumption?.consumptionCategoryId ===
+                    "cleubcq1e0007e788mgknnrix"
                 )
                 .map((consumption) => consumption.consumption.name)
                 .join(", ")}
@@ -49,7 +54,19 @@ export default function PromotionTable({
             <td>
               {promotion.consumptions
                 ?.filter(
-                  (consumption) => consumption.consumption?.type === "GAME"
+                  (consumption) =>
+                    consumption.consumption?.consumptionCategoryId ===
+                    "cleubcq1e0005e788cizbtne3"
+                )
+                .map((consumption) => consumption.consumption.name)
+                .join(", ")}
+            </td>
+            <td>
+              {promotion.consumptions
+                ?.filter(
+                  (consumption) =>
+                    consumption.consumption?.consumptionCategoryId ===
+                    "cleubcq1e0003e788dvrvlsyo"
                 )
                 .map((consumption) => consumption.consumption.name)
                 .join(", ")}

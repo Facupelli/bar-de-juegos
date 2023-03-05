@@ -1,8 +1,6 @@
-import { ConsumptionType } from "../types/model";
-
 type Drink = {
   id: string;
-  type: ConsumptionType;
+  consumptionCategoryId: string;
   points: number;
   users: {
     id: string;

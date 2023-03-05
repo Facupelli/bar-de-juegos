@@ -141,6 +141,8 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     const promotions = await prisma?.promotion.findMany({
       include: {
         users: true,
+        memberships: true,
+        consumptions: { include: { consumption: true } },
       },
     });
 

@@ -37,5 +37,5 @@ export const useUserIdHotkeys = (
         }
       };
     }
-  }, []);
+  }, [router, setConsumptionActive]);
 };

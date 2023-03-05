@@ -1,6 +1,5 @@
 import { prisma } from "../../../db";
 import type { NextApiRequest, NextApiResponse } from "next";
-import { ConsumptionType } from "../../../src/types/model";
 import { unstable_getServerSession } from "next-auth";
 import { authOptions } from "../auth/[...nextauth]";
 
@@ -13,7 +12,7 @@ export default async function handleConsumption(
     if (req.method === "GET") {
       try {
         const allGames = await prisma.consumption.findMany({
-          where: { type: "GAME" },
+          where: { consumptionCategoryId: "cleubcq1e0005e788cizbtne3" },
         });
 
         return res.status(200).json(allGames);

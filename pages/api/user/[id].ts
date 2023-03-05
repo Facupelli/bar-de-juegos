@@ -8,7 +8,6 @@ type PutBody = {
   operation: string;
   consumptionId: string;
   points: number;
-  consumptionType: string;
   quantity: number;
   promotionId: string;
 };
@@ -61,7 +60,6 @@ export default async function handlerUser(
           consumptionId,
           operation,
           points,
-          consumptionType,
           quantity,
           promotionId,
         }: PutBody = req.body;

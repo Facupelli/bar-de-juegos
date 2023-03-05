@@ -53,8 +53,6 @@ export default function Home({
 }: Props) {
   const router = useRouter();
 
-  console.log(userData);
-
   const categories = allConsumptions.map((category) => ({
     name: category.name,
     id: category.id,
