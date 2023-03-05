@@ -20,6 +20,9 @@ import PlusIcon from "../../../src/icons/PlusIcon";
 import { User } from "../../../src/types/model";
 
 import s from "./UsersPage.module.scss";
+import { fetchUsers } from "../../../src/utils/fetching";
+import Pagination from "../../../src/components/UI/Pagination/Pagination";
+import Link from "next/link";
 
 type Props = {
   membershipId: string;
@@ -31,7 +34,7 @@ type UserForm = {
   fullName: string;
 };
 
-const trUsersTitle = ["Nombre", "ID"];
+const trUsersTitle = ["", "Nombre", "ID"];
 
 export default function PromotionPage({
   membershipId,
@@ -50,9 +53,7 @@ export default function PromotionPage({
   const [skip, setSkip] = useState(0);
 
   const getNextPage = async (skip: number) => {
-    const response = await axios(`http://localhost:3000/api/user?skip=${skip}`);
-    const users: User[] = response.data;
-
+    const users = await fetchUsers(skip);
     setUsersList(users);
   };
 
@@ -67,6 +68,8 @@ export default function PromotionPage({
     if (postUser.data.message) {
       setOpenCreateModal(false);
       reset();
+      const users = await fetchUsers(skip);
+      setUsersList(users);
     }
   };
 
@@ -119,37 +122,24 @@ export default function PromotionPage({
 
           <div className={s.table_wrapper}>
             <Table trTitles={trUsersTitle}>
-              {usersList?.map((user) => (
+              {usersList?.map((user, i) => (
                 <tr key={user.id} className={s.row}>
-                  <td>{user.fullName}</td>
+                  <td>{i + 1}</td>
+                  <td>
+                    <Link href={`/user/${user.id}`}>{user.fullName}</Link>
+                  </td>
                   <td>{user.id}</td>
                 </tr>
               ))}
             </Table>
           </div>
           <div className={s.pagination_wrapper}>
-            <ButtonOnClick
-              type="primary"
-              handleClick={() => {
-                if (skip === 0) return;
-                getNextPage(skip - 20);
-                setSkip((prev) => prev - 20);
-              }}
-              isDisabled={skip === 0}
-            >
-              {"<-"}
-            </ButtonOnClick>
-            <ButtonOnClick
-              type="primary"
-              handleClick={() => {
-                if (skip + 20 > usersCount) return;
-                getNextPage(skip + 20);
-                setSkip((prev) => prev + 20);
-              }}
-              isDisabled={skip + 20 > usersCount}
-            >
-              {"->"}
-            </ButtonOnClick>
+            <Pagination
+              skip={skip}
+              setSkip={setSkip}
+              total={usersCount}
+              getNextPage={getNextPage}
+            />
           </div>
         </AdminLayout>
       </main>
