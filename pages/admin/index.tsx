@@ -171,7 +171,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       orderBy: {
         totalPointsSpent: "desc",
       },
-      take: 10,
+      take: 5,
     });
 
     return {

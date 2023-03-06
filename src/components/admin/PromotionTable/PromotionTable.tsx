@@ -23,8 +23,6 @@ export default function PromotionTable({
   setOpenDeleteModal,
   setDeleteId,
 }: Props) {
-  console.log(promotions);
-
   return (
     <>
       <Table trTitles={trPromotionTitles}>

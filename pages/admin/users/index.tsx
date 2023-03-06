@@ -1,5 +1,6 @@
 import axios from "axios";
 import Head from "next/head";
+import Link from "next/link";
 import { GetServerSideProps } from "next";
 import { unstable_getServerSession } from "next-auth";
 import { authOptions } from "../../api/auth/[...nextauth]";
@@ -14,15 +15,15 @@ import ButtonOnClick from "../../../src/components/UI/ButtonOnClick/ButtonOnClic
 import Modal from "../../../src/components/Modal/Modal";
 import Button from "../../../src/components/UI/Button/Button";
 import Table from "../../../src/components/Ranking/Table/Table";
+import Pagination from "../../../src/components/UI/Pagination/Pagination";
 
 import PlusIcon from "../../../src/icons/PlusIcon";
+
+import { fetchUsers } from "../../../src/utils/fetching";
 
 import { User } from "../../../src/types/model";
 
 import s from "./UsersPage.module.scss";
-import { fetchUsers } from "../../../src/utils/fetching";
-import Pagination from "../../../src/components/UI/Pagination/Pagination";
-import Link from "next/link";
 
 type Props = {
   membershipId: string;
