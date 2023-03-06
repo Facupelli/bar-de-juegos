@@ -67,7 +67,12 @@ export default function LoginInput() {
       )}
       <form>
         <section className={s.section}>
-          <input type="password" {...register("id")} autoFocus />
+          <input
+            type="password"
+            {...register("id")}
+            autoFocus
+            role="id-input"
+          />
         </section>
       </form>
     </>

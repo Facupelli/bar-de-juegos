@@ -1,3 +1,4 @@
+import { Dispatch, SetStateAction } from "react";
 import XMark from "../../icons/XMark";
 import s from "./Modal.module.scss";
 
@@ -14,18 +15,17 @@ export default function Modal({
   handleCloseModal,
   error,
 }: Props) {
-  console.log(error);
   return (
     <>
       <dialog open={isOpen} className={`${s.modal} ${error ? s.error : ""}`}>
         <div className={s.btn_wrapper}>
-          <button type="button" onClick={handleCloseModal}>
+          <button role="button" type="button" onClick={handleCloseModal}>
             <XMark size={22} white />
           </button>
         </div>
         {children}
       </dialog>
-      <div className={s.backdrop}>s</div>
+      <div className={s.backdrop} role="backdrop"></div>
     </>
   );
 }
