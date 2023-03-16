@@ -12,10 +12,10 @@ Socket.io esta siendo utilizado para una página donde se muestra el ranking de 
 
 ## Screenshots
 
-<img src="./imgs/1" alt="1" />
-<img src="./imgs/2" alt="2" />
-<img src="./imgs/3" alt="3" />
-<img src="./imgs/4" alt="4" />
-<img src="./imgs/5" alt="5" />
-<img src="./imgs/6" alt="6" />
-<img src="./imgs/7" alt="7" />
+<img src="./imgs/1.png" alt="1" />
+<img src="./imgs/2.png" alt="2" />
+<img src="./imgs/3.png" alt="3" />
+<img src="./imgs/4.png" alt="4" />
+<img src="./imgs/5.png" alt="5" />
+<img src="./imgs/6.png" alt="6" />
+<img src="./imgs/7.png" alt="7" />
