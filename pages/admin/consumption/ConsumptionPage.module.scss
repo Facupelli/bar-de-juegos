@@ -3,6 +3,13 @@
   display: flex;
   justify-content: flex-end;
 }
+
+.container {
+  background-color: rgb(247, 247, 247);
+  min-height: 100dvh;
+  min-height: 100vh;
+}
+
 .main {
   > div > div {
     padding: 0;
@@ -20,30 +27,15 @@
 
     .table_wrapper {
       margin-bottom: 1em;
+      @media (max-width: 768px) {
+        overflow: auto;
+      }
 
       tbody {
         tr {
-          &:nth-child(odd) {
-            background-color: rgb(243, 243, 243);
-          }
-          &:nth-child(even) {
-            background-color: rgb(228, 228, 228);
-          }
-
-          td {
-            padding: 0.5em 0.2em;
-
-            &:nth-child(3) {
-              width: 2rem;
-            }
-          }
-
-          .info {
-            width: 46%;
-          }
-
           .btn {
             cursor: pointer;
+            width: 45px;
           }
         }
       }

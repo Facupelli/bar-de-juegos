@@ -67,16 +67,6 @@ export default function ConsumptionPage({ consumptions }: Props) {
     (consumption) => consumption.id === categoryActive
   );
 
-  // const setShowDrinks = () => {
-  //   setShowConsumption((prev) => ({ drinks: true, games: false, food: false }));
-  // };
-  // const setShowGames = () => {
-  //   setShowConsumption((prev) => ({ drinks: false, games: true, food: false }));
-  // };
-  // const setShowFood = () => {
-  //   setShowConsumption((prev) => ({ drinks: false, games: false, food: true }));
-  // };
-
   return (
     <div className={s.container}>
       <Head>
@@ -178,98 +168,6 @@ export default function ConsumptionPage({ consumptions }: Props) {
                   ))}
                 </Table>
               </div>
-
-              {/* {showConsumption.drinks && (
-                <>
-                  <div className={s.table_wrapper}>
-                    <h4 className={s.mb_2}>Bebidas</h4>
-                    <Table trTitles={trTitles}>
-                      {consumptionsList
-                        .filter((c) => c.name === "Drink")[0]
-                        .consumptions.map((consumption) => (
-                          <TableRow
-                            key={consumption.id}
-                            id={consumption.id}
-                            setDeleteId={setDeleteId}
-                            setOpenDeleteModal={setOpenDeleteModal}
-                          >
-                            <td className={s.info}>{consumption.name}</td>
-                            <td className={s.info}>{consumption.points}</td>
-                            <td
-                              onClick={() => {
-                                setConsumption(consumption);
-                                setOpenEditModal(true);
-                              }}
-                              className={s.btn}
-                            >
-                              <EditIcon size={18} />
-                            </td>
-                          </TableRow>
-                        ))}
-                    </Table>
-                  </div>
-                </>
-              )}
-
-              {showConsumption.food && (
-                <div className={s.table_wrapper}>
-                  <h4 className={s.mb_2}>Comidas</h4>
-                  <Table trTitles={trTitles}>
-                    {consumptionsList
-                      .filter((c) => c.name === "Food")[0]
-                      .consumptions.map((consumption) => (
-                        <TableRow
-                          key={consumption.id}
-                          id={consumption.id}
-                          setDeleteId={setDeleteId}
-                          setOpenDeleteModal={setOpenDeleteModal}
-                        >
-                          <td className={s.info}>{consumption.name}</td>
-                          <td className={s.info}>{consumption.points}</td>
-                          <td
-                            onClick={() => {
-                              setConsumption(consumption);
-                              setOpenEditModal(true);
-                            }}
-                            className={s.btn}
-                          >
-                            <EditIcon size={18} />
-                          </td>
-                        </TableRow>
-                      ))}
-                  </Table>
-                </div>
-              )}
-
-              {showConsumption.games && (
-                <div className={s.table_wrapper}>
-                  <h4 className={s.mb_2}>Juegos</h4>
-                  <Table trTitles={trTitles}>
-                    {consumptionsList
-                      .filter((c) => c.name === "Game")[0]
-                      .consumptions.map((consumption) => (
-                        <TableRow
-                          key={consumption.id}
-                          id={consumption.id}
-                          setDeleteId={setDeleteId}
-                          setOpenDeleteModal={setOpenDeleteModal}
-                        >
-                          <td className={s.info}>{consumption.name}</td>
-                          <td className={s.info}>{consumption.points}</td>
-                          <td
-                            onClick={() => {
-                              setConsumption(consumption);
-                              setOpenEditModal(true);
-                            }}
-                            className={s.btn}
-                          >
-                            <EditIcon size={18} />
-                          </td>
-                        </TableRow>
-                      ))}
-                  </Table>
-                </div>
-              )} */}
             </div>
           </section>
         </AdminLayout>

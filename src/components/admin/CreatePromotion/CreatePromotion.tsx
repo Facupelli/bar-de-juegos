@@ -44,12 +44,13 @@ export default function CreatePromotion({
   } = useForm<PromotionData>();
 
   const onSubmitPromotion: SubmitHandler<PromotionData> = async (data) => {
+    console.log(data);
     const postMembership = await axios.post(
       "http://localhost:3000/api/promotion",
       {
         name: data.name,
         membershipsIds: data.membershipsIds,
-        consumptionsIds: [...data.drinksIds, ...data.gamesIds],
+        consumptionsIds: [...data.drinksIds, ...data.gamesIds, ...data.foodIds],
         points: data.points,
         discount: data.discount,
       }

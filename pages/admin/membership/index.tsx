@@ -23,12 +23,13 @@ import EditIcon from "../../../src/icons/EditIcon";
 import { Membership } from "../../../src/types/model";
 
 import s from "./MembershipPage.module.scss";
+import TrashIcon from "../../../src/icons/TrashIcon";
 
 type Props = {
   memberships: Membership[];
 };
 
-const trTitles = ["Nombre", "Puntos Mínimos", "Puntos Máximos"];
+const trTitles = ["Nombre", "Puntos Mínimos", "Puntos Máximos", "", ""];
 
 export default function MembershipPage({ memberships }: Props) {
   const [openCreateModal, setOpenCreateModal] = useState<boolean>(false);

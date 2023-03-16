@@ -22,7 +22,9 @@ export const authOptions = {
 
       try {
         const response = await axios.post(
-          `http://localhost:3000/api/auth/login`,
+          process.env.NODE_ENV === "production"
+            ? `https://www.bar-de-juegos.vercel.app/api/auth/login`
+            : "http://localhost:3000/api/auth/login",
           data
         );
         userLogged = await response.data;

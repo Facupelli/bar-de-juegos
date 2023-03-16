@@ -11,7 +11,7 @@ export default function Table({ trTitles = [], children }: Props) {
       <thead>
         <tr>
           {trTitles.length > 0 &&
-            trTitles.map((title) => <th key={title}>{title}</th>)}
+            trTitles.map((title, i) => <th key={i}>{title}</th>)}
         </tr>
       </thead>
       <tbody>{children}</tbody>

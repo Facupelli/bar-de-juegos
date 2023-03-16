@@ -1,3 +1,9 @@
+.container {
+  background-color: rgb(247, 247, 247);
+  min-height: 100dvh;
+  min-height: 100vh;
+}
+
 .btn_wrapper {
   margin-bottom: 1em;
   display: flex;
@@ -12,24 +18,12 @@
 
 .table_wrapper {
   margin-bottom: 1em;
+  @media (max-width: 768px) {
+    overflow: auto;
+  }
 
   tbody {
     tr {
-      &:nth-child(odd) {
-        background-color: rgb(243, 243, 243);
-      }
-      &:nth-child(even) {
-        background-color: rgb(228, 228, 228);
-      }
-
-      td {
-        padding: 0.5em;
-      }
-
-      .info {
-        width: 46%;
-      }
-
       .btn {
         cursor: pointer;
       }

@@ -1,5 +1,6 @@
 import { ReactNode } from "react";
 import EditIcon from "../../../icons/EditIcon";
+import TrashIcon from "../../../icons/TrashIcon";
 import XMark from "../../../icons/XMark";
 import { Consumption, Membership, Promotion } from "../../../types/model";
 
@@ -28,7 +29,7 @@ export default function TableRow({
         }}
         className={s.btn}
       >
-        <XMark size={18} />
+        <TrashIcon />
       </td>
     </tr>
   );

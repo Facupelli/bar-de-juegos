@@ -1,25 +1,39 @@
 .table {
   width: 100%;
   border-collapse: collapse;
-  overflow: auto;
+  box-shadow: 0px 0px 10px 1px rgba(0, 0, 0, 0.05);
+  border-radius: 0.5em;
+  overflow: hidden;
+  background-color: rgb(247, 247, 247);
 
   thead {
     font-size: 12px;
     font-weight: 300;
-    border-bottom: 1px solid gray;
+    border-bottom: 1px solid rgb(231, 231, 231);
+    color: rgb(49, 54, 53);
 
     tr {
       font-weight: 600;
-      font-size: 0.8rem;
-    }
+      font-size: 0.85rem;
+      border-radius: 0.5em;
 
-    tr th {
-      text-align: left;
-      padding: 0.5em;
+      th {
+        text-align: left;
+        padding: 1em;
+        border-radius: 0em 5em 0em 5em;
+      }
     }
   }
 
   tbody {
     font-size: 14px;
+    background-color: white;
+
+    tr {
+      td {
+        padding: 1em;
+        border-bottom: 1px solid rgb(238, 238, 238);
+      }
+    }
   }
 }

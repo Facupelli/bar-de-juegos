@@ -62,7 +62,6 @@ export default async function handlerPromotion(
 
     if (req.method === "POST") {
       try {
-        console.log("DISCOUNT", discount);
         if (name && consumptionsIds && membershipsIds && points) {
           const newPromotion = await prisma.promotion.create({
             data: {
