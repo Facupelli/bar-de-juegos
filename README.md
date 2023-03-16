@@ -1,6 +1,6 @@
 # BAR DE JUEGOS APP
 
-Web para gestionar un bar con un sistema de membresías. Los clientes con cada consumición van ganando puntos que luego pueden cambiar por promociones dependidendo la membresía que tenbga.
+Web para gestionar un bar con un sistema de membresías. Los clientes con cada consumición van ganando puntos que luego pueden cambiar por promociones dependidendo la membresía que tenga.
 
 ## Tech Stack
 
