@@ -24,13 +24,13 @@ export const useUserIdHotkeys = (
         }
 
         if (e.key === "1") {
-          setConsumptionActive("cleubcq1e0003e788dvrvlsyo");
+          setConsumptionActive("clfui8w0m0004e7643z5bwlkv");
         }
         if (e.key === "2") {
-          setConsumptionActive("cleubcq1e0005e788cizbtne3");
+          setConsumptionActive("clfui8w0m0006e764k8w84mv2");
         }
         if (e.key === "3") {
-          setConsumptionActive("cleubcq1e0007e788mgknnrix");
+          setConsumptionActive("clfui8w0n0008e764zwun0xfj");
         }
         if (e.key === "4") {
           setConsumptionActive("promos");

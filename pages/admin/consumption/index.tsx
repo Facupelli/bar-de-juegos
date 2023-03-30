@@ -32,7 +32,9 @@ type Props = {
 const trTitles = ["Nombre", "Puntos"];
 
 export default function ConsumptionPage({ consumptions }: Props) {
-  const [categoryActive, setCategoryActive] = useState(consumptions[0].id);
+  const [categoryActive, setCategoryActive] = useState(
+    consumptions[0]?.id ?? ""
+  );
 
   const [openCreateModal, setOpenCreateModal] = useState<boolean>(false);
 
