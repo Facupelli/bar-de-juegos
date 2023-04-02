@@ -35,11 +35,11 @@ import s from "./UserDetail.module.scss";
 type Props = {
   userData: User;
   allConsumptions: ConsumptionCategory[];
-  userConsumptions: {
-    drinks: Consumption[];
-    games: Consumption[];
-    foods: Consumption[];
-  };
+  consumptionsByCategory: {
+    name: string;
+    id: string;
+    consumptions: { name: string; users: { userId: string }[] }[];
+  }[];
   userId: string;
 };
 
@@ -48,7 +48,7 @@ const trLastConsumptionsTitles = ["consumición", "ganó?", "cantidad", "fecha"]
 export default function Home({
   userData,
   allConsumptions,
-  userConsumptions,
+  consumptionsByCategory,
   userId,
 }: Props) {
   const router = useRouter();
@@ -324,32 +324,16 @@ export default function Home({
             <details>
               <summary>Consumiciones totales:</summary>
               <div className={`${s.user_consumptions_section}`}>
-                <Table trTitles={["Nombre", "Cantidad"]}>
-                  {userConsumptions.drinks?.map((consumption) => (
-                    <tr key={consumption.id}>
-                      <td>{consumption.name}</td>
-                      <td>{consumption.users.length}</td>
-                    </tr>
-                  ))}
-                </Table>
-
-                <Table trTitles={["Nombre", "Cantidad"]}>
-                  {userConsumptions.games?.map((consumption) => (
-                    <tr key={consumption.id}>
-                      <td>{consumption.name}</td>
-                      <td>{consumption.users.length}</td>
-                    </tr>
-                  ))}
-                </Table>
-
-                <Table trTitles={["Nombre", "Cantidad"]}>
-                  {userConsumptions.foods?.map((consumption) => (
-                    <tr key={consumption.id}>
-                      <td>{consumption.name}</td>
-                      <td>{consumption.users.length}</td>
-                    </tr>
-                  ))}
-                </Table>
+                {consumptionsByCategory.map((category) => (
+                  <Table key={category.id} trTitles={["Nombre", "Cantidad"]}>
+                    {category.consumptions.map((consumption) => (
+                      <tr key={consumption.name}>
+                        <td>{consumption.name}</td>
+                        <td>{consumption.users.length}</td>
+                      </tr>
+                    ))}
+                  </Table>
+                ))}
               </div>
             </details>
           </section>
@@ -375,11 +359,7 @@ interface IParams extends ParsedUrlQuery {
 export const getStaticProps: GetStaticProps = async (context) => {
   const { id } = context.params as IParams;
 
-  let user,
-    allConsumptions,
-    userDrinksConsumptions,
-    userGamesConsumptions,
-    userFoodConsumptions;
+  let user, allConsumptions, consumptionsByCategory;
 
   try {
     user = await prisma.user.findUnique({
@@ -425,23 +405,41 @@ export const getStaticProps: GetStaticProps = async (context) => {
   }
 
   try {
-    userDrinksConsumptions = await prisma?.consumption.findMany({
-      include: { users: { where: { userId: id } } },
-      where: { consumptionCategoryId: "cleubcq1e0007e788mgknnrix" },
-      orderBy: { points: "asc" },
+    const categories = await prisma.consumptionCategory.findMany({
+      select: {
+        id: true,
+        name: true,
+        consumptions: {
+          select: {
+            name: true,
+            users: {
+              select: {
+                userId: true,
+              },
+            },
+          },
+          where: {
+            users: {
+              some: {
+                userId: id,
+              },
+            },
+          },
+        },
+      },
+      orderBy: {
+        name: "asc",
+      },
     });
 
-    userGamesConsumptions = await prisma?.consumption.findMany({
-      include: { users: { where: { userId: id } } },
-      where: { consumptionCategoryId: "cleubcq1e0005e788cizbtne3" },
-      orderBy: { points: "asc" },
-    });
-
-    userFoodConsumptions = await prisma?.consumption.findMany({
-      include: { users: { where: { userId: id } } },
-      where: { consumptionCategoryId: "cleubcq1e0003e788dvrvlsyo" },
-      orderBy: { points: "asc" },
-    });
+    consumptionsByCategory = categories.map((category) => ({
+      id: category.id,
+      name: category.name,
+      consumptions: category.consumptions.map((c) => ({
+        ...c,
+        users: c.users.filter((user) => user.userId === id),
+      })),
+    }));
   } catch (e) {
     console.error(e);
   }
@@ -450,11 +448,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
     props: {
       userData: JSON.parse(JSON.stringify(user)),
       allConsumptions: JSON.parse(JSON.stringify(allConsumptions)),
-      userConsumptions: {
-        drinks: JSON.parse(JSON.stringify(userDrinksConsumptions)),
-        foods: JSON.parse(JSON.stringify(userFoodConsumptions)),
-        games: JSON.parse(JSON.stringify(userGamesConsumptions)),
-      },
+      consumptionsByCategory: consumptionsByCategory,
       userId: id,
     },
     revalidate: 10,
